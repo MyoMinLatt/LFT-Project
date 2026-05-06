@@ -145,7 +145,6 @@ def send_alert():
 
     global last_alert_time
 
-    # 🔥 cooldown protection
     now = time.time()
     if now - last_alert_time < 60:
         return jsonify({"status": "cooldown"})
@@ -168,24 +167,22 @@ def send_alert():
 
     for user in users:
 
-        # ✅ only verified users
         if user["verified"] != 1:
             continue
 
-
-        # 📧 EMAIL ALERT
         if user.get("email"):
             send_email(user["email"], "System Alert", message)
 
-        # 📱 SMS ALERT
         if user.get("phone"):
             send_sms(user["phone"], message)
+
+    return jsonify({"status": "sent"})
 
 
 # ==============================
 # RUN FLASK APP
 # ==============================
-import os
+
 if __name__ == '__main__':
  #   init_user_table()
   #  app.run(debug=True)
