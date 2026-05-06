@@ -1,7 +1,24 @@
+import random
+import time
 import smtplib
 import os
 from email.mime.text import MIMEText
 
+
+# =========================
+# OTP GENERATION
+# =========================
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+
+def otp_expiry(minutes=5):
+    return time.time() + (minutes * 60)
+
+
+# =========================
+# EMAIL OTP SENDING
+# =========================
 def send_otp(destination, otp):
 
     sender_email = "minlatt.myo@gmail.com"
@@ -20,6 +37,7 @@ def send_otp(destination, otp):
         server.quit()
 
         print(f"✅ OTP SENT to {destination}")
+        print("EMAIL PASS LOADED:", bool(sender_password))
 
     except Exception as e:
         print("❌ OTP ERROR:", e)
