@@ -147,7 +147,7 @@ def login():
 
             # success login
             # success login
-            reset_fail(user["id"])
+            reset_fail(user[0])
 
             session["user"] = user["email"]
             session["email"] = user["email"]
@@ -205,10 +205,14 @@ def reset_verify():
 
         user = get_user_by_login(email)
 
-        if time.time() > user[11]:
+        # FIXED INDEXES
+        otp = user[11]
+        otp_expiry_time = user[12]
+
+        if time.time() > otp_expiry_time:
             return "OTP expired"
 
-        if code == user[10]:
+        if code == otp:
             return redirect("/reset_password")
 
         return "Wrong code"
