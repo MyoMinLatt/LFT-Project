@@ -1,0 +1,7 @@
+System
+
+System combines ultrafiltration (UF) and reverse osmosis (RO) processes with sensor-based monitoring, database management, and performance simulation tools to optimize operation and ensure stable treatment performance.  This system integrates advanced filtration technologies and a real-time monitoring platform.
+
+Expected outcomes
+
+This project improves the development of an integrated treatment and monitoring system, field-level validation of treatment efficiency and operational stability, and the establishment of a scalable and economically viable technology that supports national environmental policies, reduces greenhouse gas emissions, and promotes sustainable livestock waste resource utilization.

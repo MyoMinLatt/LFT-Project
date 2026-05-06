@@ -1,0 +1,609 @@
+{% extends "base.html" %}
+
+{% block title %}Wastewater Treatment System{% endblock %}
+
+{% block content %}
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+
+    position: relative;
+    z-index: 1;
+    background: none;
+}
+
+/* Background Photo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: url("/static/images/pig_farm.jpg") no-repeat center center;
+    background-size: cover;
+
+    opacity: 0.25;
+    z-index: -1;
+}
+
+/* Dark overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+
+
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    gap: 10px;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #f0f0f0;
+    padding: 25px 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+header .titles {
+    text-align: center;
+    flex-grow: 1;
+}
+
+header h1 { margin: 0; font-size: 20px; }
+header h2 { margin: 0; font-size: 16px; }
+
+header .logo img { height: 50px; }
+header .datetime { font-size: 14px; }
+
+/* =============================== */
+.page-layout{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 10px;
+}
+
+/* MAIN GRID */
+main {
+    display: grid;
+    grid-template-columns: repeat(3, 220px);
+    row-gap: 20px;
+    column-gap: 20px;
+}
+
+/* MENU CARDS (UNCHANGED) */
+.menu-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-card img {
+    width: 220px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.menu-card a {
+    text-decoration: none;
+    width: 220px;
+}
+
+.menu-card button {
+    margin-top: 6px;
+    width: 100%;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-card button:hover {
+    background-color: #0056b3;
+}
+
+/* ===============================
+   BASE BOX STYLE
+=============================== */
+.side-box{
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    overflow-y: auto;   /* scroll if content too long */
+}
+
+/* ===============================
+   LEFT BOX (FULL CONTROL)
+=============================== */
+.left-box{
+    width: 400px;     /* 👉 change width here */
+    height: 558px;    /* 👉 change height here */
+}
+
+/* ===============================
+   RIGHT BOX (FULL CONTROL)
+=============================== */
+.right-box{
+    width: 400px;     /* 👉 different width */
+    height: 550px;    /* 👉 different height */
+}
+
+/* ===============================
+   BOTTOM BOX (OUTER CONTAINER)
+=============================== */
+.bottom-box{
+    margin: 50px auto 5px auto;
+
+    width: 99%;
+    height: 225px;
+
+    padding: 2px;
+    background:#f5f5f5;
+    border-radius:10px;
+
+    overflow-y: auto;
+}
+
+/* ===============================
+   HEADER ROW (TITLES)
+=============================== */
+.bottom-header{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* Individual header cell */
+.header-col{
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Span 4 columns (for group title) */
+.span-4{
+    grid-column: span 4;
+}
+
+/* ===============================
+   MAIN GRID (2 PARTS)
+=============================== */
+.bottom-grid{
+    display: grid;
+    grid-template-columns: 1fr 4fr; /* left small, right big */
+    gap: 5px;
+}
+
+/* LEFT COLUMN */
+.left-column{
+    background: #CCFFFF;
+    padding: 3px;
+    border-radius: 2px;
+}
+
+/* RIGHT GROUP */
+.right-group{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* GROUP TITLE (Project Partners) */
+.group-title{
+    height: 30px;             /* 🔥 fixed height */
+    line-height: 2px;        /* vertical center */
+
+    text-align: center;
+    background: #e3f2fd;
+    border-radius: 2px;
+
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+/* 4 COLUMNS */
+.group-columns{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+/* EACH PARTNER COLUMN */
+.bottom-col{
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* ===============================
+   INNER CONTENT (LOGO LEFT)
+=============================== */
+/* FLEX LAYOUT */
+.bottom-content{
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+/* LOGO LEFT */
+.bottom-logo{
+    width: 60px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* TEXT RIGHT */
+.bottom-info{
+    text-align: left;
+}
+
+/* COMPANY NAME */
+.bottom-company{
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+/* TEXT */
+.bottom-text{
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+    /* =========================
+   TEXT BOX STYLING
+========================= */
+
+.side-box, .bottom-box {
+    line-height: 1.6;
+}
+
+/* Titles */
+.box-title {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Paragraphs */
+.side-box p,
+.bottom-box p {
+    text-align: justify;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+</style>
+
+<header>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}">
+    </div>
+
+    <div class="titles">
+        <!-- ✅ ADD data-i18n -->
+        <h1 data-i18n="title">Wastewater Treatment System</h1>
+        <h2 data-i18n="subtitle">Wastewater Treatment System Monitoring</h2>
+    </div>
+
+    <!-- ✅ ADD LANGUAGE SWITCHER HERE -->
+    <div>
+        <select id="languageSwitcher">
+            <option value="en">English</option>
+            <option value="ko">한국어</option>
+            <option value="my">Myanmar</option>
+            <option value="vi">Vietnamese</option>
+            <option value="mn">Mongolian</option>
+        </select>
+    </div>
+
+
+</header>
+
+<div class="page-layout">
+
+    <div class="side-box left-box" id="leftBox">
+    Loading...
+</div>
+
+    <main>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/LFT_diagram.png') }}">
+            <a href="{{ url_for('flow_diagram') }}">
+                <button data-i18n="flow">Flow Diagram</button>
+            </a>
+        </div>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/LFT_dashboard.png') }}">
+            <a href="{{ url_for('monitoring') }}">
+                <button data-i18n="monitoring">Monitoring</button>
+            </a>
+        </div>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/measurement.avif') }}">
+            <a href="{{ url_for('measurement') }}">
+                <button data-i18n="measurement">Measurement</button>
+            </a>
+        </div>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/UF-System.jpg') }}">
+            <a href="{{ url_for('uf') }}">
+                <button data-i18n="uf">UF</button>
+            </a>
+        </div>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/RO-System.jpg') }}">
+            <a href="{{ url_for('ro') }}">
+                <button data-i18n="ro">RO</button>
+            </a>
+        </div>
+
+        <div class="menu-card">
+            <img src="{{ url_for('static', filename='images/Data_analysis.png') }}">
+            <a href="{{ url_for('analysis') }}">
+                <button data-i18n="analysis">Analysis</button>
+            </a>
+        </div>
+
+    </main>
+
+    <div class="side-box right-box" id="rightBox">
+    Loading...
+</div>
+
+</div>
+
+<div class="bottom-box">
+
+    <div class="bottom-grid">
+
+        <!-- LEFT SIDE (COLUMN 1) -->
+        <div class="left-column">
+            <div id="col1-title" class="bottom-title"></div>
+            <div id="col1"></div>
+        </div>
+
+        <!-- RIGHT SIDE (PARTNERS) -->
+        <div class="right-group">
+
+            <!-- COMMON TITLE -->
+            <div id="group-title" class="group-title"></div>
+
+            <!-- 4 PARTNER COLUMNS -->
+            <div class="group-columns">
+                <div id="col2" class="bottom-col"></div>
+                <div id="col3" class="bottom-col"></div>
+                <div id="col4" class="bottom-col"></div>
+                <div id="col5" class="bottom-col"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===============================
+   EXISTING CLOCK (UNCHANGED)
+=============================== -->
+<script>
+function updateDateTime(){
+    const now = new Date();
+    document.getElementById("datetime").innerText =
+        now.getFullYear() + "/" +
+        String(now.getMonth()+1).padStart(2,'0') + "/" +
+        String(now.getDate()).padStart(2,'0') + " " +
+        String(now.getHours()).padStart(2,'0') + ":" +
+        String(now.getMinutes()).padStart(2,'0') + ":" +
+        String(now.getSeconds()).padStart(2,'0');
+}
+setInterval(updateDateTime,1000);
+updateDateTime();
+</script>
+
+<!-- ✅ ADD THIS AT VERY BOTTOM -->
+<script>
+function setLanguage(lang){
+    const elements = document.querySelectorAll("[data-i18n]");
+
+    elements.forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if(translations[lang][key]){
+            el.innerText = translations[lang][key];
+        }
+    });
+
+    localStorage.setItem("lang", lang);
+}
+
+const savedLang = localStorage.getItem("lang") || "en";
+setLanguage(savedLang);
+
+const switcher = document.getElementById("languageSwitcher");
+switcher.value = savedLang;
+
+switcher.addEventListener("change", function(){
+    setLanguage(this.value);
+});
+
+
+
+/* =========================
+   ORIGINAL (DO NOT TOUCH)
+   LEFT & RIGHT FORMAT
+========================= */
+function loadTextFile(elementId, filePath){
+    fetch(filePath)
+    .then(response => response.text())
+    .then(text => {
+
+        const lines = text.split("\n").map(l => l.trim());
+        let html = "";
+        let paragraphBuffer = [];
+
+        function flushParagraph(){
+            if(paragraphBuffer.length > 0){
+                html += `<p>${paragraphBuffer.join(" ")}</p>`;
+                paragraphBuffer = [];
+            }
+        }
+
+        lines.forEach(line => {
+
+            if(line === ""){
+                flushParagraph();
+                return;
+            }
+
+            if(line.length < 60 && !line.endsWith(".")){
+                flushParagraph();
+                html += `<h3 class="box-title">${line}</h3>`;
+            }
+            else{
+                paragraphBuffer.push(line);
+            }
+
+        });
+
+        flushParagraph();
+
+        document.getElementById(elementId).innerHTML = html;
+    })
+    .catch(err => {
+        document.getElementById(elementId).innerText = "Failed to load content";
+        console.error(err);
+    });
+}
+
+
+/* =========================
+   NEW: BOTTOM BOX FORMAT
+========================= */
+function loadBottomColumn(elementId, filePath){
+
+    fetch(filePath)
+    .then(response => response.text())
+    .then(text => {
+
+        const lines = text.split("\n").map(l => l.trim());
+
+        let logo = "";
+        let company = "";
+        let infoHTML = "";
+
+        lines.forEach(line => {
+
+            // LOGO
+            if(line.startsWith("logo:")){
+                const file = line.replace("logo:", "").trim();
+                logo = `<img src="/static/images/${file}" class="bottom-logo">`;
+            }
+
+            // COMPANY NAME
+            else if(line.startsWith("##")){
+                company = `<div class="bottom-company">${line.replace("##","").trim()}</div>`;
+            }
+
+            // OTHER INFO
+            else if(line !== ""){
+                infoHTML += `<div class="bottom-text">${line}</div>`;
+            }
+
+        });
+
+        // 🔥 FINAL LAYOUT (LEFT LOGO + RIGHT TEXT)
+        const finalHTML = `
+            <div class="bottom-content">
+                ${logo}
+                <div class="bottom-info">
+                    ${company}
+                    ${infoHTML}
+                </div>
+            </div>
+        `;
+
+        document.getElementById(elementId).innerHTML = finalHTML;
+
+    })
+    .catch(err => {
+        document.getElementById(elementId).innerText = "Failed to load content";
+        console.error(err);
+    });
+}
+
+
+/* =========================
+   LOAD ALL BOX CONTENT
+========================= */
+function loadAllBoxes(lang){
+
+    /* LEFT & RIGHT (UNCHANGED) */
+    loadTextFile("leftBox", `/static/text/left_information_${lang}.txt`);
+    loadTextFile("rightBox", `/static/text/right_information_${lang}.txt`);
+
+    /* TITLES (UNCHANGED) */
+    loadTextFile("col1-title", `/static/text/title_col1_${lang}.txt`);
+    loadTextFile("group-title", `/static/text/title_group_${lang}.txt`);
+
+    /* ✅ BOTTOM COLUMNS (USE NEW FUNCTION) */
+    loadBottomColumn("col1", `/static/text/bottom1_${lang}.txt`);
+    loadBottomColumn("col2", `/static/text/bottom2_${lang}.txt`);
+    loadBottomColumn("col3", `/static/text/bottom3_${lang}.txt`);
+    loadBottomColumn("col4", `/static/text/bottom4_${lang}.txt`);
+    loadBottomColumn("col5", `/static/text/bottom5_${lang}.txt`);
+}
+
+
+/* =========================
+   HOOK INTO LANGUAGE SYSTEM
+========================= */
+const originalSetLanguage = setLanguage;
+
+setLanguage = function(lang){
+    originalSetLanguage(lang);
+    loadAllBoxes(lang);
+};
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+const savedLang2 = localStorage.getItem("lang") || "en";
+loadAllBoxes(savedLang2);
+
+
+</script>
+
+{% endblock %}

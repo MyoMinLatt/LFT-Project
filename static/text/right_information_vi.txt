@@ -1,0 +1,4 @@
+Mô tả dự án
+Hệ thống được phát triển dựa trên sự kết hợp giữa công nghệ siêu lọc (UF) và thẩm thấu ngược (RO), cùng với hệ thống giám sát dựa trên cảm biến, quản lý cơ sở dữ liệu và các công cụ mô phỏng hiệu suất. Hệ thống tích hợp các công nghệ lọc tiên tiến với nền tảng giám sát thời gian thực nhằm tối ưu hóa vận hành và đảm bảo hiệu quả xử lý ổn định.
+Kết quả kỳ vọng
+Dự án hướng tới việc phát triển một hệ thống xử lý và giám sát tích hợp, đồng thời kiểm chứng hiệu quả xử lý và độ ổn định vận hành ở quy mô thực địa. Công nghệ được phát triển sẽ có khả năng mở rộng và mang lại hiệu quả kinh tế, góp phần hỗ trợ các chính sách môi trường quốc gia, giảm phát thải khí nhà kính và thúc đẩy việc sử dụng bền vững nguồn tài nguyên từ chất thải chăn nuôi.

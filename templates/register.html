@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+
+<h2>Create Account</h2>
+
+<form method="POST">
+
+    <input type="text" name="full_name" placeholder="Full Name" required><br><br>
+
+    <input type="text" name="last_name" placeholder="Last Name" required>
+
+    <input type="text" name="birthday" placeholder="YYYYMMDD" required><br><br>
+
+    <input type="text" name="email" placeholder="Email" required><br><br>
+
+    <input type="text" name="phone" placeholder="Phone (+country code)" required><br><br>
+
+    <select name="gender" required>
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select><br><br>
+
+    <input type="text" name="position" placeholder="Position"><br><br>
+
+    <input type="text" name="affiliation" placeholder="Affiliation"><br><br>
+
+    <input type="password" name="password" placeholder="Password" required><br><br>
+
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required><br><br>
+
+    <select name="recovery">
+        <option>Email</option>
+        <option>Phone</option>
+    </select><br><br>
+
+    <!-- AGREEMENT -->
+    <label>
+        <input type="checkbox" name="agree" value="yes"> I agree to Terms of Use
+    </label><br><br>
+
+    <button type="submit">Register</button>
+
+</form>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<br>
+<a href="/login">Back to Login</a>
+
+</body>
+</html>

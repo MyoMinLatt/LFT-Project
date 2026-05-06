@@ -1,0 +1,6 @@
+Tên dự án
+Phát triển hệ thống xử lý phân bón lỏng cho cơ sở tái chế tài nguyên cộng đồng với công suất 30 m³/ngày
+Bối cảnh dự án
+Dự án được triển khai nhằm giải quyết các vấn đề môi trường ngày càng gia tăng liên quan đến quản lý chất thải chăn nuôi, đặc biệt là phát thải khí nhà kính từ quá trình phân hủy phân chuồng, cũng như các quy định ngày càng nghiêm ngặt của nhà nước về xử lý và tái chế chất thải chăn nuôi. Các hệ thống xử lý hiện tại thường gặp hạn chế về hiệu quả vận hành và yêu cầu quản lý phức tạp, do đó cần phát triển các giải pháp xử lý hiệu quả và thông minh hơn.
+Địa điểm thực hiện dự án
+Trung tâm Nông nghiệp Tuần hoàn Tự nhiên – Hợp tác xã Chăn nuôi Gunwi, Daegu

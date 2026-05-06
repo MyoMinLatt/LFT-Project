@@ -1,0 +1,11 @@
+digraph Schema {
+	Database [label=Database color=lightblue shape=box style=filled]
+	Services [label=Services color=lightgreen shape=box style=filled]
+	Routes [label=Routes color=yellow shape=ellipse style=filled]
+	Templates [label=Templates color=orange shape=folder style=filled]
+	Static [label=Static color=pink shape=note style=filled]
+	Routes -> Services
+	Services -> Database
+	Routes -> Templates
+	Templates -> Static
+}

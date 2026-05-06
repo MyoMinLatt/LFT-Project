@@ -1,0 +1,5 @@
+logo: logo3.png
+## 충남대학교 산학협력단 
+📍 RM#XXX, XX, 99, Daehak-ro, Yuseong-gu, Daejeon, 34134, Korea
+📞 042-222-333
+✉️ email

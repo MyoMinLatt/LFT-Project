@@ -1,0 +1,47 @@
+<table class="status-table">
+
+    <thead>
+
+        <tr>
+            <th colspan="4" class="th-title">
+                Pumps Status
+            </th>
+        </tr>
+
+        <tr>
+            <th colspan="2" class="th-uf">UF System</th>
+            <th colspan="2" class="th-ro">RO System</th>
+        </tr>
+
+        <tr>
+            <th>Device</th>
+            <th>Value</th>
+
+            <th>Device</th>
+            <th>Value</th>
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        {% for row in pumps_table %}
+
+        <tr>
+
+            <!-- UF -->
+            <td>{{ row.uf_device }}</td>
+            <td>{{ row.uf_value }}</td>
+
+            <!-- RO -->
+            <td>{{ row.ro_device }}</td>
+            <td>{{ row.ro_value }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>

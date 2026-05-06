@@ -1,0 +1,46 @@
+/* Prevent invisible text */
+
+td, th {
+    color: #000 !important;
+    background-clip: padding-box;
+}
+/* ================================
+   DASHBOARD LAYOUT (DO NOT TOUCH TABLE DESIGN)
+================================ */
+
+.dashboard-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+
+/* Main table area */
+.main-table-box {
+    flex: 3;
+    overflow-x: auto;
+}
+
+/* Pump table area */
+.side-table-box {
+    flex: 1.5;
+    overflow-x: auto;
+    border-left: 1px solid #ddd;
+    padding-left: 10px;
+}
+
+/* Mobile support */
+@media (max-width: 1200px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+
+    .side-table-box {
+        border-left: none;
+        padding-left: 0;
+        margin-top: 20px;
+    }
+}

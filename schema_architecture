@@ -1,0 +1,36 @@
+digraph G {
+	rankdir=LR
+	node [fontsize=10 shape=box style=filled]
+	subgraph cluster_database {
+		color=lightblue label=Database
+		"db_connection.py"
+		"queries.py"
+		"models.py"
+	}
+	subgraph cluster_services {
+		color=lightgreen label=Services
+		"auth_service.py"
+		"data_service.py"
+	}
+	subgraph cluster_routes {
+		color=yellow label=Routes
+		"main_route.py"
+		"user_route.py"
+	}
+	subgraph cluster_templates {
+		color=orange label=Templates
+		"index.html"
+		"dashboard.html"
+	}
+	subgraph cluster_static {
+		color=pink label=Static
+		"style.css"
+		"script.js"
+	}
+	"main_route.py" -> "auth_service.py"
+	"main_route.py" -> "data_service.py"
+	"auth_service.py" -> "db_connection.py"
+	"data_service.py" -> "queries.py"
+	"dashboard.html" -> "style.css"
+	"dashboard.html" -> "script.js"
+}

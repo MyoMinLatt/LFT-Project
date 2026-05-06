@@ -1,0 +1,956 @@
+{% extends "base.html" %}
+
+{% block title %}
+Wastewater Monitoring Dashboard
+{% endblock %}
+
+{% block content %}
+
+
+<style>
+
+/* ===============================
+   PAGE
+=============================== */
+body{
+    background:linear-gradient(180deg,#020924,#07143d);
+    color:white;
+    font-family:"Segoe UI",sans-serif;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+/* ===============================
+   MAIN LAYOUT
+=============================== */
+.dashboard-layout{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:20px;
+    padding:10px;
+}
+
+.dashboard-main{
+    flex:0 0 auto;
+}
+
+/* ===============================
+   RIGHT PANEL
+=============================== */
+.dashboard-side{
+    flex:0 0 360px;
+    background:rgba(5,15,45,0.95);
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 0 20px rgba(0,140,255,0.25);
+    min-height:450px;
+}
+
+/* ===============================
+   CONTAINER
+=============================== */
+.container-box{
+    max-width:900px;
+    margin:auto;
+    background:rgba(5,15,45,0.95);
+    border-radius:16px;
+    padding:14px;
+    box-shadow:0 0 25px rgba(0,140,255,0.4);
+}
+
+/* ===============================
+   TITLES
+=============================== */
+h2{ font-size:1.6rem; }
+h4{ font-size:1.1rem; }
+
+table{
+    width:85%;
+    margin:auto;
+    table-layout:fixed;
+    border-collapse:separate;
+    border-spacing:0 3px;
+}
+
+thead th{
+    text-align:center;
+    font-size:0.95rem;
+    padding:6px;
+    border-radius:8px;
+    font-weight:700;
+}
+
+.header-text{
+    max-width:100px;
+    margin:auto;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.th-var{ background:linear-gradient(180deg,#071a4d,#0b2b75); color:#00c8ff; border:2px solid #1c5cff; }
+.th-uf{ background:linear-gradient(180deg,#01351f,#045c38); color:#7affc9; border:2px solid rgba(0,255,140,0.9); }
+.th-ro{ background:linear-gradient(180deg,#3a2400,#6b3f00); color:#ffd27a; border:2px solid rgba(255,180,0,0.9); }
+
+.var-cell{
+    background:linear-gradient(180deg,#01351f,#045c38);
+    border-radius:12px;
+    border:2px solid rgba(0,255,140,0.9);
+    font-weight:700;
+    text-align:center;
+}
+
+.pair-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-radius:10px;
+    padding:4px 6px;
+    gap:6px;                 /* 🔥 add spacing */
+}
+
+.uf-box{ background:linear-gradient(180deg,#022f1a,#064d2c); border:2px solid rgba(0,255,120,0.9); }
+.ro-box{ background:linear-gradient(180deg,#3a2400,#6b3f00); border:2px solid rgba(255,180,0,0.9); }
+
+.device-text{
+    font-size:0.85rem;
+    font-weight:600;
+    flex:1;                  /* 🔥 take available space */
+    min-width:0;             /* 🔥 allow shrinking */
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.value-text{
+    font-size:0.95rem;
+    font-weight:700;
+    flex-shrink:0;           /* 🔥 NEVER shrink value */
+    text-align:right;
+}
+
+.pump-table{
+    width:100%;
+    table-layout:fixed;
+}
+
+.pump-table td{
+    padding:6px;
+}
+
+/* ===== Valve Override Only ===== */
+#valve-table-container .uf-box,
+#valve-table-container .ro-box{
+    background:linear-gradient(180deg,#4a4a4a,#6a6a6a) !important;
+    border:2px solid #9a9a9a !important;
+}
+
+/* ===============================
+   FULL WIDTH VARIABLE DIVIDER
+=============================== */
+.divider-row td{
+    border-top:4px solid #00c8ff;
+    padding:0;
+    height:10px;
+}
+/* ===============================
+   MAIN TABLE SCROLL AREA
+=============================== */
+.table-responsive{
+    max-height:800px;     /* adjust height as you like */
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+/* 🔥 BLINK COLORS */
+.blink-low{
+    animation: blinkLow 1s infinite;
+}
+.blink-high{
+    animation: blinkHigh 1s infinite;
+}
+
+@keyframes blinkLow{
+    0%{ border:2px solid yellow; }
+    50%{ border:2px solid transparent; }
+    100%{ border:2px solid yellow; }
+}
+
+@keyframes blinkHigh{
+    0%{ border:2px solid red; }
+    50%{ border:2px solid transparent; }
+    100%{ border:2px solid red; }
+}
+
+
+    /* 🔥 THRESHOLD GRID LAYOUT */
+.threshold-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap:8px;
+}
+
+.threshold-card{
+    background:#081a3a;
+    border:1px solid #1c5cff;
+    border-radius:8px;
+    padding:6px;
+    font-size:0.8rem;
+}
+
+.threshold-header{
+    cursor:pointer;
+    font-weight:600;
+    text-align:center;
+    color:#00c8ff;
+}
+
+.threshold-body{
+    display:none;
+    margin-top:5px;
+}
+
+.threshold-body input{
+    width:48%;
+    margin-top:3px;
+    font-size:0.75rem;
+}
+
+</style>
+
+<div style="position:absolute; right:20px; top:38px; z-index:1000;">
+    <select id="languageSwitcher">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="my">Myanmar</option>
+        <option value="vi">Vietnamese</option>
+        <option value="mn">Mongolian</option>
+    </select>
+</div>
+
+<div class="container-fluid p-2">
+<h2 class="text-center fw-bold text-info" data-i18n="main_title">
+💧 Liquid Fertilizer Treatment System
+</h2>
+
+<div class="dashboard-layout">
+
+<!-- LEFT -->
+<div class="dashboard-main">
+<div class="container container-box">
+<h4 class="text-center text-primary" data-i18n="dashboard_title">
+LFT Monitoring Dashboard
+</h4>
+
+<div class="table-responsive">
+<table id="dashboard-table">
+<thead>
+<tr>
+<th class="th-var"><div class="header-text" data-i18n="variables">Variables</div></th>
+<th colspan="2" class="th-uf"><div class="header-text" data-i18n="uf_system">UF System</div></th>
+<th colspan="2" class="th-ro"><div class="header-text" data-i18n="ro_system">RO System</div></th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- RIGHT -->
+<div class="dashboard-side">
+
+<h5 class="text-center text-info mb-2" data-i18n="pump_status">Pump Status</h5>
+<div id="pump-table-container">
+<p class="text-center text-secondary small">Loading...</p>
+</div>
+
+<h5 class="text-center text-info mt-4 mb-2" data-i18n="valve_status">Valve Status</h5>
+<div id="valve-table-container">
+<p class="text-center text-secondary small">Loading...</p>
+</div>
+
+
+
+</div>
+ <!-- 🔥 THRESHOLD PANEL -->
+<h5 class="text-center text-warning mt-4 mb-2"> </h5>
+
+<button id="toggleThreshold"
+        class="btn btn-sm btn-warning w-100 mb-2"
+        data-i18n="thresholds">
+    Thresholds
+</button>
+
+<div id="thresholdPanel" style="display:none;"></div>
+
+
+<!-- 🔥 ALARM PANEL -->
+<div id="alarmPanel" style="margin-top:10px; text-align:center;">
+
+    <button id="alarmHighBtn" class="btn btn-danger btn-sm">
+    🔴 0
+</button>
+
+<button id="alarmLowBtn" class="btn btn-warning btn-sm">
+    🟡 0
+</button>
+
+    <button id="soundToggle" class="btn btn-secondary btn-sm">
+        🔊
+    </button>
+</div>
+</div>
+</div>
+
+<script>
+/* =========================
+   GLOBALS
+========================= */
+let thresholds = JSON.parse(localStorage.getItem("thresholds") || "{}");
+let alarmHigh = 0;   // 🔴 above max
+let alarmLow  = 0;   // 🟡 below min
+
+let highDevices = [];   // 🔴 above max
+let lowDevices  = [];   // 🟡 below min
+let lastAlertSignature = ""; // prevent duplicate sending
+let lastAlertTime = 0;   // 🔥 REQUIRED FIX
+
+
+let alarmAudio = new Audio("{{ url_for('static', filename='voice/alert-alarm-1005.wav') }}");
+alarmAudio.loop = true;
+let soundEnabled = true;
+soundEnabled = JSON.parse(localStorage.getItem("soundEnabled") ?? "true");
+document.getElementById("soundToggle").textContent = soundEnabled ? "🔊" : "🔇";
+
+document.addEventListener("click", () => {
+    alarmAudio.play().then(() => {
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+    }).catch(()=>{});
+}, { once: true });
+
+document.getElementById("soundToggle").addEventListener("click", function () {
+
+    // 🔁 Toggle state
+    soundEnabled = !soundEnabled;
+
+    // 🔥 SAVE STATE (ADD THIS LINE HERE)
+    localStorage.setItem("soundEnabled", JSON.stringify(soundEnabled));
+
+    if (!soundEnabled) {
+        // TURN OFF SOUND
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+        this.textContent = "🔇";
+    } else {
+        // 🔊 TURN ON SOUND
+        this.textContent = "🔊";
+
+        // 🔥 play immediately if alarm exists
+        let total = alarmHigh + alarmLow;
+        if(total > 0){
+            alarmAudio.play().catch(()=>{});
+        }
+    }
+
+});
+/* =========================
+   THRESHOLD CHECK
+========================= */
+function checkThreshold(device, value){
+
+    if(!device) return "";
+
+    let t = thresholds[device];
+    if(!t) return "";
+
+    let num = parseFloat(value);
+    if(isNaN(num)) return "";
+
+    // 🔴 BELOW MIN
+    if(typeof t.min === "number" && !isNaN(t.min)){
+        if(num < t.min){
+            alarmLow++;
+
+            if (!lowDevices.some(d => d.name === device)) {
+                lowDevices.push({ name: device, value: num });
+            }
+
+            return "blink-low";
+        }
+    }
+
+    // 🔴 ABOVE MAX
+    if(typeof t.max === "number" && !isNaN(t.max)){
+        if(num > t.max){
+            alarmHigh++;
+
+            if (!highDevices.some(d => d.name === device)) {
+                highDevices.push({ name: device, value: num });
+            }
+
+            return "blink-high";
+        }
+    }
+
+    return "";
+}
+
+   /* ===============================
+   🔥 TRANSLATE VARIABLE FUNCTION (ADD HERE)
+=============================== */
+function translateVariable(name){
+    const lang = localStorage.getItem("lang") || "en";
+
+    // normalize string
+    let key = name.replace("m³", "m<sup>3</sup>");
+
+    if(translations[lang] && translations[lang]["var_" + key]){
+        return translations[lang]["var_" + key];
+    }
+
+    console.log("Translate:", name, "=>", "var_" + key);
+    return name;
+}
+
+
+/* ===============================
+   MAIN TABLE (UNCHANGED)
+=============================== */
+function fetchDashboard(){
+
+    $.get("/api/dashboard?t=" + new Date().getTime(), function(data){
+
+        if(!Array.isArray(data)) return;
+
+        let tbody="";
+        let previousVariable=null;
+
+        data.forEach(function(row){
+
+            if(row.variable && row.variable !== previousVariable){
+
+                if(previousVariable !== null){
+                    tbody += `
+                    <tr class="divider-row">
+                        <td colspan="5"></td>
+                    </tr>`;
+                }
+
+                previousVariable = row.variable;
+            }
+
+            tbody += "<tr>";
+
+            if(row.rowspan && row.rowspan > 0){
+                tbody += `
+                <td rowspan="${row.rowspan}" class="var-cell">
+                    ${translateVariable(row.variable ?? "")}
+                </td>`;
+            }
+
+            // ✅ UF WITH THRESHOLD CHECK
+            if(row.uf_device || row.uf_value){
+                tbody += `
+                <td colspan="2">
+                    <div class="pair-box uf-box ${checkThreshold(row.uf_device, row.uf_value)}">
+                        <span class="device-text">${row.uf_device ?? ""}</span>
+                        <span class="value-text">${row.uf_value ?? ""}</span>
+                    </div>
+                </td>`;
+            } else{
+                tbody += `<td colspan="2"></td>`;
+            }
+
+            // ✅ RO WITH THRESHOLD CHECK
+            if(row.ro_device || row.ro_value){
+                tbody += `
+                <td colspan="2">
+                    <div class="pair-box ro-box ${checkThreshold(row.ro_device, row.ro_value)}">
+                        <span class="device-text">${row.ro_device ?? ""}</span>
+                        <span class="value-text">${row.ro_value ?? ""}</span>
+                    </div>
+                </td>`;
+            } else{
+                tbody += `<td colspan="2"></td>`;
+            }
+
+            tbody += "</tr>";
+        });
+
+        // ✅ MUST be inside
+        $("#dashboard-table tbody").html(tbody);
+
+
+    });
+}
+
+
+
+/* ===============================
+   PUMP TABLE (UNCHANGED)
+=============================== */
+function fetchPumps(){
+
+
+
+    $.get("/api/pumps?t=" + new Date().getTime(), function(data){
+
+        let html=`<table><thead><tr>
+        <th colspan="2" class="th-uf"><div class="header-text">UF System</div></th>
+        <th colspan="2" class="th-ro"><div class="header-text">RO System</div></th>
+        </tr></thead><tbody>`;
+
+        data.forEach(function(row){
+            html+="<tr>";
+
+            // ✅ UF WITH THRESHOLD
+            if(row.uf_device || row.uf_value){
+                html+=`<td colspan="2">
+                <div class="pair-box uf-box ${checkThreshold(row.uf_device, row.uf_value)}">
+                    <span class="device-text">${row.uf_device??""}</span>
+                    <span class="value-text">${row.uf_value??"-"}</span>
+                </div>
+                </td>`;
+            } else{
+                html+=`<td colspan="2"></td>`;
+            }
+
+            // ✅ RO WITH THRESHOLD
+            if(row.ro_device || row.ro_value){
+                html+=`<td colspan="2">
+                <div class="pair-box ro-box ${checkThreshold(row.ro_device, row.ro_value)}">
+                    <span class="device-text">${row.ro_device??""}</span>
+                    <span class="value-text">${row.ro_value??"-"}</span>
+                </div>
+                </td>`;
+            } else{
+                html+=`<td colspan="2"></td>`;
+            }
+
+            html+="</tr>";
+        });
+
+        html+="</tbody></table>";
+
+        // ✅ MUST be inside callback
+        $("#pump-table-container").html(html);
+
+
+    });
+}
+
+
+/* ===============================
+   VALVE ICON FUNCTION (ADDED)
+=============================== */
+function getValveIcon(value){
+    if(!value || !value.status){
+        return `<img src="{{ url_for('static', filename='images/3.ERROR.png') }}" height="40">`;
+    }
+    if(value.status === "on"){
+        return `<img src="{{ url_for('static', filename='images/1.ON.gif') }}" height="40">`;
+    }
+    if(value.status === "off"){
+        return `<img src="{{ url_for('static', filename='images/2.OFF.png') }}" height="45">`;
+    }
+    return `<img src="{{ url_for('static', filename='images/3.ERROR.png') }}" height="40">`;
+}
+
+
+
+/* ===============================
+   VALVE TABLE (FIXED)
+=============================== */
+function fetchValves(){
+
+    $.get("/api/valves?t=" + new Date().getTime(), function(data){
+
+        if(!Array.isArray(data)){
+            console.log("Valve API error");
+            return;
+        }
+
+        let ufList = [];
+        let roList = [];
+
+        // Separate UF and RO valves
+        data.forEach(function(row){
+
+            if(row.uf_device){
+                ufList.push({
+                    device: row.uf_device,
+                    value: row.uf_value
+                });
+            }
+
+            if(row.ro_device){
+                roList.push({
+                    device: row.ro_device,
+                    value: row.ro_value
+                });
+            }
+
+        });
+
+        /* ==========================
+           BUILD UF TABLE (2 columns)
+        ========================== */
+
+        let ufHtml = `
+        <div style="margin-bottom:15px;">
+        <div class="text-success fw-bold text-center mb-2" data-i18n="uf_system">UF System</div>
+        <table style="width:100%"><tbody>`;
+
+        let half = Math.ceil(ufList.length / 2);
+
+        for(let i = 0; i < half; i++){
+
+            ufHtml += "<tr>";
+
+            // First column
+            let left = ufList[i];
+            ufHtml += `
+            <td>
+                <div class="pair-box uf-box">
+                    <span class="device-text">${left.device}</span>
+                    <span class="value-text">
+                        ${getValveIcon(left.value)}
+                    </span>
+                </div>
+            </td>`;
+
+            // Second column (if exists)
+            let right = ufList[i + half];
+            if(right){
+                ufHtml += `
+                <td>
+                    <div class="pair-box uf-box">
+                        <span class="device-text">${right.device}</span>
+                        <span class="value-text">
+                            ${getValveIcon(right.value)}
+                        </span>
+                    </div>
+                </td>`;
+            } else{
+                ufHtml += `<td></td>`;
+            }
+
+            ufHtml += "</tr>";
+        }
+
+        ufHtml += "</tbody></table></div>";
+
+
+        /* ==========================
+           BUILD RO TABLE (1 column)
+        ========================== */
+
+        let roHtml = `
+        <div>
+        <div class="text-warning fw-bold text-center mb-2" data-i18n="ro_system">RO System</div>
+        <table style="width:100%"><tbody>`;
+
+        roList.forEach(function(item){
+
+            roHtml += `
+            <tr>
+                <td>
+                    <div class="pair-box ro-box">
+                        <span class="device-text">${item.device}</span>
+                        <span class="value-text">
+                            ${getValveIcon(item.value)}
+                        </span>
+                    </div>
+                </td>
+            </tr>`;
+        });
+
+        roHtml += "</tbody></table></div>";
+
+        $("#valve-table-container").html(ufHtml + roHtml);
+
+    });
+}
+
+
+
+/* =============================== */
+function refreshAll(){
+
+    // RESET
+    alarmHigh = 0;
+    alarmLow  = 0;
+
+    highDevices = [];   // 🔥 ADD
+    lowDevices  = [];   // 🔥 ADD
+
+    fetchDashboard();
+    fetchPumps();
+    fetchValves();
+
+    setTimeout(() => {
+        updateAlarm();
+        triggerWarning();   // 🔥 ADD HERE
+    }, 500);
+}
+
+
+</script>
+
+<script>
+/* =========================
+   ALARM
+========================= */
+function updateAlarm(){
+
+    let total = alarmHigh + alarmLow;
+
+    // 🔴 High alarm button
+    $("#alarmHighBtn").text("🔴 " + alarmHigh);
+
+    // 🟡 Low alarm button
+    $("#alarmLowBtn").text("🟡 " + alarmLow);
+
+    if(total > 0){
+        if(soundEnabled && alarmAudio.paused){
+            alarmAudio.play().catch(err => {
+                console.warn("Audio blocked:", err);
+});
+        }
+    }else{
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+    }
+}
+
+function triggerWarning(){
+
+    // nothing abnormal
+    if(highDevices.length === 0 && lowDevices.length === 0){
+        lastAlertSignature = "";
+        return;
+    }
+
+    // ===== COOLDOWN (🔥 ADD THIS BLOCK)
+    let now = Date.now();
+    let cooldown = 60000; // 60 seconds
+
+    if(now - lastAlertTime < cooldown){
+        return; // ⛔ prevent spam
+    }
+
+    // create signature (avoid duplicate sending)
+    let signature = JSON.stringify({highDevices, lowDevices});
+
+    if(signature === lastAlertSignature){
+        return;
+    }
+
+    lastAlertSignature = signature;
+    lastAlertTime = now;   // 🔥 IMPORTANT
+
+    // ===== BUILD MESSAGE =====
+    let highList = highDevices.map(d => `${d.name}: ${d.value}`).join(", ");
+    let lowList  = lowDevices.map(d => `${d.name}: ${d.value}`).join(", ");
+
+    let message = {
+        high_count: highDevices.length,
+        high_list: highList,
+        low_count: lowDevices.length,
+        low_list: lowList
+    };
+
+    console.log("🚨 Sending alert:", message);
+
+    // ===== SEND TO BACKEND =====
+    $.ajax({
+        url: "/api/send-alert",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(message),
+        success: function(){
+            console.log("✅ Alert sent");
+        },
+        error: function(err){
+            console.error("❌ Alert failed", err);
+        }
+    });
+}
+
+/* ===== THRESHOLD LOGIC ===== */
+
+/* =========================
+   THRESHOLD UI
+========================= */
+$("#toggleThreshold").click(function(){
+    $("#thresholdPanel").toggle();
+    renderThresholdUI();
+});
+
+
+function getAllDevices(){
+    let devices = new Set();
+
+    $(".device-text").each(function(){
+
+    let name = $(this).text().trim();
+
+    if(!name) return;
+
+    // EXCLUDE valves (XV series)
+    if(name.startsWith("XV")) return;
+
+    devices.add(name);
+});
+
+    let arr = Array.from(devices);
+
+    // 🔥 SORT LOGIC
+    arr.sort((a, b) => {
+
+        // extract text + number
+        let aMatch = a.match(/^([A-Za-z ]+)(\d+)?$/);
+        let bMatch = b.match(/^([A-Za-z ]+)(\d+)?$/);
+
+        let aPrefix = aMatch ? aMatch[1].trim() : a;
+        let bPrefix = bMatch ? bMatch[1].trim() : b;
+
+        let aNum = aMatch && aMatch[2] ? parseInt(aMatch[2]) : 0;
+        let bNum = bMatch && bMatch[2] ? parseInt(bMatch[2]) : 0;
+
+        // 🔹 First sort by prefix
+        if(aPrefix < bPrefix) return -1;
+        if(aPrefix > bPrefix) return 1;
+
+        // 🔹 Then sort by number
+        return aNum - bNum;
+    });
+
+    return arr;
+}
+
+function renderThresholdUI(){
+
+    let devices = getAllDevices();
+    let html="";
+
+    devices.forEach(dev=>{
+
+        let t = thresholds[dev] || {};
+
+        html+=`
+        <div style="display:flex; gap:10px; margin-bottom:5px;">
+
+            <div onclick="toggleDevice('${dev}')" style="cursor:pointer; width:100px;">
+                ▶ ${dev}
+            </div>
+
+            <div id="dev_${dev}" style=" display:none; align-items:center; gap:5px; white-space:nowrap;">
+
+                Min <input type="number"
+                    value="${t.min ?? ""}"
+                    style="width:60px; padding:2px; font-size:0.8rem;"
+                    onchange="saveThreshold('${dev}','min',this.value)">
+
+                Max <input type="number"
+                    value="${t.max ?? ""}"
+                    style="width:60px; padding:2px; font-size:0.8rem;"
+                    onchange="saveThreshold('${dev}','max',this.value)">
+
+            </div>
+
+        </div>`;
+    });
+
+    $("#thresholdPanel").html(html);
+}
+
+function toggleDevice(dev){
+
+    let el = $("#dev_" + dev);
+
+    if(el.is(":visible")){
+        el.hide();
+    }else{
+        el.css("display","flex");   // 🔥 KEY CHANGE
+    }
+}
+
+
+/* Save threshold */
+
+function saveThreshold(dev, type, val){
+
+    if(!thresholds[dev]) thresholds[dev] = {};
+
+    // 🔥 if input is empty → REMOVE threshold
+    if(val === "" || val === null){
+
+        delete thresholds[dev][type];
+
+        // 🔥 if both min & max removed → delete device completely
+        if(!thresholds[dev].min && !thresholds[dev].max){
+            delete thresholds[dev];
+        }
+
+    } else {
+
+        thresholds[dev][type] = parseFloat(val);
+    }
+
+    localStorage.setItem("thresholds", JSON.stringify(thresholds));
+}
+
+    setInterval(refreshAll, 5000);
+refreshAll();
+
+</script>
+
+<script>
+/* ===============================
+   LANGUAGE SWITCH (ADD THIS)
+=============================== */
+
+function setLanguage(lang){
+
+    localStorage.setItem("lang", lang);
+
+    // 🔥 Update static text (titles etc.)
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+
+        if(translations[lang] && translations[lang][key]){
+            el.innerHTML = translations[lang][key];
+        }
+    });
+
+    // 🔥 Reload dynamic tables
+    fetchDashboard();
+    fetchPumps();
+    fetchValves();
+}
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    const switcher = document.getElementById("languageSwitcher");
+    const savedLang = localStorage.getItem("lang") || "en";
+
+    if(switcher){
+        switcher.value = savedLang;
+
+        switcher.addEventListener("change", function(){
+            setLanguage(this.value);
+        });
+    }
+
+    // 🔥 apply language on page load
+    setLanguage(savedLang);
+});
+</script>
+
+
+
+{% endblock %}

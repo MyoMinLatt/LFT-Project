@@ -1,0 +1,41 @@
+body {
+    font-family: Arial;
+    background-color: #f5f5f5;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 8px;
+    text-align: center;
+}
+
+
+/* =========================
+   Variable Colors
+========================= */
+
+.bg-pressure {
+    background-color: #cce5ff;   /* Light Blue */
+}
+
+.bg-flow {
+    background-color: #d4edda;   /* Light Green */
+}
+
+.bg-temp {
+    background-color: #ffeeba;   /* Light Orange */
+}
+
+.bg-ph {
+    background-color: #f8d7da;   /* Light Red */
+}

@@ -1,0 +1,1729 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Liquid Fertilizer Water Treatment Plant
+{% endblock %}
+
+{% block content %}
+
+    <style>
+
+      /* Myanmar font adjustment ONLY for table */
+.table-my {
+    font-size: 13px;   /* 🔥 adjust as you want */
+}
+
+/* Optional: make header slightly larger */
+.table-my th {
+    font-size: 10px;
+}
+
+/* Optional: better Myanmar font */
+.table-my {
+    font-family: "Noto Sans Myanmar", "Myanmar Text", sans-serif;
+}
+
+
+
+        body {
+            background: #1c1c1c;
+            font-family: Arial;
+            color: white;
+        }
+
+        #plant {
+            position: relative;
+            width: 1280px;
+            margin: auto;
+        }
+
+        /* Title style */
+h2{
+    text-align: center;
+    font-size: 50px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: bold;
+    margin: 6px 0;
+    letter-spacing: 2px;
+
+    /* gradient color */
+    background: linear-gradient(90deg, #00e6ff, #00ff99);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+        /* SVG layer */
+        #diagram-image {
+            width: 100%;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        #flowLayer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            z-index: 5;
+        }
+
+        /* pipe style */
+        .pipe {
+            stroke: #00bfff;
+            stroke-width: 6;
+            fill: none;
+            stroke-dasharray: 12 12;
+            animation: flow 1s linear infinite;
+        }
+
+        /* Special pipe colors */
+        #p55 { stroke: yellow; stroke-width: 4; }
+        #p56 { stroke: skyblue; stroke-width: 4; }
+        #p57 { stroke: red; stroke-width: 4; }
+        #p58 { stroke: #3A5F0B; stroke-width: 4; }
+        #p59,
+        #p60,
+        #p61 { stroke: yellow; stroke-width: 4; }
+        #p62,
+        #p63,
+        #p64 { stroke: red; stroke-width: 4; }
+
+        #p1{stroke:#FF4500; stroke-width:5; }
+        #p2{stroke:#FF4500; stroke-width:5; }
+        #p3{stroke:#FF4500; stroke-width:5; }
+
+        #p29{stroke:#00008B; stroke-width:5; }
+
+        #p4{stroke:#FF4500; stroke-width:5; }
+        #p5{ stroke:#FF4500; stroke-width:5; }
+        #p6{stroke:#FF4500; stroke-width:5; }
+        #p7{stroke:#FF4500; stroke-width:5; }
+        #p8{stroke:#FF4500; stroke-width:5; }
+        #p9{stroke:#00FF00; stroke-width:5; }
+        #p10{stroke:#FF4500; stroke-width:5; }
+        #p11{stroke:#FF4500; stroke-width:5; }
+
+        #p12{stroke:#2B60DE; stroke-width:5; }
+        #p13{stroke:#2B60DE; stroke-width:5; }
+        #p14{stroke:#2B60DE; stroke-width:5; }
+        #p15{stroke:#2B60DE; stroke-width:5; }
+
+        #p16{stroke:#EB5406; stroke-width:5; }
+        #p17{stroke:#EB5406; stroke-width:5; }
+        #p18{stroke:#EB5406; stroke-width:5; }
+        #p19{stroke:#EB5406; stroke-width:5; }
+        #p20{stroke:#EB5406; stroke-width:5; }
+        #p21{stroke:#EB5406; stroke-width:5; }
+        #p22{stroke:#EB5406; stroke-width:5; }
+        #p23{stroke:#EB5406; stroke-width:5; }
+
+        #p24{stroke:#00BFFF; stroke-width:5; }
+        #p41{stroke:#00BFFF; stroke-width:5; }
+
+        #p25{stroke:#0000FF; stroke-width:5; }
+        #p26{stroke:#0000FF; stroke-width:5; }
+        #p27{stroke:#0000FF; stroke-width:5; }
+        #p28{stroke:#0000FF; stroke-width:5; }
+
+        #p42{stroke:#00FF00; stroke-width:5; }
+        #p43{stroke:yellow; stroke-width:5; }
+        #p44{stroke:yellow; stroke-width:5; }
+        #p45{stroke:yellow; stroke-width:5; }
+        #p46{stroke:yellow; stroke-width:5; }
+        #p47{stroke:yellow; stroke-width:5; }
+        #p48{stroke:yellow; stroke-width:5; }
+
+        #p35{stroke:yellow; stroke-width:5; }
+        #p36{stroke:#00FF00; stroke-width:5; }
+
+        #p37{stroke:yellow; stroke-width:5; }
+        #p38{stroke:yellow; stroke-width:5; }
+        #p39{stroke:yellow; stroke-width:5; }
+        #p40{stroke:yellow; stroke-width:5; }
+
+        #p30{stroke:yellow; stroke-width:5; }
+        #p31{stroke:yellow; stroke-width:5; }
+        #p32{stroke:yellow; stroke-width:5; }
+        #p33{stroke:yellow; stroke-width:5; }
+
+        #p34{stroke:yellow; stroke-width:5; }
+
+        #p49{stroke:#9D00FF; stroke-width:5; }
+        #p50{stroke:#9D00FF; stroke-width:5; }
+        #p51{stroke:#9D00FF; stroke-width:5; }
+        #p52{stroke:#9D00FF; stroke-width:5; }
+        #p53{stroke:#9D00FF; stroke-width:5; }
+        #p54{stroke:#9D00FF; stroke-width:5; }
+
+        @keyframes flow{
+        from{stroke-dashoffset:0;}
+        to{stroke-dashoffset:-24;}
+        }
+
+/* =========================
+BASE DEVICE STYLE
+========================= */
+
+/* Valve base */
+.valve{
+stroke:black;
+stroke-width:2;
+fill:#666;
+cursor:pointer;
+transition:all 0.3s;
+}
+
+/* Pump base */
+.pump{
+stroke:black;
+stroke-width:2;
+fill:#666;
+cursor:pointer;
+transition:all 0.3s;
+}
+
+
+/* =========================
+BLINK ANIMATION
+========================= */
+
+@keyframes blink{
+
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+
+}
+
+
+/* =========================
+VALVE STATUS
+========================= */
+
+/* ON → green blinking */
+.valve-on{
+fill:#00ff00;
+animation:blink 1s infinite;
+}
+
+/* OFF → red */
+.valve-off{
+fill:#ff0000;
+animation:blink 1s infinite;
+}
+
+/* ERROR → orange blinking */
+.valve-error{
+fill:orange;
+animation:blink 0.7s infinite;
+}
+
+
+/* =========================
+PUMP STATUS
+========================= */
+
+/* base pump appearance */
+.pump circle{
+stroke:black;
+stroke-width:2;
+fill:#666;
+}
+
+/* Pump running */
+.pump-on circle{
+fill:#00ff00;
+animation:blink 1s infinite;
+}
+
+/* Pump stopped */
+.pump-off circle{
+fill:#ff0000;
+animation:none;
+}
+
+/* Pump error */
+.pump-error circle{
+fill:yellow;
+animation:blink 0.7s infinite;
+}
+
+        /* Device */
+        .device {
+            stroke: skyblue;
+            stroke-width: 2;
+            cursor: pointer;
+        }
+
+        .device text {
+            font-size: 10px;
+            fill: white;
+            stroke: none; /* IMPORTANT FIX */
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none;
+        }
+
+        .textBlack {
+            fill: black;
+        }
+
+        /* Keyframes */
+        @keyframes flow {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: -24; }
+        }
+
+        @keyframes pumpBlink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+
+/* device */
+.device{ stroke:skyblue;
+stroke-width:2;
+cursor:pointer; }
+.device text{
+font-size:10px;
+fill:white;
+stroke:none;
+
+/* IMPORTANT FIX */
+
+text-anchor:middle;
+dominant-baseline:middle;
+pointer-events:none; }
+.textBlack{ fill:black; }
+
+/* specific device fill colors */
+
+#PT001 circle{fill:black;} /* Pressure */
+#PT002 circle{fill:black;}
+#PT003 circle{fill:black;}
+#PT004 circle{fill:black;}
+#PT005 circle{fill:black;}
+#PT006 circle{fill:black;}
+#PT007 circle{fill:black;}
+#PT008 circle{fill:black;}
+#PT009 circle{fill:black;}
+#PT010 circle{fill:black;}
+#PT011 circle{fill:black;}
+
+#TIT001 circle{fill:#000080;} /* Temperature */
+#TIT002 circle{fill:#000080;}
+#TIT003 circle{fill:#000080;}
+#TT004 circle{fill:#000080;}
+
+#FIT001 circle{fill:#033E3E;} /* Flow */
+#FIT002 circle{fill:#033E3E;}
+#FT001 circle{fill:#045F5F;}
+#FT002 circle{fill:#045F5F;}
+#FI001 circle{fill:#5E7D7E;}
+#FI002 circle{fill:#5E7D7E;}
+
+#pH001 circle{fill:#66FF00;} /* pH */
+#pH002 circle{fill:#66FF00;}
+#pH003 circle{fill:#66FF00;}
+
+#EC001 circle{fill:#EE9A4D;} /* Conductivity */
+#EC002 circle{fill:#EE9A4D;}
+#EC003 circle{fill:#EE9A4D;}
+
+#TUB001 circle{fill:#5865F2;} /* Turbidity */
+
+#ORP001 circle{fill:#36013F;} /* ORP */
+
+/* specific device font colors */
+
+#PT001 text, /* Pressure */
+#PT002 text,
+#PT003 text,
+#PT004 text,
+#PT005 text,
+#PT006 text,
+#PT007 text,
+#PT008 text,
+#PT009 text,
+#PT010 text,
+#PT011 text{fill:white;}
+
+#TIT001 text, /* Temperature */
+#TIT002 text,
+#TIT003 text,
+#TT004 text{fill:white;}
+
+#FIT001 text, /* Flow */
+#FIT002 text,
+#FT001 text,
+#FT002 text,
+#FI001 text,
+#FI002 text{fill:white;}
+
+#pH001 text, /* pH */
+#pH002 text,
+#pH003 text{fill:black;}
+
+#EC001 text, /* Conductivity */
+#EC002 text,
+#EC003 text{fill:white;}
+
+#TUB001 text{fill:white;} /* Turbidity */
+
+#ORP001 text{fill:white;} /* ORP */
+
+@keyframes pumpBlink{ 0%{opacity:1;} 50%{opacity:0.4;} 100%{opacity:1;} }
+
+#ON{fill:#00ff00; animation:blink 1s infinite;}
+#OFF{fill:#ff0000; animation:blink 1s infinite;}
+#ERROR{fill:orange; animation:blink 1s infinite;}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+}
+
+
+        /* Device popup */
+        #devicePopup {
+            width: 580px;
+            position: absolute;
+            background: radial-gradient(circle at top, blue, black);
+            border: 2px solid #444;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            font-size: 12px;
+             transform: translateY(-20px);  /* 👈 increase gap from button */
+
+             /* bevel effect */
+    box-shadow:
+        inset 2px 2px 4px rgba(255,255,255,0.9),
+        inset -2px -2px 4px rgba(0,0,0,0.15),
+        2px 2px 6px rgba(0,0,0,0.2);
+        }
+
+        #devicePopup::after {
+           content: "";
+           position: absolute;
+           bottom: -40px;        /* length of pointer */
+           left: 210px;          /* horizontal position */
+           width: 0;
+           height: 0;
+           border-left: 5px solid transparent;   /* narrow pointer */
+           border-right: 5px solid transparent;  /* narrow pointer */
+           border-top: 40px solid blue;         /* long pointer, matches bottom offset */
+        }
+
+ #kvContainer {
+    position: absolute;  /* relative to parent container */
+    top: 100px;           /* adjust vertical distance from button */
+    left: 250px;         /* adjust horizontal distance from button */
+}
+
+        #devicePopup table {
+    border-collapse: collapse;
+    color: black;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing:4px;
+    font-size:13px;
+}
+
+#devicePopup th,
+#devicePopup th{
+    padding:6px 8px;
+    color:white;
+    font-weight:600;
+
+    background: linear-gradient(#5c6f91, #2f3f5f);
+
+    border-radius:4px;
+
+    box-shadow:
+        inset 1px 1px 2px rgba(255,255,255,0.5),
+        inset -1px -1px 2px rgba(0,0,0,0.4);
+}
+
+#devicePopup td{
+    padding:6px 8px;
+    text-align:center;
+    color:#222;
+
+    background: linear-gradient(#ffffff, #e6edf5);
+
+    border-radius:4px;
+
+    box-shadow:
+        inset 1px 1px 2px rgba(255,255,255,0.9),
+        inset -1px -1px 2px rgba(0,0,0,0.15);
+
+    font-variant-numeric: tabular-nums;
+}
+
+/* Row fill colors for key-value table */
+
+/* Header row */
+#devicePopup table tr:nth-child(1) th{
+    background:#2c3e50;
+    color:white;
+}
+
+/* Today values row */
+#devicePopup table tr:nth-child(2) td{
+    background:#e8f4ff;
+}
+
+/* Selected date row */
+#devicePopup table tr:nth-child(3) td{
+    background:#fff4e6;
+}
+
+
+        /* Calendar */
+        #calendarContainer {
+            position: absolute;
+            right: -290px;
+            top: 0px;  /* to adjust custom and rest button and calendar */
+            width: 260px;
+            background: white;
+            color: black;
+            padding: 10px;
+            border: 4px solid #9AFEFF;
+            border-radius: 4px;
+            z-index: 500;
+        }
+
+        #calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for Sun–Sat */
+    gap: 2px; /* optional spacing between cells */
+    width: 100%; /* take full width of calendarContainer */
+    box-sizing: border-box;
+}
+
+#calendar div {
+    text-align: center;
+    padding: 5px 0;
+    border: 1px solid #444; /* optional */
+    box-sizing: border-box;
+}
+
+        .calDate {
+            cursor: pointer;
+            text-align: center;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .calDate:hover {
+            background: #00bfff;
+        }
+
+        #calendarHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        #calendarHeader button {
+            cursor: pointer;
+            border: none;
+            background: #444;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+
+        #calendarHeader button:hover {
+            background: #00bfff;
+        }
+
+        #calendarControls {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* LABEL ROW */
+.control-labels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* INPUT ROW */
+.control-inputs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+/* SELECT STYLE */
+.control-inputs select {
+    width: 100%;
+    padding: 4px;
+    text-align: center;
+}
+
+        #device-table {
+            display: none;
+        }
+
+        body {
+    background: #1c1c1c;
+    font-family: Arial;
+    color: white;
+    margin: 0;   /* remove default browser margin */
+}
+
+h2 {
+    text-align: center;
+    margin: 30px 0;   /* control gap above and below title */
+}
+
+#plant {
+    position: relative;
+    overflow: visible;
+    width: 1280px;
+    margin: 0 auto;
+}
+
+#customControls {
+    position: absolute;
+    right: 30px;     /* 🔥 FIX */
+    top: 63px;
+    width: 280px;    /* 🔥 FIX */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#languageSwitcher {
+    padding: 5px;
+    width: 100%;
+}
+
+.button-row {
+    display: flex;
+    gap: 2px;
+    width: 100%;
+}
+
+.button-row button {
+    flex: 1;
+    padding: 6px;
+    min-width: 60px;   /* 🔥 FIX */
+}
+
+
+/* Coordinate display */
+
+        #coords{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: black;
+    color: lime;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+    </style>
+
+    <h2 data-i18n="flowdiagram_title" style="text-align:center">
+    Liquid Fertilizer Water Treatment Plant
+</h2>
+
+     <div id="customControls">
+
+    <!-- LANGUAGE -->
+    <select id="languageSwitcher">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="my">Myanmar</option>
+        <option value="vi">Vietnamese</option>
+        <option value="mn">Mongolian</option>
+    </select>
+<!-- Custom & Reset Button -->
+
+     <div class="button-row">
+        <button id="customBtn" data-i18n="custom_btn">Custom</button>
+        <button id="resetBtn" data-i18n="reset_btn">Reset</button>
+    </div>
+
+</div>
+
+    <div id="plant" style="position: relative;">
+
+        <img src="{{ url_for('static', filename='images/LFT_diagram.png') }}" id="diagram-image">
+
+        <svg id="flowLayer" viewBox="0 0 1280 720">
+
+
+<!-- PIPE LINES -->
+
+<path id="p1"
+class="pipe"
+d="M115 292 L115 328 L164 328"/>
+
+<path id="p2" class="pipe" d="M196 290 L196 240 L218 242"/>
+<path id="p3" class="pipe" d="M299 239 L321 239"/>
+<path id="p4" class="pipe" d="M451 323 L471 323"/>
+<path id="p5" class="pipe" d="M509 323 L625 323"/>
+<path id="p6" class="pipe" d="M662 320 L908 320"/>
+<path id="p7" class="pipe" d="M806 317 L806 310"/>
+<path id="p8" class="pipe" d="M907 317 L907 310"/>
+<path id="p9" class="pipe" d="M907 320 L1006 320 L1006 55 L62 55 L62 237"/>
+<path id="p10" class="pipe" d="M806 287 L806 260"/>
+<path id="p11" class="pipe" d="M907 287 L907 260"/>
+<path id="p12" class="pipe" d="M791 183 L768 183 L768 41"/>
+<path id="p13" class="pipe" d="M923 183 L947 183 L947 41"/>
+<path id="p14" class="pipe" d="M730 35 L972 35"/>
+<path id="p15" class="pipe" d="M1002 35 L1182 35 L1182 103"/>
+<path id="p16" class="pipe" d="M1199 103 L1199 47 L1264 47 L1269 633 L1223 633"/>
+<path id="p17" class="pipe" d="M1217 633 L1183 633"/>
+<path id="p18" class="pipe" d="M1217 633 L1217 581 L1169 581"/>
+<path id="p19" class="pipe" d="M1150 581 L1116 581 L1116 633"/>
+<path id="p20" class="pipe" d="M1152 633 L1116 633"/>
+<path id="p21" class="pipe" d="M1113 633 L962 636"/>
+<path id="p22" class="pipe" d="M926 647 L715 647"/>
+<path id="p23" class="pipe" d="M686 647 L646 647 L646 609 L663 609 L646 609 L646 569 L663 567 L646 569 L663 569 L646 569 L646 529 L660 529 L646 528 L646 482 L660 482"/>
+<path id="p24" class="pipe" d="M1023 475 L1023 698 L322 698 L322 599 L268 599 L268 627"/>
+<path id="p25" class="pipe" d="M220 674 L61 674"/>
+<path id="p26" class="pipe" d="M36 659 L36 376 L730 376 L730 356"/>
+<path id="p27" class="pipe" d="M730 356 L730 37"/>
+<path id="p28" class="pipe" d="M734 355 L858 355"/>
+<path id="p29" class="pipe" d="M334 334 L334 353 L6 353 L6 197 L40 197 L40 240"/>
+<path id="p30" class="pipe" d="M806 146 L806 87"/>
+<path id="p31" class="pipe" d="M907 146 L907 87"/>
+<path id="p32" class="pipe" d="M906 84 L424 84"/>
+<path id="p33" class="pipe" d="M430 84 L105 84 L105 236"/>
+<path id="p34" class="pipe" d="M424 80 L424 230"/>
+<path id="p35" class="pipe" d="M1055 603 L1068 603 L1068 564 L1055 564 L1068 564 L1068 526 L1055 526 L1068 526 L1068 482 L1055 482 L1068 482 L1068 422"/>
+<path id="p36" class="pipe" d="M1024 473 L1024 446 L327 446 L327 485"/>
+<path id="p37" class="pipe" d="M328 560 L328 574 L483 574"/>
+<path id="p38" class="pipe" d="M517 591 L582 591"/>
+<path id="p39" class="pipe" d="M585 592 L585 650 L641 650"/>
+<path id="p40" class="pipe" d="M585 592 L585 394 L687 394 L687 329"/>
+<path id="p41" class="pipe" d="M1055 617 L1040 617 L1040 576 L1055 576 L1040 576 L1040 536 L1055 536 L1040 536 L1040 494 L1055 494 L1040 494 L1040 475 L1028 475"/>
+<path id="p42" class="pipe" d="M960 442 L960 432 L1025 432 L1025 420"/>
+<path id="p43" class="pipe" d="M1072 417 L1147 417"/>
+<path id="p44" class="pipe" d="M1068 417 L922 417"/>
+<path id="p45" class="pipe" d="M921 417 L829 417"/>
+<path id="p46" class="pipe" d="M922 417 L922 397 L823 397 L823 417"/>
+<path id="p47" class="pipe" d="M824 417 L280 417"/>
+<path id="p48" class="pipe" d="M257 412 L257 282"/>
+<path id="p49" class="pipe" d="M1122 223 L1073 223"/>
+<path id="p50" class="pipe" d="M1073 223 L1073 355"/>
+<path id="p51" class="pipe" d="M1009 355 L860 355"/>
+<path id="p52" class="pipe" d="M858 350 L858 131 L812 131"/>
+<path id="p53" class="pipe" d="M858 131 L904 131"/>
+<path id="p54" class="pipe" d="M1105 231 L1105 281 L1170 281"/>
+<path id="p55" class="pipe" d="M775 543 L775 530 L808 530 L808 640"/>
+<path id="p56" class="pipe" d="M836 543 L836 527 L867 527 L867 640"/>
+<path id="p57" class="pipe" d="M897 543 L897 527 L921 527 L921 640"/>
+<path id="p58" class="pipe" d="M69 519 L69 382"/>
+<path id="p59" class="pipe" d="M118 519 L118 491"/>
+<path id="p60" class="pipe" d="M118 490 L118 382"/>
+<path id="p61" class="pipe" d="M121 484 L283 484"/>
+<path id="p62" class="pipe" d="M169 519 L169 491"/>
+<path id="p63" class="pipe" d="M169 490 L169 382"/>
+<path id="p64" class="pipe" d="M173 491 L283 491"/>
+
+<!-- VALVES -->
+
+<circle id="V1" class="valve" cx="312" cy="350" r="10"/>
+<circle id="V2" class="valve" cx="649" cy="323" r="10"/>
+<circle id="V3" class="valve" cx="806" cy="290" r="10"/>
+<circle id="V4" class="valve" cx="910" cy="290" r="10"/>
+<circle id="V5" class="valve" cx="976" cy="33" r="10"/>
+<circle id="V6" class="valve" cx="856" cy="130" r="10"/>
+<circle id="V7" class="valve" cx="426" cy="136" r="10"/>
+<circle id="V8" class="valve" cx="356" cy="83" r="10"/>
+<circle id="V9" class="valve" cx="730" cy="232" r="10"/>
+<circle id="V10" class="valve" cx="773" cy="354" r="10"/>
+<circle id="V11" class="valve" cx="897" cy="354" r="10"/>
+<circle id="V12" class="valve" cx="968" cy="320" r="10"/>
+<circle id="V13" class="valve" cx="1112" cy="416" r="10"/>
+
+
+
+<!-- PUMPS -->
+
+<g class="device pump" id="P001">
+  <circle cx="183" cy="323" r="12"/>
+</g>
+
+<g class="device pump" id="P002">
+  <circle cx="488" cy="322" r="10"/>
+</g>
+
+<g class="device pump" id="P003">
+  <circle cx="41" cy="672" r="10"/>
+</g>
+
+<g class="device pump" id="P004">
+  <circle cx="262" cy="416" r="10"/>
+</g>
+
+<g class="device pump" id="P005">
+  <circle cx="396" cy="574" r="10"/>
+</g>
+
+<g class="device pump" id="P006" data-system="RO">
+  <circle cx="1168" cy="633" r="10"/>
+</g>
+
+<g class="device pump" id="P007" data-system="RO">
+  <circle cx="703" cy="647" r="10"/>
+</g>
+
+
+  <!-- DEVICES -->
+  <g class="device" id="PT001">
+    <circle cx="555" cy="292" r="14"/>
+    <text x="555" y="292" class="deviceText">
+      <tspan x="555" dy="-5">PT</tspan>
+      <tspan x="555" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT002">
+    <circle cx="1098" cy="17" r="14"/>
+    <text x="1098" y="17" class="deviceText">
+      <tspan x="1098" dy="-5">PT</tspan>
+      <tspan x="1098" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT003">
+    <circle cx="879" cy="282" r="14"/>
+    <text x="879" y="282" class="deviceText">
+      <tspan x="879" dy="-5">PT</tspan>
+      <tspan x="879" dy="12">003</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT004">
+    <circle cx="838" cy="157" r="14"/>
+    <text x="838" y="157" class="deviceText">
+      <tspan x="838" dy="-5">PT</tspan>
+      <tspan x="838" dy="12">004</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT005">
+    <circle cx="493" cy="57" r="14"/>
+    <text x="493" y="57" class="deviceText">
+      <tspan x="493" dy="-5">PT</tspan>
+      <tspan x="493" dy="12">005</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT006">
+    <circle cx="1026" cy="314" r="14"/>
+    <text x="1026" y="314" class="deviceText">
+      <tspan x="1026" dy="-5">PT</tspan>
+      <tspan x="1026" dy="12">006</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT007">
+    <circle cx="605" cy="353" r="14"/>
+    <text x="605" y="353" class="deviceText">
+      <tspan x="605" dy="-5">PT</tspan>
+      <tspan x="605" dy="12">007</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT008">
+    <circle cx="993" cy="606" r="14"/>
+    <text x="993" y="606" class="deviceText">
+      <tspan x="993" dy="-5">PT</tspan>
+      <tspan x="993" dy="12">008</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT009">
+    <circle cx="673" cy="622" r="14"/>
+    <text x="673" y="622" class="deviceText">
+      <tspan x="673" dy="-5">PT</tspan>
+      <tspan x="673" dy="12">009</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT010">
+    <circle cx="915" cy="376" r="14"/>
+    <text x="915" y="376" class="deviceText">
+      <tspan x="915" dy="-5">PT</tspan>
+      <tspan x="915" dy="12">010</tspan>
+    </text>
+  </g>
+  <g class="device" id="PT011">
+    <circle cx="385" cy="672" r="14"/>
+    <text x="385" y="672" class="deviceText">
+      <tspan x="385" dy="-5">PT</tspan>
+      <tspan x="385" dy="12">011</tspan>
+    </text>
+  </g>
+  <g class="device" id="TIT001">
+    <circle cx="526" cy="292" r="14"/>
+    <text x="526" y="292" class="deviceText">
+      <tspan x="526" dy="-5">TIT</tspan>
+      <tspan x="526" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="TIT002">
+    <circle cx="1125" cy="17" r="14"/>
+    <text x="1125" y="17" class="deviceText">
+      <tspan x="1125" dy="-5">TIT</tspan>
+      <tspan x="1125" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="TIT003">
+    <circle cx="393" cy="499" r="14"/>
+    <text x="393" y="499" class="deviceText">
+      <tspan x="393" dy="-5">TIT</tspan>
+      <tspan x="393" dy="12">003</tspan>
+    </text>
+  </g>
+  <g class="device" id="TT004">
+    <circle cx="521" cy="672" r="14"/>
+    <text x="521" y="672" class="deviceText">
+      <tspan x="521" dy="-5">TT</tspan>
+      <tspan x="521" dy="12">004</tspan>
+    </text>
+  </g>
+  <g class="device" id="pH001">
+    <circle cx="1039" cy="17" r="14"/>
+    <text x="1039" y="17" class="deviceText textBlack">
+      <tspan x="1039" dy="-5">pH</tspan>
+      <tspan x="1039" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="pH002">
+    <circle cx="770" cy="622" r="14"/>
+    <text x="770" y="622" class="deviceText textBlack">
+      <tspan x="770" dy="-5">pH</tspan>
+      <tspan x="770" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="pH003">
+    <circle cx="469" cy="672" r="14"/>
+    <text x="469" y="672" class="deviceText textBlack">
+      <tspan x="469" dy="-5">pH</tspan>
+      <tspan x="469" dy="12">003</tspan>
+    </text>
+  </g>
+  <g class="device" id="FIT001">
+    <circle cx="619" cy="292" r="14"/>
+    <text x="619" y="292" class="deviceText">
+      <tspan x="619" dy="-5">FIT</tspan>
+      <tspan x="619" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="FIT002">
+    <circle cx="1181" cy="17" r="14"/>
+    <text x="1181" y="17" class="deviceText">
+      <tspan x="1181" dy="-5">FIT</tspan>
+      <tspan x="1181" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="FT001">
+    <circle cx="413" cy="672" r="14"/>
+    <text x="413" y="672" class="deviceText">
+      <tspan x="413" dy="-5">FT</tspan>
+      <tspan x="413" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="FI001">
+    <circle cx="441" cy="672" r="14"/>
+    <text x="441" y="672" class="deviceText">
+      <tspan x="441" dy="-5">FI</tspan>
+      <tspan x="441" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="FT002">
+    <circle cx="826" cy="376" r="14"/>
+    <text x="826" y="376" class="deviceText">
+      <tspan x="826" dy="-5">FT</tspan>
+      <tspan x="826" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="FI002">
+    <circle cx="861" cy="376" r="14"/>
+    <text x="861" y="376" class="deviceText">
+      <tspan x="861" dy="-5">FI</tspan>
+      <tspan x="861" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="EC001">
+    <circle cx="1012" cy="17" r="14"/>
+    <text x="1012" y="17" class="deviceText">
+      <tspan x="1012" dy="-5">EC</tspan>
+      <tspan x="1012" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="EC002">
+    <circle cx="737" cy="622" r="14"/>
+    <text x="737" y="622" class="deviceText">
+      <tspan x="737" dy="-5">EC</tspan>
+      <tspan x="737" dy="12">002</tspan>
+    </text>
+  </g>
+  <g class="device" id="EC003">
+    <circle cx="549" cy="672" r="14"/>
+    <text x="549" y="672" class="deviceText">
+      <tspan x="549" dy="-5">EC</tspan>
+      <tspan x="549" dy="12">003</tspan>
+    </text>
+  </g>
+  <g class="device" id="TUB001">
+    <circle cx="1153" cy="17" r="14"/>
+    <text x="1153" y="17" class="deviceText">
+      <tspan x="1153" dy="-5">TUB</tspan>
+      <tspan x="1153" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="ORP001">
+    <circle cx="1243" cy="605" r="14"/>
+    <text x="1243" y="605" class="deviceText">
+      <tspan x="1243" dy="-5">ORP</tspan>
+      <tspan x="1243" dy="12">001</tspan>
+    </text>
+  </g>
+
+<!-- Legend -->
+
+  <circle id="ON" class="valve" cx="1153" cy="459" r="12"/>
+  <circle id="OFF" class="valve" cx="1153" cy="495" r="12"/>
+  <circle id="ERROR" class="valve" cx="1153" cy="531" r="12"/>
+
+</svg>
+
+
+
+<!-- Coordinate display -->
+        <div id="coords">X:0 Y:0</div>
+
+        <!-- Device popup table -->
+        <div id="devicePopup"style="position:absolute; z-index: 1000;">
+            <div id="popupTable"></div>
+            <div id="customTable" style="display:none;"></div>
+        </div>
+
+
+        <!-- Calendar panel -->
+        <div id="calendarContainer">
+            <div id="calendarControls">
+
+    <!-- LABEL ROW -->
+    <div class="control-labels">
+        <div data-i18n="label_minute">mm</div>
+        <div data-i18n="label_hour">hh</div>
+        <div data-i18n="label_month">Month</div>
+        <div data-i18n="label_year">Year</div>
+    </div>
+
+    <!-- INPUT ROW -->
+    <div class="control-inputs">
+        <select id="minuteSelect"></select>
+        <select id="hourSelect"></select>
+        <select id="monthSelect"></select>
+        <select id="yearSelect"></select>
+    </div>
+
+</div>
+
+    <div id="calendar"></div>
+        </div>
+    </div>
+
+
+
+
+       <!-- Current date/time, fixed at top-right of screen -->
+    <div id="currentDateTime" style="
+        position: fixed;
+        top: 45px;
+        left: 20px;
+        font-weight: bold;
+        font-size: 30px;
+        color: white;
+        z-index: 1000;
+    "></div>
+
+    <script>
+
+        function fmt(val){
+    if(val === null || val === undefined || val === '-') return '-';
+    return Number(val).toFixed(4);
+}
+
+        /* GLOBAL STATE */
+let selectedDate = null;
+let currentDevice = null;
+let customMode = false;
+
+/* DEVICE CLICK */
+document.querySelectorAll(".device").forEach(dev => {
+    dev.addEventListener("click", function(){
+        const circle = this.querySelector("circle");
+        let x = circle.getAttribute("cx");
+        let y = circle.getAttribute("cy");
+        let deviceId = this.id;
+
+        let popup = document.getElementById("devicePopup");
+
+        // If same device clicked → toggle popup
+        if(currentDevice === deviceId){
+            if(popup.style.display === "block"){
+                popup.style.display = "none";  // hide
+            } else {
+                showPopup(x,y);  // show
+            }
+            return;
+        }
+
+        // New device clicked → show popup
+        currentDevice = deviceId;
+        showPopup(x,y);
+    });
+});
+
+function showPopup(x,y){
+    let popup = document.getElementById("devicePopup");
+    let px = parseFloat(x);
+    let py = parseFloat(y);
+    popup.style.left = (px - 220) + "px";
+    popup.style.top = (py - 120) + "px";
+    popup.style.display = "block";
+    loadTable();  // always reload table for current device
+}
+
+function hidePopup(){
+    let popup = document.getElementById("devicePopup");
+    popup.style.display="none";
+    currentDevice = null;
+}
+
+/* CALENDAR DATE SELECTION */
+document.getElementById("calendar").addEventListener("change", function(){
+    selectedDate = this.value; // yyyy-mm-dd format
+    if(currentDevice) loadTable(); // reload table with selected date
+});
+
+/* LOAD DEVICE DATA */
+
+function loadTable() {
+    if (!currentDevice) return;
+    const device = currentDevice;   // freeze device at request time
+
+let datetimeParam = "";
+
+if(customMode && selectedDate){
+    const hour = document.getElementById("hourSelect").value;
+    const minute = document.getElementById("minuteSelect").value;
+
+    datetimeParam = `${selectedDate} ${hour}:${minute}`;
+}
+
+let url = `/device_popup?device=${device}&date=${selectedDate || ''}&datetime=${datetimeParam}`;
+
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+        console.log("CUSTOM DATA:", data.custom);
+
+    // ⭐ IMPORTANT: ignore outdated responses
+            if (device !== currentDevice) return;
+            let today = data.today || {};
+            let selected = data.selected || null;
+
+            const fmt = (v) => {
+                let num = parseFloat(v);
+                return isNaN(num) ? '-' : num.toFixed(4);
+            };
+
+
+    const lang = localStorage.getItem("lang") || "en";
+
+            let html;
+
+if(!customMode){
+
+    // ✅ ORIGINAL TABLE (UNCHANGED)
+    const tableClass = (lang === "my") ? "table-my" : "";
+
+html = `
+<table class="${tableClass}">
+        <tr>
+            <th>${translations[lang].table_date}</th>
+            <th>${translations[lang].table_latest}</th>
+            <th>${translations[lang].table_recent}</th>
+            <th>${translations[lang].table_avg30m}</th>
+            <th>${translations[lang].table_avg1hr}</th>
+            <th>${translations[lang].table_avg1d}</th>
+            <th>${translations[lang].table_max}</th>
+            <th>${translations[lang].table_min}</th>
+        </tr>
+        <tr>
+            <td>${translations[lang].table_today}</td>
+            <td>${fmt(today.latest)}</td>
+            <td>${fmt(today.recent)}</td>
+            <td>${fmt(today.avg30m)}</td>
+            <td>${fmt(today.avg1hr)}</td>
+            <td>${fmt(today.avg1d)}</td>
+            <td>${fmt(today.max)}</td>
+            <td>${fmt(today.min)}</td>
+        </tr>
+        ${selected ? `<tr>
+            <td>${selectedDate ? selectedDate.replace(/-/g,'/') : translations[lang].table_selected}</td>
+            <td>${fmt(selected.latest)}</td>
+            <td>${fmt(selected.recent)}</td>
+            <td>${fmt(selected.avg30m)}</td>
+            <td>${fmt(selected.avg1hr)}</td>
+            <td>${fmt(selected.avg1d)}</td>
+            <td>${fmt(selected.max)}</td>
+            <td>${fmt(selected.min)}</td>
+        </tr>` : ''}
+    </table>
+    `;
+
+}else{
+
+    // ✅ CUSTOM TABLE (YOUR REQUIREMENT)
+
+    const hour = document.getElementById("hourSelect").value;
+    const minute = document.getElementById("minuteSelect").value;
+
+    const custom = data.custom || {};
+
+const value = custom.value !== undefined && custom.value !== null
+    ? fmt(custom.value)
+    : "-";
+
+const avg = custom.avg !== undefined && custom.avg !== null
+    ? fmt(custom.avg)
+    : "-";
+
+const max = custom.max !== undefined && custom.max !== null
+    ? fmt(custom.max)
+    : "-";
+
+const min = custom.min !== undefined && custom.min !== null
+    ? fmt(custom.min)
+    : "-";
+
+    html = `
+    <table>
+    <tr>
+        <th>${translations[lang].table_date}</th>
+        <th>${translations[lang].table_time}</th>
+        <th>${translations[lang].table_value}</th>
+        <th>${translations[lang].table_avg}</th>
+        <th>${translations[lang].table_max}</th>
+        <th>${translations[lang].table_min}</th>
+    </tr>
+
+    <tr>
+        <td>${selectedDate ? selectedDate.replace(/-/g,'/') : '-'}</td>
+        <td>${hour}:${minute}</td>
+        <td>${value}</td>
+        <td>${avg}</td>
+        <td>${max}</td>
+        <td>${min}</td>
+    </tr>
+    </table>
+    `;
+}
+
+// ✅ ONE render only
+document.getElementById("popupTable").innerHTML = html;
+
+            // ✅ Adjust pointer to avoid overlapping device
+            let popupHeight = popup.offsetHeight;
+            let popupWidth = popup.offsetWidth;
+            let circle = document.getElementById(device).querySelector("circle");
+            let cx = parseFloat(circle.getAttribute("cx"));
+            let cy = parseFloat(circle.getAttribute("cy"));
+
+            popup.style.left = `${cx - popupWidth/2}px`;
+            popup.style.top = `${cy - popupHeight - 40}px`;
+
+            // Adjust pointer position
+            let after = window.getComputedStyle(popup, "::after");
+            // we can also dynamically adjust left if needed
+        });
+}
+
+/* Key-value Table with Customize Date & Time */
+
+
+document.getElementById("customBtn").onclick = function(){
+    customMode = true;
+    if(currentDevice) loadTable();   // 🔥 IMPORTANT
+};
+
+document.getElementById("resetBtn").onclick = function(){
+    customMode = false;
+    if(currentDevice) loadTable();   // 🔥 IMPORTANT
+};
+
+
+
+/* Data fetch of Custom & Reset Buttons */
+
+
+        /* CALENDAR SYSTEM */
+        let currentDate = new Date();
+
+        function buildCalendar(){
+            const cal = document.getElementById("calendar");
+            cal.innerHTML = "";
+
+            const monthNames= [ "January","February","March","April","May","June", "July","August","September","October","November","December" ];
+            let year = currentDate.getFullYear();
+            let month = currentDate.getMonth();
+
+            /* WEEK HEADER */
+            const lang = localStorage.getItem("lang") || "en";
+            const days = (translations[lang] && translations[lang].days)
+            ? translations[lang].days
+            : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+            days.forEach(d=>{
+                let day = document.createElement("div");
+                day.innerHTML = "<b>"+d+"</b>";
+                day.style.background="#bbb";
+                cal.appendChild(day);
+            });
+
+            /* FIRST DAY OFFSET */
+            let firstDay = new Date(year,month,1).getDay();
+            for(let i=0;i<firstDay;i++){
+                cal.appendChild(document.createElement("div"));
+            }
+
+            /* DAYS IN MONTH */
+            let daysInMonth = new Date(year,month+1,0).getDate();
+            for(let i=1;i<=daysInMonth;i++){
+                let d=document.createElement("div");
+                d.className="calDate";
+                d.innerText=i;
+                d.onclick = function(){
+                    selectedDate = year+"-"+String(month+1).padStart(2,'0')+ "-"+String(i).padStart(2,'0');
+                    document.querySelectorAll(".calDate").forEach(el=>{ el.style.background=""; el.style.color=""; });
+                    d.style.background="#4CAF50";
+                    d.style.color="white";
+                    if(currentDevice){ loadTable(); }
+                };
+                cal.appendChild(d);
+            }
+        }
+
+        /* INITIAL CALENDAR CONTROLS */
+        function initCalendarControls(){
+            const monthSelect = document.getElementById("monthSelect");
+            const yearSelect = document.getElementById("yearSelect");
+            const months = [ "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" ];
+
+            months.forEach((m,i)=>{
+                let option=document.createElement("option");
+                option.value=i;
+                option.text=m;
+                monthSelect.appendChild(option);
+            });
+
+            for(let y=2020;y<=2035;y++){
+                let option=document.createElement("option");
+                option.value=y;
+                option.text=y;
+                yearSelect.appendChild(option);
+            }
+
+            monthSelect.value = currentDate.getMonth();
+            yearSelect.value = currentDate.getFullYear();
+
+            monthSelect.addEventListener("change",()=>{ currentDate.setMonth(parseInt(monthSelect.value)); buildCalendar(); });
+            yearSelect.addEventListener("change",()=>{ currentDate.setFullYear(parseInt(yearSelect.value)); buildCalendar(); });
+            const hourSelect = document.getElementById("hourSelect");
+const minuteSelect = document.getElementById("minuteSelect");
+
+/* HOURS */
+for(let h=0; h<24; h++){
+    let option=document.createElement("option");
+    option.value = String(h).padStart(2,'0');
+    option.text = String(h).padStart(2,'0');
+    hourSelect.appendChild(option);
+}
+
+/* MINUTES */
+for(let m=0; m<60; m++){
+    let option=document.createElement("option");
+    option.value = String(m).padStart(2,'0');
+    option.text = String(m).padStart(2,'0');
+    minuteSelect.appendChild(option);
+}
+        }
+
+        /* HOUR SELECT */
+const hourSelect = document.getElementById("hourSelect");
+
+for(let h=0; h<24; h++){
+    let option = document.createElement("option");
+    option.value = h;
+    option.text = String(h).padStart(2,'0');
+    hourSelect.appendChild(option);
+}
+
+/* MINUTE SELECT */
+const minuteSelect = document.getElementById("minuteSelect");
+
+for(let m=0; m<60; m++){
+    let option = document.createElement("option");
+    option.value = m;
+    option.text = String(m).padStart(2,'0');
+    minuteSelect.appendChild(option);
+}
+
+/* DEFAULT VALUES */
+hourSelect.value = currentDate.getHours();
+minuteSelect.value = currentDate.getMinutes();
+
+/* UPDATE DATE TIME */
+hourSelect.addEventListener("change",()=>{
+    currentDate.setHours(parseInt(hourSelect.value));
+});
+
+minuteSelect.addEventListener("change",()=>{
+    currentDate.setMinutes(parseInt(minuteSelect.value));
+});
+
+        initCalendarControls();
+        buildCalendar();
+
+// CURRENT DATE/TIME DISPLAY
+function updateCurrentDateTime(){
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth()+1).padStart(2,'0');
+    const dd = String(now.getDate()).padStart(2,'0');
+    const hh = String(now.getHours()).padStart(2,'0');
+    const min = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById("currentDateTime").innerText = `${yyyy}/${mm}/${dd} ${hh}:${min}:${ss}`;
+}
+
+// update every 1 second
+setInterval(updateCurrentDateTime, 1000);
+updateCurrentDateTime(); // initial call
+
+
+
+
+// =========================
+// PIPE CONTROL
+// =========================
+function setPipe(pipeID, state){
+    let pipe = document.getElementById(pipeID);
+
+    if(!pipe){
+        console.warn("Pipe NOT FOUND:", pipeID);
+        return;
+    }
+
+    pipe.style.animation = (state === "ON")
+        ? "flow 1s linear infinite"
+        : "none";
+}
+
+function onPipes(arr){ arr.forEach(p => setPipe(p,"ON")); }
+function offPipes(arr){ arr.forEach(p => setPipe(p,"OFF")); }
+
+
+
+
+// =========================
+// PUMP → PIPE LOGIC (FINAL CONTROL)
+// =========================
+function applyPumpLogic(pumpStates){
+
+    console.log("PumpStates:", pumpStates);
+
+    // -------- P003 --------
+    if(pumpStates["P003"] === "RUN"){
+        onPipes(["p25","p26","p27","p28","p58","p60","p63"]);
+    } else {
+        offPipes(["p25","p26","p27","p28","p58","p60","p63"]);
+    }
+
+    // -------- P006 --------
+    if(pumpStates["P006"] === "RUN"){
+        onPipes(["p17","p20"]);
+        offPipes(["p18","p19"]);
+    }
+    else if(pumpStates["P006"] === "STOP"){
+        onPipes(["p18","p19"]);
+        offPipes(["p17","p20"]);
+    }
+    else { // ERROR
+        offPipes(["p17","p18","p19","p20"]);
+    }
+}
+
+// =========================
+// VALVE → PIPE LOGIC
+// =========================
+function applyValveLogic(valveStates){
+
+    function off(pipes){ offPipes(pipes); }
+
+    if(valveStates["V1"] === "CLOSED") off(["p29"]);
+    if(valveStates["V2"] === "CLOSED") off(["p4","p5"]);
+    if(valveStates["V3"] === "CLOSED") off(["p7","p10","p12","p30"]);
+    if(valveStates["V4"] === "CLOSED") off(["p8","p11","p13","p31"]);
+
+    if(valveStates["V3"] === "CLOSED" && valveStates["V4"] === "CLOSED"){
+        off(["p32","p33","p34"]);
+    }
+
+    if(valveStates["V5"] === "CLOSED") off(["p15","p16","p17","p18","p19","p20","p21","p22"]);
+    if(valveStates["V6"] === "CLOSED") off(["p51","p52","p53"]);
+    if(valveStates["V7"] === "CLOSED") off(["p34"]);
+    if(valveStates["V8"] === "CLOSED") off(["p33"]);
+    if(valveStates["V9"] === "CLOSED") off(["p27"]);
+    if(valveStates["V10"] === "CLOSED") off(["p28"]);
+    if(valveStates["V11"] === "CLOSED") off(["p49","p50","p51","p52","p53","p54"]);
+    if(valveStates["V12"] === "CLOSED") off(["p9"]);
+    if(valveStates["V13"] === "CLOSED") off(["p43"]);
+}
+
+// =========================
+// MAIN SYSTEM UPDATE (CRITICAL FIX)
+// =========================
+function updateSystem(){
+
+    Promise.all([
+        fetch("/api/valves").then(r=>r.json()),
+        fetch("/api/pumps").then(r=>r.json())
+    ])
+    .then(([valveData, pumpData]) => {
+
+        let valveStates = {};
+        let pumpStates = {};
+
+        // =====================
+        // RESET ALL PIPES
+        // =====================
+        document.querySelectorAll(".pipe").forEach(p=>{
+            p.style.animation="flow 1s linear infinite";
+        });
+
+        // =====================
+        // VALVES (UF + RO SEPARATE)
+        // =====================
+        valveData.forEach(row => {
+
+            // ---------- UF ----------
+            if(row.uf_device){
+                let id = "V" + parseInt(row.uf_device.replace("XV",""));
+                let status = row.uf_value?.status;
+                let el = document.getElementById(id);
+
+                if(el){
+                    el.classList.remove("valve-on","valve-off","valve-error");
+
+                    if(status === "on"){
+                        el.classList.add("valve-on");
+                        valveStates[id] = "OPEN";
+                    }
+                    else if(status === "off"){
+                        el.classList.add("valve-off");
+                        valveStates[id] = "CLOSED";
+                    }
+                    else{
+                        el.classList.add("valve-error");
+                        valveStates[id] = "ERROR";
+                    }
+                }
+            }
+
+            // ---------- RO ----------
+            if(row.ro_device){
+                let id = "V" + parseInt(row.ro_device.replace("XV",""));
+                let status = row.ro_value?.status;
+                let el = document.getElementById(id);
+
+                if(el){
+                    el.classList.remove("valve-on","valve-off","valve-error");
+
+                    if(status === "on"){
+                        el.classList.add("valve-on");
+                        valveStates[id] = "OPEN";
+                    }
+                    else if(status === "off"){
+                        el.classList.add("valve-off");
+                        valveStates[id] = "CLOSED";
+                    }
+                    else{
+                        el.classList.add("valve-error");
+                        valveStates[id] = "ERROR";
+                    }
+                }
+            }
+
+        });
+
+        // =====================
+        // PUMPS (UF + RO SEPARATE)
+        // =====================
+        pumpData.forEach(row => {
+
+            // ---------- UF ----------
+            if(row.uf_device){
+                let id = row.uf_device;
+                let value = row.uf_value;
+                let el = document.getElementById(id);
+
+                if(el){
+                    el.classList.remove("pump-on","pump-off","pump-error");
+
+                    if(value === null || value === "" || value === "N/A"){
+                        el.classList.add("pump-error");
+                        pumpStates[id] = "ERROR";
+                    }
+                    else if(parseFloat(value) > 0){
+                        el.classList.add("pump-on");
+                        pumpStates[id] = "RUN";
+                    }
+                    else{
+                        el.classList.add("pump-off");
+                        pumpStates[id] = "STOP";
+                    }
+                }
+            }
+
+            // ---------- RO ----------
+            if(row.ro_device){
+                let id = row.ro_device;
+                let value = row.ro_value;
+                let el = document.getElementById(id);
+
+                if(el){
+                    el.classList.remove("pump-on","pump-off","pump-error");
+
+                    if(value === null || value === "" || value === "N/A"){
+                        el.classList.add("pump-error");
+                        pumpStates[id] = "ERROR";
+                    }
+                    else if(parseFloat(value) > 0){
+                        el.classList.add("pump-on");
+                        pumpStates[id] = "RUN";
+                    }
+                    else{
+                        el.classList.add("pump-off");
+                        pumpStates[id] = "STOP";
+                    }
+                }
+            }
+
+        });
+
+        // =====================
+        // APPLY LOGIC
+        // =====================
+        applyPumpLogic(pumpStates);
+        applyValveLogic(valveStates);
+
+        console.log("PUMPS:", pumpStates);
+        console.log("VALVES:", valveStates);
+
+
+    });
+}
+
+
+// =========================
+// AUTO REFRESH
+// =========================
+setInterval(updateSystem, 2000);
+updateSystem();
+
+
+
+
+
+
+/* COORDINATE TRACKER */
+        const svg=document.getElementById("flowLayer");
+        const coords=document.getElementById("coords");
+        svg.addEventListener("mousemove",function(e){
+            const rect=svg.getBoundingClientRect();
+            const x=Math.round(e.clientX-rect.left);
+            const y=Math.round(e.clientY-rect.top);
+            coords.innerHTML="X: "+x+" Y: "+y;
+        });
+
+
+/* Language Switcher */
+
+function setLanguage(lang){
+    const elements = document.querySelectorAll("[data-i18n]");
+
+    elements.forEach(el => {
+        const key = el.getAttribute("data-i18n");
+
+        if(typeof translations !== "undefined" &&
+           translations[lang] &&
+           translations[lang][key]){
+
+            el.innerText = translations[lang][key];
+        }
+    });
+
+    localStorage.setItem("lang", lang);
+}
+
+const savedLang = localStorage.getItem("lang") || "en";
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    setLanguage(savedLang);
+
+    const switcher = document.getElementById("languageSwitcher");
+
+    if(switcher){
+        switcher.value = savedLang;
+
+        switcher.addEventListener("change", function(){
+    setLanguage(this.value);
+    buildCalendar();
+});
+    }
+
+});
+
+
+/* ==========================
+   AUTO REFRESH
+========================== */
+
+
+setInterval(updatePumps,2000)
+setInterval(updateValves,2000)
+
+updatePumps()
+updateValves()
+
+    </script>
+
+
+{% endblock %}
+
+
