@@ -30,11 +30,10 @@ app = Flask(__name__)
 
 from auth.models import init_user_table
 
-init_user_table()
-
 import os
 app.secret_key = os.environ.get("SECRET_KEY")
 
+init_user_table()
 
 # ==============================
 # REGISTER BLUEPRINTS
