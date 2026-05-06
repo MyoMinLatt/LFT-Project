@@ -28,6 +28,10 @@ from routes import uf_bp, ro_bp
 
 app = Flask(__name__)
 
+from auth.models import init_user_table
+
+init_user_table()
+
 import os
 app.secret_key = os.environ.get("SECRET_KEY")
 

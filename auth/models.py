@@ -1,4 +1,3 @@
-# auth/models.py
 import sqlite3
 import time
 from pathlib import Path
@@ -55,12 +54,18 @@ def init_user_table():
 
 
 # =========================
-# CREATE USER
+# CREATE USER (FIXED SAFE VERSION)
 # =========================
 def create_user(data, hashed_password, otp, expiry):
     conn = get_db()
     try:
         c = conn.cursor()
+
+        # 🔥 IMPORTANT: prevent duplicate crash
+        c.execute("SELECT id FROM users WHERE email=? OR phone=?",
+                  (data["email"], data["phone"]))
+        if c.fetchone():
+            raise Exception("Email or phone already registered")
 
         c.execute("SELECT COUNT(*) FROM users")
         count = c.fetchone()[0]
@@ -74,9 +79,7 @@ def create_user(data, hashed_password, otp, expiry):
             verified, otp, otp_expiry, recovery, agreed,
             failed_attempts, lock_until, created_at,
             password_changed_at, role
-        ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-        )
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             data["full_name"],
             data["last_name"],
@@ -90,7 +93,7 @@ def create_user(data, hashed_password, otp, expiry):
             0,
             otp,
             expiry,
-            data["recovery"],
+            data.get("recovery", ""),
             1,
             0,
             0,
@@ -100,6 +103,7 @@ def create_user(data, hashed_password, otp, expiry):
         ))
 
         conn.commit()
+
     finally:
         conn.close()
 
@@ -171,7 +175,7 @@ def reset_fail(user_id):
 
 
 # =========================
-# PASSWORD RESET (OTP)
+# OTP RESET
 # =========================
 def set_reset_otp(email, otp, expiry):
     conn = get_db()
@@ -187,6 +191,9 @@ def set_reset_otp(email, otp, expiry):
         conn.close()
 
 
+# =========================
+# PASSWORD UPDATE
+# =========================
 def update_password(email, hashed_password):
     conn = get_db()
     try:
@@ -202,7 +209,7 @@ def update_password(email, hashed_password):
 
 
 # =========================
-# GET ALL USERS (SAFE DICT OUTPUT)
+# GET USERS
 # =========================
 def get_all_users():
     conn = get_db()
@@ -213,19 +220,7 @@ def get_all_users():
         FROM users
         """)
 
-        rows = c.fetchall()
+        return [dict(row) for row in c.fetchall()]
 
-        return [
-            {
-                "id": r["id"],
-                "full_name": r["full_name"],
-                "email": r["email"],
-                "phone": r["phone"],
-                "role": r["role"],
-                "verified": r["verified"],
-                "recovery": r["recovery"]
-            }
-            for r in rows
-        ]
     finally:
         conn.close()
