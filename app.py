@@ -29,7 +29,7 @@ from routes import uf_bp, ro_bp
 app = Flask(__name__)
 
 import os
-app.secret_key = os.getenv("Sm2!Ey0(Jo2*Om4)Ni0)Gn4#Rl1@Aa9)ItNt")
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 # ==============================
