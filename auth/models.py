@@ -60,42 +60,78 @@ def create_user(data, hashed_password, otp, expiry):
     conn = get_db()
     c = conn.cursor()
 
-    c.execute("SELECT COUNT(*) FROM users")
-    count = c.fetchone()[0]
+    # check if user already exists
+    c.execute("SELECT id, verified FROM users WHERE email=?", (data["email"],))
+    existing = c.fetchone()
 
-    role = "admin" if count == 0 else "user"
+    role = "admin" if not existing else "user"
 
-    c.execute("""
-    INSERT INTO users (
-        full_name, last_name, birthday, email, phone, gender,
-        position, affiliation, password,
-        verified, otp, otp_expiry, recovery, agreed,
-        failed_attempts, lock_until, created_at,
-        password_changed_at, role
-    ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-    )
-    """, (
-        data["full_name"],
-        data["last_name"],
-        data["birthday"],
-        data["email"],
-        data["phone"],
-        data["gender"],
-        data["position"],
-        data["affiliation"],
-        hashed_password,
-        0,              # verified default
-        otp,
-        expiry,
-        data["recovery"],
-        1,
-        0,              # failed_attempts
-        0,              # lock_until
-        time.time(),
-        time.time(),    # password_changed_at
-        role
-    ))
+    if existing:
+        # 🔥 UPDATE EXISTING USER (VERY IMPORTANT FIX)
+        c.execute("""
+        UPDATE users
+        SET full_name=?,
+            last_name=?,
+            birthday=?,
+            phone=?,
+            gender=?,
+            position=?,
+            affiliation=?,
+            password=?,
+            otp=?,
+            otp_expiry=?,
+            verified=0,
+            recovery=?,
+            agreed=1
+        WHERE email=?
+        """, (
+            data["full_name"],
+            data["last_name"],
+            data["birthday"],
+            data["phone"],
+            data["gender"],
+            data["position"],
+            data["affiliation"],
+            hashed_password,
+            otp,
+            expiry,
+            data["recovery"],
+            data["email"]
+        ))
+
+    else:
+        # 🔥 NEW USER INSERT
+        c.execute("""
+        INSERT INTO users (
+            full_name, last_name, birthday, email, phone, gender,
+            position, affiliation, password,
+            verified, otp, otp_expiry, recovery, agreed,
+            failed_attempts, lock_until, created_at,
+            password_changed_at, role
+        ) VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        )
+        """, (
+            data["full_name"],
+            data["last_name"],
+            data["birthday"],
+            data["email"],
+            data["phone"],
+            data["gender"],
+            data["position"],
+            data["affiliation"],
+            hashed_password,
+            0,
+            otp,
+            expiry,
+            data["recovery"],
+            1,
+            0,
+            0,
+            time.time(),
+            time.time(),
+            role
+        ))
 
     conn.commit()
     conn.close()
