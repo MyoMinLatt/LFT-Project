@@ -11,10 +11,11 @@ DB = BASE_DIR / "database" / "users.db"
 # DATABASE CONNECTION
 # =========================
 def get_db():
-    conn = sqlite3.connect(DB)
-    conn.row_factory = sqlite3.Row  # optional but useful
+    conn = sqlite3.connect(DB, timeout=10, check_same_thread=False)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA busy_timeout = 5000")
+    conn.row_factory = sqlite3.Row
     return conn
-
 
 # =========================
 # INIT TABLE
