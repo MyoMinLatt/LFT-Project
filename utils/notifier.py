@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 # =========================
 def send_email(to_email, subject, message):
     sender_email = "minlatt.myo@gmail.com"
-    sender_password = "wrcl couc qaac eqpy"
+    sender_password = os.getenv("EMAIL_APP_PASSWORD")
 
     msg = MIMEText(message)
     msg["Subject"] = subject
