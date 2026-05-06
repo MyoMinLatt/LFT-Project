@@ -29,7 +29,7 @@ from routes import uf_bp, ro_bp
 app = Flask(__name__)
 
 import os
-app.secret_key = os.getenv("SECRET_KEY", "dev_only_secret")
+app.secret_key = os.environ.get("SECRET_KEY")
 
 
 # ==============================
