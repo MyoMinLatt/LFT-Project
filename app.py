@@ -15,11 +15,8 @@ from database.system_map_pumps import get_pumps_table
 from database.system_map_valves import get_valves_table
 from database.device_popup import get_device_popup_data as get_device_data
 from database.pump_popup import get_device_popup_data as get_pump_data
-from auth.routes import auth_bp
-from auth.security import login_required, role_required
-from auth.models import init_user_table
-from routes.api import api_bp
 
+from database.user_utils import get_all_users
 
 # ==============================
 # ROUTES BLUEPRINTS
@@ -28,67 +25,52 @@ from routes import uf_bp, ro_bp
 
 app = Flask(__name__)
 
-from auth.models import init_user_table
-
 import os
 app.secret_key = os.environ.get("SECRET_KEY")
 
-init_user_table()
 
 # ==============================
 # REGISTER BLUEPRINTS
 # ==============================
 app.register_blueprint(uf_bp)
 app.register_blueprint(ro_bp)
-app.register_blueprint(auth_bp)
-app.register_blueprint(api_bp)
+
 
 # ==============================
-# MAIN PAGES
+# MAIN PAGES (PUBLIC ACCESS)
 # ==============================
 @app.route('/')
 def main_page():
     return render_template('main_page.html')
 
 @app.route('/monitoring')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def monitoring():
     return render_template('dashboard.html')
 
 @app.route('/flow_diagram')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def flow_diagram():
     return render_template('flow_diag.html')
 
 @app.route('/measurement')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def measurement():
     return render_template('measurements.html')
 
 @app.route('/uf')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def uf():
     return render_template('uf_system.html')
 
 @app.route('/ro')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def ro():
     return render_template('ro_system.html')
 
 @app.route('/analysis')
-@login_required
-@role_required(["admin", "engineer", "user"])
 def analysis():
     return render_template('analysis.html')
 
 @app.route("/health")
 def health():
     return "OK", 200
+
 
 # ==============================
 # API ROUTES (Dashboard)
@@ -105,6 +87,7 @@ def api_pumps():
 def api_valves():
     return jsonify(get_valves_table())
 
+
 # ==============================
 # DEVICE POPUP (Dynamic)
 # ==============================
@@ -112,11 +95,10 @@ def api_valves():
 def device_popup():
     device = request.args.get("device")
     date = request.args.get("date")
-    datetime_param = request.args.get("datetime")  # NEW
+    datetime_param = request.args.get("datetime")
 
     from database.system_map_pumps import SYSTEM_MAP as PUMP_MAP
 
-    # Check if the device is a pump
     is_pump = any(
         device in PUMP_MAP[category][system]
         for category in PUMP_MAP
@@ -134,10 +116,8 @@ def device_popup():
 
 
 # ==============================
-# SEND EMAIL TO ALL USERS
+# SEND EMAIL / SMS ALERTS
 # ==============================
-
-from auth.models import get_all_users
 from utils.notifier import send_email, send_sms
 import time
 
@@ -170,13 +150,11 @@ def send_alert():
 
     for user in users:
 
-        if user["verified"] != 1:
-            continue
-
-        if user.get("email"):
+        # OPTIONAL FLAGS (if you added columns)
+        if user.get("receive_email", 1) and user.get("email"):
             send_email(user["email"], "System Alert", message)
 
-        if user.get("phone"):
+        if user.get("receive_sms", 1) and user.get("phone"):
             send_sms(user["phone"], message)
 
     return jsonify({"status": "sent"})
@@ -190,7 +168,7 @@ if __name__ == '__main__':
  #   init_user_table()
   #  app.run(debug=True)
     # For network access,
-    #app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
- port = int(os.environ.get("PORT", 5000))
- app.run(host="0.0.0.0", port=port)
+ #port = int(os.environ.get("PORT", 5000))
+ #app.run(host="0.0.0.0", port=port)
