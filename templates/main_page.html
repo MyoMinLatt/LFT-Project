@@ -4,58 +4,6 @@
 
 {% block content %}
 
-/* =====================================
-   MOBILE RESPONSIVE
-===================================== */
-
-@media screen and (max-width:768px){
-
-    header{
-        flex-direction:column;
-        text-align:center;
-        position:relative;
-    }
-
-    .page-layout{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    main{
-        grid-template-columns:1fr;
-        width:100%;
-    }
-
-    .menu-card img{
-        width:100%;
-        max-width:350px;
-        height:auto;
-    }
-
-    .menu-card a{
-        width:100%;
-        max-width:350px;
-    }
-
-    .left-box,
-    .right-box{
-        width:100%;
-        max-width:95%;
-    }
-
-    .bottom-grid{
-        grid-template-columns:1fr;
-    }
-
-    .group-columns{
-        grid-template-columns:1fr;
-    }
-
-    .bottom-box{
-        height:auto;
-    }
-}
-
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -129,21 +77,19 @@ header .datetime { font-size: 14px; }
 
 /* =============================== */
 .page-layout{
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    gap:20px;
-    padding:10px;
-    flex-wrap:wrap;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 10px;
 }
 
 /* MAIN GRID */
 main {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(3, 220px);
     row-gap: 20px;
     column-gap: 20px;
-    width: 100%;
 }
 
 /* MENU CARDS (UNCHANGED) */
@@ -193,14 +139,19 @@ main {
 }
 
 /* ===============================
-   LEFT & RIGHT BOX (FULL CONTROL)
+   LEFT BOX (FULL CONTROL)
 =============================== */
-.left-box,
+.left-box{
+    width: 400px;     /* 👉 change width here */
+    height: 558px;    /* 👉 change height here */
+}
+
+/* ===============================
+   RIGHT BOX (FULL CONTROL)
+=============================== */
 .right-box{
-    width:100%;
-    max-width:400px;
-    height:auto;
-    min-height:300px;
+    width: 400px;     /* 👉 different width */
+    height: 550px;    /* 👉 different height */
 }
 
 /* ===============================
