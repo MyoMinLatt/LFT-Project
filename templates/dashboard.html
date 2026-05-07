@@ -700,6 +700,7 @@ function refreshAll(){
 
 </script>
 
+
 <script>
 /* =========================
    ALARM
@@ -951,6 +952,43 @@ window.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
+<!-- 🔥 THRESHOLD PASSWORD LOGIC -->
+<script>
 
+/* =========================
+   THRESHOLD UI (WITH PASSWORD LOCK)
+========================= */
+
+const THRESHOLD_PASSWORD = "1234";
+let thresholdUnlocked = false;
+
+$("#toggleThreshold").off("click").on("click", function () {
+
+    if (!thresholdUnlocked) {
+
+        let input = prompt("Enter password to access Threshold settings:");
+
+        if (input === THRESHOLD_PASSWORD) {
+            thresholdUnlocked = true;
+            alert("Access granted ✔");
+
+            $("#thresholdPanel").show();
+            renderThresholdUI();
+
+        } else {
+            alert("Incorrect password ❌");
+        }
+
+        return;
+    }
+
+    $("#thresholdPanel").toggle();
+
+    if ($("#thresholdPanel").is(":visible")) {
+        renderThresholdUI();
+    }
+});
+
+</script>
 
 {% endblock %}

@@ -1,0 +1,91 @@
+/* =====================================
+   GLOBAL RESPONSIVE
+===================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    overflow-x:hidden;
+}
+
+/* Images */
+img{
+    max-width:100%;
+    height:auto;
+}
+
+/* SVG */
+svg{
+    width:100%;
+    height:auto;
+}
+
+/* Videos */
+video{
+    max-width:100%;
+    height:auto;
+}
+
+/* Tables */
+table{
+    width:100%;
+    display:block;
+    overflow-x:auto;
+}
+
+/* Inputs */
+input,select,textarea{
+    max-width:100%;
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media screen and (max-width:768px){
+
+    body{
+        font-size:14px;
+    }
+
+    .nav-menu{
+        left:5px !important;
+        right:5px !important;
+        width:auto !important;
+    }
+
+    .btn-group{
+        flex-wrap:wrap;
+    }
+
+    .btn-group .btn{
+        flex:1 1 45%;
+        margin-bottom:5px;
+    }
+}
+
+/* =====================================
+   SMALL PHONES
+===================================== */
+
+@media screen and (max-width:480px){
+
+    body{
+        font-size:13px;
+    }
+
+    h1{
+        font-size:20px !important;
+    }
+
+    h2{
+        font-size:16px !important;
+    }
+
+    button{
+        font-size:13px !important;
+    }
+}

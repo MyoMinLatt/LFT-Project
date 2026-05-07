@@ -642,6 +642,84 @@ h2 {
     border-radius: 4px;
 }
 
+      /* =========================================
+   MOBILE RESPONSIVE FLOW DIAGRAM
+========================================= */
+
+@media screen and (max-width: 1024px) {
+
+    body{
+        overflow-x:hidden;
+    }
+
+    /* Rotate diagram for mobile/tablet */
+    #plant{
+
+        width: 100vh;          /* use screen height after rotation */
+        height: 100vw;
+
+        transform: rotate(90deg);
+
+        transform-origin: top left;
+
+        position: absolute;
+
+        top: 100vh;
+        left: 0;
+
+    }
+
+    /* Scale title */
+    h2{
+        font-size: 22px;
+    }
+
+    /* Smaller datetime */
+    #currentDateTime{
+        font-size: 14px !important;
+        top: 5px !important;
+        left: 5px !important;
+    }
+
+    /* Popup resize */
+    #devicePopup{
+        width: 320px;
+        font-size: 10px;
+    }
+
+    #devicePopup table{
+        font-size: 9px;
+    }
+
+    /* Calendar resize */
+    #calendarContainer{
+        width: 180px;
+        right: -190px;
+        font-size: 10px;
+    }
+
+    /* Control buttons */
+    #customControls{
+        width: 180px;
+        right: 5px;
+        top: 5px;
+    }
+
+    .button-row button{
+        font-size: 10px;
+        padding: 4px;
+    }
+
+    #languageSwitcher{
+        font-size: 10px;
+    }
+
+    /* Coordinate box */
+    #coords{
+        font-size: 9px;
+    }
+}
+
     </style>
 
     <h2 data-i18n="flowdiagram_title" style="text-align:center">
