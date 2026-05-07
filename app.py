@@ -51,9 +51,9 @@ def monitoring():
 def flow_diagram():
     return render_template('flow_diag.html')
 
-@app.route('/measurement')
-def measurement():
-    return render_template('measurements.html')
+@app.route('/manual')
+def manual():
+    return render_template('manual.html')
 
 @app.route('/uf')
 def uf():
@@ -159,6 +159,16 @@ def send_alert():
 
     return jsonify({"status": "sent"})
 
+ # ===========================
+#       LOAD HTML FILE
+# ============================
+
+@app.route("/manuals/<name>")
+def manuals(name):
+
+    return render_template(
+        f"manuals/{name}.html"
+    )
 
 # ==============================
 # RUN FLASK APP

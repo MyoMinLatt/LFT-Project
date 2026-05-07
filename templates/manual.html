@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+
+{% block title %}Manual of Measurements{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ===============================
+   BASE
+=============================== */
+body {
+    background:#848B79;
+    color:white;
+}
+
+/* ===============================
+   TEXT BOX
+=============================== */
+.text-box {
+    background:white;
+    padding:15px;
+    border-radius:8px;
+    min-height:150px;
+}
+
+.text-box h5{
+    color:black;
+    margin-bottom:10px;
+}
+
+.text-box p{
+    color:black;
+    margin:0;
+}
+
+/* ===============================
+   TOP PANEL
+=============================== */
+.manual-top-panel{
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
+    background: #555D50;
+    padding: 10px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.manual-title{
+    text-align: center;
+    font-size: 40px;
+    margin: 0;
+}
+
+.manual-top-panel select{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 120px;
+}
+
+/* ===============================
+   TIME BOX
+=============================== */
+.time-box{
+    margin-top:10px;
+    font-size:16px;
+    line-height:1.5;
+}
+
+/* ===============================
+   CONTENT
+=============================== */
+.manual-content{
+    margin-top: 170px;
+}
+
+.param-panel{
+    max-width: 250px;
+    padding-right: 10px;
+}
+
+/* ===============================
+   PARAMETER BUTTONS
+=============================== */
+.parameter-btn {
+    width:100%;
+    margin-bottom:6px;
+    padding: 8px;
+    font-size: 14px;
+    background-color:#004225 !important;
+    color:#ffffff !important;
+    border:2px solid #22CE83 !important;
+}
+
+.parameter-btn:hover {
+    background-color:#3c096c !important;
+}
+
+/* ===============================
+   DEVICE BUTTONS
+=============================== */
+.device-btn {
+    width:100%;
+    margin-bottom:4px;
+    background-color:#348781 !important;
+    color:white !important;
+    border:2px solid #01F9C6 !important;
+}
+
+.device-btn:hover {
+    background-color:#033E3E !important;
+}
+
+/* ===============================
+   TEXT PANEL
+=============================== */
+.text-panel{
+    padding-left:10px;
+}
+
+</style>
+
+<!-- ===============================
+     TOP PANEL
+=============================== -->
+<div class="manual-top-panel">
+
+    <h2 class="manual-title">
+        Manual of Measurement
+    </h2>
+
+    <!-- LANGUAGE -->
+    <select id="languageSwitcher">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="my">Myanmar</option>
+        <option value="vi">Vietnamese</option>
+        <option value="mn">Mongolian</option>
+    </select>
+
+    <!-- TIME -->
+    <div class="time-box">
+
+        <div>
+            UTC:
+            <span id="utc-time"></span>
+        </div>
+
+        <div>
+            KST:
+            <span id="kst-time"></span>
+        </div>
+
+    </div>
+
+</div>
+
+<hr style="border-color:white;">
+
+<!-- ===============================
+     MAIN CONTENT
+=============================== -->
+<div class="row manual-content">
+
+    <!-- ===============================
+         PARAMETER PANEL
+    =============================== -->
+    <div class="col-md-3 param-panel">
+
+        <button class="btn btn-primary parameter-btn"
+                data-param="Language Switcher">
+            Language Switcher
+        </button>
+        <div class="device-container"></div>
+
+        <button class="btn btn-primary parameter-btn"
+                data-param="Flow Diagram Page">
+            Flow Diagram Page
+        </button>
+        <div class="device-container"></div>
+
+        <button class="btn btn-primary parameter-btn"
+                data-param="Monitoring Page">
+            Monitoring Page
+        </button>
+        <div class="device-container"></div>
+
+        <button class="btn btn-primary parameter-btn"
+                data-param="UF & RO System Pages">
+            UF & RO System Pages
+        </button>
+        <div class="device-container"></div>
+
+        <button class="btn btn-primary parameter-btn"
+                data-param="Analysis Page">
+            Analysis Page
+        </button>
+        <div class="device-container"></div>
+
+    </div>
+
+    <!-- ===============================
+         TEXT PANEL
+    =============================== -->
+    <div class="col-md-9 text-panel">
+
+        <div class="row g-3" id="text-container"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+$(document).ready(function(){
+
+/* ===============================
+   DEVICE MAP
+=============================== */
+const deviceMap = {
+
+    "Language Switcher": [
+        "Languages"
+    ],
+
+    "Flow Diagram Page": [
+        "Measurable Devices",
+        "Pumps",
+        "Automatic Control Valves",
+        "Calendar",
+        "Customized Date & Times",
+        "1st Key-value Table",
+        "2nd Key value Table",
+        "Animated Logic"
+    ],
+
+    "Monitoring Page": [
+        "LFT Monitoring Dashboard",
+        "Pump Status",
+        "Valve Status",
+        "Thresholds",
+        "Counts & Alarm Toggle"
+    ],
+
+    "UF & RO System Pages": [
+        "Variable Buttons",
+        "Time Interval Buttons",
+        "Custom Range",
+        "Valve Status",
+        "Graphs",
+        "Thresholds",
+        "Key-value Tables"
+    ],
+
+    "Analysis Page": [
+        "Variable Buttons",
+        "Time Interval Buttons",
+        "Custom Range",
+        "Statistical Models"
+    ]
+
+};
+
+/* ===============================
+   SAFE ID
+=============================== */
+function safeId(name){
+
+    return name
+        .replace(/\s+/g,"_")
+        .replace(/[^\w]/g,"");
+
+}
+
+/* ===============================
+   PARAMETER BUTTON CLICK
+=============================== */
+$(".parameter-btn").click(function(){
+
+    let param = $(this).data("param");
+
+    let container = $(this).next(".device-container");
+
+    /* TOGGLE DEVICE BUTTONS */
+    if(container.children().length > 0){
+
+        container.empty();
+
+        return;
+    }
+
+    /* CHECK MAP */
+    if(!deviceMap[param]){
+
+        console.warn("No mapping:", param);
+
+        return;
+    }
+
+    /* ADD DEVICE BUTTONS */
+    deviceMap[param].forEach(function(d){
+
+        container.append(`
+            <button class="btn btn-secondary device-btn"
+                    data-device="${d}">
+                ${d}
+            </button>
+        `);
+
+    });
+
+});
+
+/* ===============================
+   DEVICE BUTTON CLICK
+=============================== */
+$(document).on("click",".device-btn",function(){
+
+    const device = $(this).data("device");
+
+    const deviceId = safeId(device);
+
+    /* TOGGLE OFF */
+    if($("#box_" + deviceId).length){
+
+        $("#box_" + deviceId).remove();
+
+        return;
+    }
+
+    /* CREATE CONTAINER */
+    $("#text-container").append(`
+
+        <div class="col-md-12"
+             id="box_${deviceId}">
+
+            <div class="text-box">
+
+                <div id="content_${deviceId}">
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+    `);
+
+    /* LOAD HTML FILE */
+    $("#content_" + deviceId).load(
+        "/manuals/" + deviceId
+    );
+
+});
+
+/* ===============================
+   CLOCK
+=============================== */
+function updateTimes(){
+
+    const now = new Date();
+
+    /* UTC */
+    $("#utc-time").text(
+        now.toISOString()
+           .slice(0,19)
+           .replace("T"," ")
+    );
+
+    /* KST */
+    const kst = new Date(
+        now.getTime() + 9*60*60*1000
+    );
+
+    $("#kst-time").text(
+        kst.toISOString()
+           .slice(0,19)
+           .replace("T"," ")
+    );
+
+}
+
+/* RUN CLOCK */
+setInterval(updateTimes,1000);
+
+updateTimes();
+
+}); // END document.ready
+
+</script>
+
+{% endblock %}
