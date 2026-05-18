@@ -402,7 +402,7 @@ pointer-events:none; }
             display: none;
             z-index: 1000;
             font-size: 12px;
-             transform: translateY(-20px);  /* 👈 increase gap from button */
+             transform: translateY(-35px);  /* 👈 increase gap from button */
 
              /* bevel effect */
     box-shadow:
@@ -414,18 +414,18 @@ pointer-events:none; }
         #devicePopup::after {
            content: "";
            position: absolute;
-           bottom: -40px;        /* length of pointer */
+           bottom: -35px;        /* length of pointer */
            left: 210px;          /* horizontal position */
            width: 0;
            height: 0;
            border-left: 5px solid transparent;   /* narrow pointer */
            border-right: 5px solid transparent;  /* narrow pointer */
-           border-top: 40px solid blue;         /* long pointer, matches bottom offset */
+           border-top: 35px solid blue;         /* long pointer, matches bottom offset */
         }
 
  #kvContainer {
     position: absolute;  /* relative to parent container */
-    top: 100px;           /* adjust vertical distance from button */
+    top: 120px;           /* adjust vertical distance from button */
     left: 250px;         /* adjust horizontal distance from button */
 }
 
@@ -438,12 +438,11 @@ pointer-events:none; }
     font-size:13px;
 }
 
-#devicePopup th,
 #devicePopup th{
-    padding:6px 8px;
+    padding:6px 3px;
     color:white;
     font-weight:600;
-
+    text-align:center;
     background: linear-gradient(#5c6f91, #2f3f5f);
 
     border-radius:4px;

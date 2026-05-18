@@ -31,8 +31,8 @@ const translations = {
         table_selected: "Selected Date",
 
         //Monitoring page
-        main_title: "Liquid Fertilizer Treatment System",
-        dashboard_title: "LFT Monitoring Dashboard",
+        main_title: "LFT Monitoring Dashboard",
+        dashboard_title: "Devices Status",
         variables: "Variables",
         uf_system: "UF System",
         ro_system: "RO System",
@@ -111,8 +111,8 @@ const translations = {
         table_today: "오늘",
         table_selected: "선택된 날짜",
 
-        main_title: "액비처리 시스템",
-        dashboard_title: "LFT 모니터링 대시보드",
+        main_title: "LFT 모니터링 대시보드",
+        dashboard_title: "기기 상태",
         variables: "변수",
         uf_system: "UF 시스템",
         ro_system: "RO 시스템",
@@ -187,8 +187,8 @@ const translations = {
         table_today: "ယနေ့",
         table_selected: "ရွေးချယ်နေ့",
 
-        main_title: "ရေဆိုးပြုပြင်ခြင်းစနစ်",
-        dashboard_title: "LFT စောင့်ကြည့် အခြေပြုဇယား",
+        main_title: "LFT စောင့်ကြည့် အခြေပြုဇယား",
+        dashboard_title: "တိုင်းတာရေးကိရိယာများ အခြေအနေ",
         variables: "တိုင်းတာကိန်းရှင်များ",
         uf_system: "UF စနစ်",
         ro_system: "RO စနစ်",
@@ -263,8 +263,8 @@ const translations = {
         table_today: "Hôm nay",
         table_selected: "Ngày đã chọn",
 
-        main_title: "Hệ thống xử lý phân bón lỏng",
-        dashboard_title: "Bảng điều khiển giám sát LFT",
+        main_title: "Bảng điều khiển giám sát LFT",
+        dashboard_title: "Trạng thái thiết bị",
         variables: "Biến số",
         uf_system: "Hệ thống UF",
         ro_system: "Hệ thống RO",
@@ -338,8 +338,8 @@ const translations = {
         table_today: "Өнөөдөр",
         table_selected: "Сонгосон огноо",
 
-        main_title: "Шингэн бордоо боловсруулах систем",
-        dashboard_title: "LFT хяналтын самбар",
+        main_title: "LFT хяналтын самбар",
+        dashboard_title: "Төхөөрөмжийн төлөв",
         variables: "Хувьсагчид",
         uf_system: "UF систем",
         ro_system: "RO систем",
