@@ -31,8 +31,74 @@ body {
     font-size:12px;
 }
 
+
 /* ===============================
-   🔥 FULL-WIDTH TOP PANEL
+   CLOSE BUTTON
+=============================== */
+.chart-close{
+
+    position:absolute;
+
+    top:0px;
+    right:0px;
+
+    width:20px;
+    height:20px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#ff4d4d;
+    color:white;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+    line-height:12px;
+    text-align:center;
+}
+
+/* hover */
+.chart-close:hover{
+    background:#cc0000;
+}
+
+/* graph box relative */
+.graph-box{
+    position:relative;
+}
+
+.graph-box canvas {
+    width:100% !important;
+    height:220px !important;
+    margin-bottom:15px;
+}
+
+.table {
+    font-size:12px;
+}
+
+
+/* ===============================
+   CHART TITLE
+=============================== */
+.chart-title{
+
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    color:black;
+    margin-bottom:10px;
+    margin-top:5px;
+}
+
+
+/* ===============================
+   FULL-WIDTH TOP PANEL
 =============================== */
 .ro-top-panel{
     position: fixed;
@@ -50,7 +116,7 @@ body {
 }
 
 /* ===============================
-   🔥 TITLE (CENTERED)
+   TITLE (CENTERED)
 =============================== */
 .ro-title{
     text-align: center;
@@ -62,7 +128,7 @@ body {
 /* .ro-top-panel h2 { ... } */
 
 /* ===============================
-   🔥 LANGUAGE (TOP RIGHT)
+   LANGUAGE (TOP RIGHT)
 =============================== */
 .ro-top-panel select{
     position: absolute;
@@ -72,7 +138,7 @@ body {
 }
 
 /* ===============================
-   🔥 ROW: TIME LEFT / INTERVAL RIGHT
+   ROW: TIME LEFT / INTERVAL RIGHT
 =============================== */
 .top-row{
     display: flex;
@@ -114,7 +180,7 @@ body {
 }
 
 /* ===============================
-   🔥 PUSH MAIN CONTENT DOWN
+   PUSH MAIN CONTENT DOWN
 =============================== */
 .ro-content{
     margin-top: 170px;  /* adjust if needed */
@@ -168,6 +234,25 @@ body {
     border:2px solid #ffffff !important;
 }
 
+.device-container{
+
+    margin-left:40px;   /* move device buttons to right */
+}
+
+/* ===============================
+   ACTIVE DEVICE BUTTON
+=============================== */
+.device-btn.active-device{
+
+    background:#FFD700 !important;
+
+    color:black !important;
+
+    border:2px solid #FF8C00 !important;
+
+    font-weight:bold;
+}
+
 /* ===============================
    ACTIVE INTERVAL
 =============================== */
@@ -182,7 +267,7 @@ body {
 }
 
 /* ===============================
-   🔥 FIXED VALVE BOX (OUTSIDE PANEL)
+   FIXED VALVE BOX (OUTSIDE PANEL)
 =============================== */
 .fixed-valve{
     position: fixed;
@@ -317,9 +402,9 @@ body {
 
 $(document).ready(function(){
 
-let currentInterval = "raw";   // 🔥 default = raw (real-time)
+let currentInterval = "raw";   // default = raw (real-time)
 let charts = {};
-let thresholds = {};  // 🔥 store min/max threshold per device
+let thresholds = {};  // store min/max threshold per device
 let customStart = null;
 let customEnd = null;
 let isCustomActive = false;
@@ -391,7 +476,7 @@ function loadChart(param, device, start=null, end=null){
         }
 
         const ctx = document.getElementById("chart_"+deviceId);
-// ✅ DEFINE DATASETS FIRST (CRITICAL FIX)
+// DEFINE DATASETS FIRST (CRITICAL FIX)
         let datasets = [
             {
                 label: device,
@@ -417,6 +502,7 @@ function loadChart(param, device, start=null, end=null){
             }
         ];
 
+        // CREATE CHART
         charts[deviceId] = new Chart(ctx,{
             type:'line',
             data:{
@@ -442,7 +528,7 @@ function loadChart(param, device, start=null, end=null){
             }
 
             if(index >= fullLabels.length){
-                index = 0;  // 🔁 LOOP BACK (recycle continuously)
+                index = 0;  // LOOP BACK (recycle continuously)
             }
 
             charts[deviceId].data.labels.push(fullLabels[index]);
@@ -462,6 +548,8 @@ if(th){
     charts[deviceId].data.datasets[2].data.push(null);
 }
 
+// maintain window size
+
             if(charts[deviceId].data.labels.length > windowSize){
                 charts[deviceId].data.labels.shift();
 
@@ -476,7 +564,7 @@ if(th){
 
         }, speed);
 
-        // 🧠 STORE interval inside chart object
+        // STORE interval inside chart object
         charts[deviceId].animationInterval = animationInterval;
 
     });
@@ -493,7 +581,7 @@ $(".interval-btn").click(function(){
         .removeClass("btn-info")
         .addClass("active-interval");
 
-    currentInterval = $(this).data("int");   // 🔥 apply interval
+    currentInterval = $(this).data("int");   // apply interval
 
     $("[id^='box_']").each(function(){
         const param  = $(this).data("param");
@@ -535,7 +623,7 @@ $("#resetRange").click(function(){
     customStart = null;
     customEnd = null;
 
-    currentInterval = "raw";   // 🔥 back to real-time
+    currentInterval = "raw";   // back to real-time
 
     $(".interval-btn")
         .removeClass("active-interval")
@@ -600,18 +688,38 @@ $(document).on("click",".device-btn",function(){
 
     if($("#box_"+deviceId).length){
 
-        if(charts[deviceId]){
-            charts[deviceId].destroy();
-            delete charts[deviceId];
+    if(charts[deviceId]){
+
+        if(charts[deviceId].animationInterval){
+            clearInterval(charts[deviceId].animationInterval);
         }
 
-        $("#box_"+deviceId).remove();
-        return;
+        charts[deviceId].destroy();
+
+        delete charts[deviceId];
     }
+
+    $("#box_"+deviceId).remove();
+
+    /* REMOVE ACTIVE COLOR */
+    $(this).removeClass("active-device");
+
+    return;
+}
+
+/* HIGHLIGHT ACTIVE BUTTON */
+$(this).addClass("active-device");
 
     $("#graph-container").append(`
         <div class="col-md-4" id="box_${deviceId}" data-param="${param}" data-device="${device}">
             <div class="graph-box">
+             <button class="chart-close"
+                data-device="${device}">
+                 ×
+            </button>
+            <h5 class="chart-title">
+                ${device}
+            </h5>
 
              <!-- THRESHOLD UI -->
             <div class="d-flex mb-2" style="gap:5px;">
@@ -641,10 +749,49 @@ $(document).on("click",".device-btn",function(){
         </div>
     `);
 
-    // 🔥 First click ALWAYS real-time
+    // First click ALWAYS real-time
     loadChart(param, device);
 
 });
+
+/* ===============================
+   CLOSE CHART CONTAINER
+=============================== */
+$(document).on("click",".chart-close",function(){
+
+    const box = $(this).closest("[id^='box_']");
+
+    const device = box.data("device");
+
+    const deviceId = safeId(device);
+
+    /* destroy chart */
+    if(charts[deviceId]){
+
+        if(charts[deviceId].animationInterval){
+            clearInterval(charts[deviceId].animationInterval);
+        }
+
+        charts[deviceId].destroy();
+
+        delete charts[deviceId];
+    }
+
+/* RESET DEVICE BUTTON COLOR */
+$(".device-btn").each(function(){
+
+    if($(this).data("device") === device){
+        $(this).removeClass("active-device");
+    }
+
+});
+
+    /* remove container */
+    box.remove();
+
+});
+
+
 
 $(document).on("click", ".threshold-btn", function(){
 
@@ -652,7 +799,7 @@ $(document).on("click", ".threshold-btn", function(){
     const deviceId = safeId(device);
     const btn = $(this);
 
-    // 🔥 TOGGLE OFF (HIDE)
+    // TOGGLE OFF (HIDE)
     if(thresholds[deviceId]){
         delete thresholds[deviceId];
 
@@ -666,7 +813,7 @@ $(document).on("click", ".threshold-btn", function(){
         return;
     }
 
-    // 🔥 TOGGLE ON (SET)
+    // TOGGLE ON (SET)
     const minVal = parseFloat($("#"+deviceId+"_min_input").val());
     const maxVal = parseFloat($("#"+deviceId+"_max_input").val());
 
