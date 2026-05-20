@@ -154,6 +154,20 @@ body {
 }
 
 /* ===============================
+   ACTIVE DEVICE BUTTON
+=============================== */
+.device-btn.active-device{
+
+    background-color:#240046 !important;
+
+    color:#ffffff !important;
+
+    border:2px solid #ffffff !important;
+
+    box-shadow:0 0 10px #00ffff;
+}
+
+/* ===============================
    TEXT PANEL
 =============================== */
 .text-panel{
@@ -217,9 +231,7 @@ body {
 =============================== */
 .main-image{
     width:100%;
-
     border-radius:8px;
-
     border:1px solid #ccc;
 }
 
@@ -248,17 +260,11 @@ body {
     position:absolute;
     background:yellow;
     color:black;
-
     padding:6px 10px;
-
     font-size:14px;
-
     font-weight:bold;
-
     border-radius:6px;
-
     border:1px solid black;
-
     box-shadow:2px 2px 6px rgba(0,0,0,0.3);
 }
 
@@ -527,13 +533,9 @@ body {
 .figure-caption{
 
     margin-top:15px;
-
     font-size:16px;
-
     font-weight:bold;
-
     color:black;
-
     text-align:center;
 }
 
@@ -584,6 +586,9 @@ body {
         <option value="vi">Vietnamese</option>
         <option value="mn">Mongolian</option>
     </select>
+<!-- GOOGLE TRANSLATE -->
+#<div id="google_translate_element"></div>   */if Google translator is applied
+
 
     <!-- TIME -->
     <div class="time-box">
@@ -874,11 +879,16 @@ $(".parameter-btn").click(function(){
 /* ===============================
    DEVICE BUTTON CLICK
 =============================== */
+/* ===============================
+   DEVICE BUTTON CLICK
+=============================== */
 $(document).on("click",".device-btn",function(){
 
-    const device = $(this).data("device");
+    const btn = $(this);
 
-    const file = $(this).data("file");
+    const device = btn.data("device");
+
+    const file = btn.data("file");
 
     const deviceId = safeId(device);
 
@@ -887,8 +897,14 @@ $(document).on("click",".device-btn",function(){
 
         $("#box_" + deviceId).remove();
 
+        /* REMOVE ACTIVE COLOR */
+        btn.removeClass("active-device");
+
         return;
     }
+
+    /* ACTIVE COLOR */
+    btn.addClass("active-device");
 
     /* CREATE CONTAINER */
     $("#text-container").append(`
@@ -928,7 +944,23 @@ $(document).on("click",".close-box",function(){
 
     const target = $(this).data("target");
 
+    /* FIND DEVICE ID */
+    const deviceId = target.replace("box_","");
+
+    /* REMOVE CONTAINER */
     $("#" + target).remove();
+
+    /* REMOVE ACTIVE COLOR FROM BUTTON */
+    $(".device-btn").each(function(){
+
+        const btnDevice = safeId($(this).data("device"));
+
+        if(btnDevice === deviceId){
+
+            $(this).removeClass("active-device");
+        }
+
+    });
 
 });
 
@@ -967,5 +999,35 @@ updateTimes();
 }); // END document.ready
 
 </script>
+
+
+#APPLICATION OF GOOGLE TRANSLATOR
+
+#<script type="text/javascript">
+
+#function googleTranslateElementInit() {
+
+ #   new google.translate.TranslateElement(
+  #  {
+   #     pageLanguage: 'en',
+
+    #    includedLanguages:
+     #       'en,ko,my,vi,mn',
+
+      #  layout:
+       #     google.translate.TranslateElement.InlineLayout.SIMPLE
+
+#    },
+ #   'google_translate_element'
+ #   );
+
+#}
+
+#</script>
+
+#<script
+#src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+#</script> */
+
 
 {% endblock %}

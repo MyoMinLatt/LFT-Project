@@ -170,51 +170,88 @@ def get_dashboard_table():
 
     final_table = []
 
-
     for variable in VARIABLE_ORDER:
 
         if variable not in raw_data:
             continue
 
-
         uf_data = raw_data[variable].get("UF", {})
         ro_data = raw_data[variable].get("RO", {})
-
 
         uf_list = list(uf_data.items())
         ro_list = list(ro_data.items())
 
+        # ==========================================
+        # GROUP 2 DEVICES PER ROW
+        # ==========================================
 
-        max_len = max(len(uf_list), len(ro_list))
+        uf_grouped = [
+            uf_list[i:i+2]
+            for i in range(0, len(uf_list), 2)
+        ]
 
+        ro_grouped = [
+            ro_list[i:i+2]
+            for i in range(0, len(ro_list), 2)
+        ]
 
-        uf_list += [("", "")] * (max_len - len(uf_list))
-        ro_list += [("", "")] * (max_len - len(ro_list))
+        max_rows = max(len(uf_grouped), len(ro_grouped))
 
+        # fill missing rows
+        while len(uf_grouped) < max_rows:
+            uf_grouped.append([])
 
-        for i in range(max_len):
+        while len(ro_grouped) < max_rows:
+            ro_grouped.append([])
 
-            uf_dev, uf_val = uf_list[i]
-            ro_dev, ro_val = ro_list[i]
+        # ==========================================
+        # BUILD ROWS
+        # ==========================================
 
+        for i in range(max_rows):
+
+            uf_row = uf_grouped[i]
+            ro_row = ro_grouped[i]
+
+            # UF PAIR 1
+            uf1_dev = uf_row[0][0] if len(uf_row) > 0 else ""
+            uf1_val = uf_row[0][1] if len(uf_row) > 0 else ""
+
+            # UF PAIR 2
+            uf2_dev = uf_row[1][0] if len(uf_row) > 1 else ""
+            uf2_val = uf_row[1][1] if len(uf_row) > 1 else ""
+
+            # RO PAIR 1
+            ro1_dev = ro_row[0][0] if len(ro_row) > 0 else ""
+            ro1_val = ro_row[0][1] if len(ro_row) > 0 else ""
+
+            # RO PAIR 2
+            ro2_dev = ro_row[1][0] if len(ro_row) > 1 else ""
+            ro2_val = ro_row[1][1] if len(ro_row) > 1 else ""
 
             row = {
 
                 "variable": variable if i == 0 else "",
-                "rowspan": max_len if i == 0 else 0,
+                "rowspan": max_rows if i == 0 else 0,
 
                 "color_class": COLOR_MAP.get(variable, ""),
 
-                "uf_device": uf_dev,
-                "uf_value": uf_val,
+                # UF
+                "uf1_device": uf1_dev,
+                "uf1_value": uf1_val,
 
-                "ro_device": ro_dev,
-                "ro_value": ro_val
+                "uf2_device": uf2_dev,
+                "uf2_value": uf2_val,
 
+                # RO
+                "ro1_device": ro1_dev,
+                "ro1_value": ro1_val,
+
+                "ro2_device": ro2_dev,
+                "ro2_value": ro2_val
             }
 
             final_table.append(row)
-
 
     return final_table
 
@@ -248,3 +285,4 @@ if __name__ == "__main__":
     import pprint
 
     pprint.pprint(get_dashboard_table())
+

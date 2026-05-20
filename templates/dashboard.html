@@ -16,61 +16,99 @@ body{
     background:linear-gradient(180deg,#020924,#07143d);
     color:white;
     font-family:"Segoe UI",sans-serif;
-    overflow-y:auto;
+    overflow-y:hidden;
     overflow-x:hidden;
 }
 
 /* ===============================
-   MAIN LAYOUT
+   TOP PANEL
 =============================== */
-.dashboard-layout{
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    gap:20px;
-    padding:10px;
-}
 
-.dashboard-main{
-    flex:0 0 auto;
-}
-
-/* ===============================
-   RIGHT PANEL
-=============================== */
-.dashboard-side{
-    flex:0 0 360px;
+.top-panel{
+    position:relative;
     background:rgba(5,15,45,0.95);
-    border-radius:16px;
-    padding:16px;
+    border-radius:18px;
+    padding:12px 15px;
+    margin-top:-35px;
+    margin-bottom:10px;
+    background:linear-gradient(180deg,#071a4d,#0b2b75);
     box-shadow:0 0 20px rgba(0,140,255,0.25);
-    min-height:450px;
-}
-
-/* ===============================
-   CONTAINER
-=============================== */
-.container-box{
-    max-width:900px;
-    margin:auto;
-    background:rgba(5,15,45,0.95);
-    border-radius:16px;
-    padding:14px;
-    box-shadow:0 0 25px rgba(0,140,255,0.4);
 }
 
 /* ===============================
    TITLES
 =============================== */
-h2{ font-size:1.6rem; }
-h4{ font-size:1.1rem; }
+/* ===============================
+   PAGE TITLE
+=============================== */
+.dashboard-title{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:max-content;   /* 🔥 IMPORTANT */
+
+    text-align:center;
+    white-space:nowrap;
+
+    font-size:2rem;
+    font-weight:700;
+    color:#00e5ff;
+
+    background:linear-gradient(180deg,#08245c,#0b3b8f);
+
+    padding:8px 25px;
+
+    border-radius:14px;
+
+    border:2px solid #1c8cff;
+
+    box-shadow:0 0 18px rgba(0,180,255,0.45);
+
+    letter-spacing:1px;
+
+    z-index:10;
+}
+
+
+
+/* ===============================
+   PANEL TITLES
+=============================== */
+
+/* Devices Status */
+.devices-title{
+    text-align:center;
+    font-size:1.35rem;
+    font-weight:700;
+    color:#00c8ff;   /* cyan */
+    margin-bottom:12px;
+}
+
+/* Pump Status */
+.pump-title{
+    text-align:center;
+    font-size:1.1rem;
+    font-weight:700;
+    color:#00ff99;   /* green */
+    margin-bottom:10px;
+}
+
+/* Valve Status */
+.valve-title{
+    text-align:center;
+    font-size:1.1rem;
+    font-weight:700;
+    color:#ffcc66;   /* orange/yellow */
+    margin-bottom:10px;
+}
 
 table{
-    width:85%;
+    width:100%;
     margin:auto;
-    table-layout:fixed;
+    table-layout:auto;
     border-collapse:separate;
-    border-spacing:0 3px;
+    border-spacing:4px 4px;
 }
 
 thead th{
@@ -94,21 +132,68 @@ thead th{
 .th-ro{ background:linear-gradient(180deg,#3a2400,#6b3f00); color:#ffd27a; border:2px solid rgba(255,180,0,0.9); }
 
 .var-cell{
-    background:linear-gradient(180deg,#01351f,#045c38);
+    background:linear-gradient(180deg,#071a4d,#0b2b75);
     border-radius:12px;
-    border:2px solid rgba(0,255,140,0.9);
+    border:2px solid #1c5cff;
     font-weight:700;
     text-align:center;
 }
 
 .pair-box{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     border-radius:10px;
-    padding:4px 6px;
-    gap:6px;                 /* 🔥 add spacing */
+
+    padding:4px 8px;
+
+    min-width:140px;
+
+    width:100%;
+
+    height:40px;
+
+    box-sizing:border-box;
 }
+
+.system-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-items:center;
+}
+/* ==================================
+   UF/RO GRID LAYOUT
+================================== */
+
+.system-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2, 1fr);
+
+    gap:6px;
+
+    width:100%;
+}
+
+
+/* EMPTY PLACEHOLDER */
+
+.empty-box{
+
+    visibility:hidden;
+
+    height:40px;
+}
+.system-item{
+    min-width:150px;
+}
+
 
 .uf-box{ background:linear-gradient(180deg,#022f1a,#064d2c); border:2px solid rgba(0,255,120,0.9); }
 .ro-box{ background:linear-gradient(180deg,#3a2400,#6b3f00); border:2px solid rgba(255,180,0,0.9); }
@@ -163,7 +248,7 @@ thead th{
     overflow-x:hidden;
 }
 
-/* 🔥 BLINK COLORS */
+/* BLINK COLORS */
 .blink-low{
     animation: blinkLow 1s infinite;
 }
@@ -184,7 +269,7 @@ thead th{
 }
 
 
-    /* 🔥 THRESHOLD GRID LAYOUT */
+    /* THRESHOLD GRID LAYOUT */
 .threshold-grid{
     display:grid;
     grid-template-columns: repeat(3, 1fr); /* 3 columns */
@@ -217,90 +302,175 @@ thead th{
     font-size:0.75rem;
 }
 
+    .dashboard-grid{
+    display:flex;
+    flex-wrap:nowrap;        /* ❗ keeps everything in one row */
+    gap:10px;
+    align-items:flex-start;
+    overflow-x:auto;         /* allow scroll only if needed */
+}
+
+/* all panels */
+.panel{
+    background:rgba(5,15,45,0.95);
+    border-radius:16px;
+    padding:10px;
+    box-shadow:0 0 15px rgba(0,140,255,0.25);
+}
+
+/* main table bigger */
+.main-panel{
+    flex:2;
+    min-width:600px;
+}
+
+/* small side panels */
+.small-panel{
+    flex:1;
+    min-width:250px;
+    max-width:300px;
+}
+
+/* REMOVE FULL PAGE VERTICAL STACK */
+.dashboard-layout{
+    display:none;   /* ❗ disable old layout */
+}
+.stack-column{
+    display:flex;
+    flex-direction:column;   /* 🔥 THIS MAKES VERTICAL STACK */
+    gap:10px;
+}
+
+/* optional inner boxes */
+.sub-panel{
+    background:rgba(0,0,0,0.15);
+    border-radius:12px;
+    padding:8px;
+}
+
+/* alarm styling in header */
+.alarm-top{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    margin-right:80px;
+}
+.top-header{
+    position:relative;
+    display:flex;
+    justify-content:flex-end;   /* alarm stays right */
+    align-items:center;
+    padding:5px 10px;
+    margin-bottom:10px;
+    min-height:50px;
+}
+
+/* 🔴🟡 alarm buttons */
+.alarm-top button{
+    font-size:1rem;        /* text size */
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:10px;
+    min-width:70px;
+}
+
+/* 🔊 sound button only */
+#soundToggle{
+    font-size:1.8rem;      /* 🔥 icon size */
+    width:48px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+
+    border-radius:10px;
+}
+
+/* optional hover effect */
+#soundToggle:hover{
+    transform:scale(1.08);
+    transition:0.2s;
+}
+
 </style>
 
-<div style="position:absolute; right:20px; top:38px; z-index:1000;">
-    <select id="languageSwitcher">
-        <option value="en">English</option>
-        <option value="ko">한국어</option>
-        <option value="my">Myanmar</option>
-        <option value="vi">Vietnamese</option>
-        <option value="mn">Mongolian</option>
-    </select>
-</div>
 
-<div class="container-fluid p-2">
-<h2 class="text-center fw-bold text-info" data-i18n="main_title">
-💧 LFT Monitoring Dashboard
-</h2>
 
-<div class="dashboard-layout">
 
-<!-- LEFT -->
-<div class="dashboard-main">
-<div class="container container-box">
-<h4 class="text-center text-primary" data-i18n="dashboard_title">
-Devices Status
-</h4>
+    <div style="position:absolute; right:20px; top:10px; z-index:1000;">
+        <select id="languageSwitcher">
+            <option value="en">English</option>
+            <option value="ko">한국어</option>
+            <option value="my">Myanmar</option>
+            <option value="vi">Vietnamese</option>
+            <option value="mn">Mongolian</option>
+        </select>
+    </div>
 
-<div class="table-responsive">
-<table id="dashboard-table">
-<thead>
-<tr>
-<th class="th-var"><div class="header-text" data-i18n="variables">Variables</div></th>
-<th colspan="2" class="th-uf"><div class="header-text" data-i18n="uf_system">UF System</div></th>
-<th colspan="2" class="th-ro"><div class="header-text" data-i18n="ro_system">RO System</div></th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-</div>
+<div class="top-panel">
 
-<!-- RIGHT -->
-<div class="dashboard-side">
+    <div class="top-header">
 
-<h5 class="text-center text-info mb-2" data-i18n="pump_status">Pump Status</h5>
-<div id="pump-table-container">
-<p class="text-center text-secondary small">Loading...</p>
-</div>
+        <h2 class="dashboard-title fw-bold m-0">
+            💧 LFT Monitoring Dashboard
+        </h2>
 
-<h5 class="text-center text-info mt-4 mb-2" data-i18n="valve_status">Valve Status</h5>
-<div id="valve-table-container">
-<p class="text-center text-secondary small">Loading...</p>
+    <!-- RIGHT ALARM -->
+        <div class="alarm-top" id="alarmPanel">
+
+            <button id="alarmHighBtn" class="btn btn-danger btn-sm"> 🔴 0 </button>
+            <button id="alarmLowBtn"  class="btn btn-warning btn-sm"> 🟡 0 </button>
+            <button id="soundToggle"  class="btn btn-secondary">      🔊   </button>
+        </div>
+    </div>
 </div>
 
 
+<div class="dashboard-grid">
+
+    <!-- 1. MAIN TABLE -->
+    <div class="panel main-panel">
+        <h4 class="devices-title"> Devices Status</h4>
+        <div class="table-responsive">
+            <table id="dashboard-table">
+                <thead>
+                    <tr>
+                        <th class="th-var"><div class="header-text" data-i18n="variables">Variables</div></th>
+                        <th colspan="4" class="th-uf"><div class="header-text" data-i18n="uf_system">UF System</div></th>
+                        <th colspan="4" class="th-ro"><div class="header-text" data-i18n="ro_system">RO System</div></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2+3 GROUP (VERTICAL STACK) -->
+<div class="panel small-panel stack-column">
+
+    <!-- PUMP -->
+    <div class="sub-panel">
+        <h5 class="pump-title"> Pump Status</h5>
+        <div id="pump-table-container"></div>
+    </div>
+
+    <!-- VALVE -->
+    <div class="sub-panel">
+        <h5 class="valve-title"> Valve Status</h5>
+        <div id="valve-table-container"></div>
+    </div>
 
 </div>
- <!-- 🔥 THRESHOLD PANEL -->
-<h5 class="text-center text-warning mt-4 mb-2"> </h5>
 
-<button id="toggleThreshold"
-        class="btn btn-sm btn-warning w-100 mb-2"
-        data-i18n="thresholds">
-    Thresholds
-</button>
-
-<div id="thresholdPanel" style="display:none;"></div>
-
-
-<!-- 🔥 ALARM PANEL -->
-<div id="alarmPanel" style="margin-top:10px; text-align:center;">
-
-    <button id="alarmHighBtn" class="btn btn-danger btn-sm">
-    🔴 0
-</button>
-
-<button id="alarmLowBtn" class="btn btn-warning btn-sm">
-    🟡 0
-</button>
-
-    <button id="soundToggle" class="btn btn-secondary btn-sm">
-        🔊
-    </button>
-</div>
+    <!-- 4. THRESHOLD -->
+    <div class="panel small-panel">
+        <h5>Thresholds</h5>
+        <button id="toggleThreshold" class="btn btn-warning btn-sm w-100">Thresholds</button>
+        <div id="thresholdPanel"></div>
+    </div>
 </div>
 </div>
 
@@ -417,7 +587,7 @@ function translateVariable(name){
 
 
 /* ===============================
-   MAIN TABLE (UNCHANGED)
+   MAIN TABLE
 =============================== */
 function fetchDashboard(){
 
@@ -451,33 +621,90 @@ function fetchDashboard(){
                 </td>`;
             }
 
-            // ✅ UF WITH THRESHOLD CHECK
-            if(row.uf_device || row.uf_value){
-                tbody += `
-                <td colspan="2">
-                    <div class="pair-box uf-box ${checkThreshold(row.uf_device, row.uf_value)}">
-                        <span class="device-text">${row.uf_device ?? ""}</span>
-                        <span class="value-text">${row.uf_value ?? ""}</span>
-                    </div>
-                </td>`;
-            } else{
-                tbody += `<td colspan="2"></td>`;
-            }
+            /* =========================
+   UF MULTI DEVICES
+========================= */
 
-            // ✅ RO WITH THRESHOLD CHECK
-            if(row.ro_device || row.ro_value){
-                tbody += `
-                <td colspan="2">
-                    <div class="pair-box ro-box ${checkThreshold(row.ro_device, row.ro_value)}">
-                        <span class="device-text">${row.ro_device ?? ""}</span>
-                        <span class="value-text">${row.ro_value ?? ""}</span>
-                    </div>
-                </td>`;
-            } else{
-                tbody += `<td colspan="2"></td>`;
-            }
+tbody += `<div class="system-grid">`;
 
-            tbody += "</tr>";
+/* ===============================
+   UF GROUP
+=============================== */
+
+tbody += `<td colspan="4">`;
+
+tbody += `<div class="system-grid">`;
+
+// UF BOX 1
+if(row.uf1_device || row.uf1_value){
+
+    tbody += `
+    <div class="pair-box uf-box ${checkThreshold(row.uf1_device, row.uf1_value)}">
+        <span class="device-text">${row.uf1_device ?? ""}</span>
+        <span class="value-text">${row.uf1_value ?? ""}</span>
+    </div>`;
+}
+else{
+    tbody += `<div class="empty-box"></div>`;
+}
+
+
+// UF BOX 2
+if(row.uf2_device || row.uf2_value){
+
+    tbody += `
+    <div class="pair-box uf-box ${checkThreshold(row.uf2_device, row.uf2_value)}">
+        <span class="device-text">${row.uf2_device ?? ""}</span>
+        <span class="value-text">${row.uf2_value ?? ""}</span>
+    </div>`;
+}
+else{
+    tbody += `<div class="empty-box"></div>`;
+}
+
+tbody += `</div>`;
+
+tbody += `</td>`;
+
+
+/* ===============================
+   RO GROUP
+=============================== */
+
+tbody += `<td colspan="4">`;
+
+tbody += `<div class="system-grid">`;
+
+// RO BOX 1
+if(row.ro1_device || row.ro1_value){
+
+    tbody += `
+    <div class="pair-box ro-box ${checkThreshold(row.ro1_device, row.ro1_value)}">
+        <span class="device-text">${row.ro1_device ?? ""}</span>
+        <span class="value-text">${row.ro1_value ?? ""}</span>
+    </div>`;
+}
+else{
+    tbody += `<div class="empty-box"></div>`;
+}
+
+
+// RO BOX 2
+if(row.ro2_device || row.ro2_value){
+
+    tbody += `
+    <div class="pair-box ro-box ${checkThreshold(row.ro2_device, row.ro2_value)}">
+        <span class="device-text">${row.ro2_device ?? ""}</span>
+        <span class="value-text">${row.ro2_value ?? ""}</span>
+    </div>`;
+}
+else{
+    tbody += `<div class="empty-box"></div>`;
+}
+
+tbody += `</div>`;
+
+tbody += `</td>`;
         });
 
         // ✅ MUST be inside
