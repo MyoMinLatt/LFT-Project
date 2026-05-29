@@ -78,7 +78,46 @@ const translations = {
         threshold_min: "Min",
         threshold_max: "Max",
         threshold_set: "Set",
-        threshold_hide: "Hide"
+        threshold_hide: "Hide",
+
+
+        // Manual Page
+
+        manual_measurement:"Manual of Measurement",
+        manual_language_switcher:"Language Switcher",
+        manual_flow_page:"Flow Diagram Page",
+        manual_monitoring_page:"Monitoring Page",
+        manual_system_pages:"UF & RO System Pages",
+        manual_analysis_page:"Analysis Page",
+
+        manual_languages:"Languages",
+        manual_devices:"Measurable Devices",
+        manual_pumps:"Pumps",
+        manual_auto_valves:"Automatic Control Valves",
+        manual_calendar:"Calendar",
+        manual_custom_datetime:"Customized Date & Times",
+        manual_table1:"1st Key-value Table",
+        manual_table2:"2nd Key-value Table",
+        manual_animation:"Animated Logic",
+
+        manual_devices_status:"Devices Status",
+        manual_pump_status:"Pump Status",
+        manual_valve_status:"Valve Status",
+        manual_thresholds:"Thresholds",
+        manual_alarm_toggle:"Counts & Alarm Toggle",
+
+        manual_parameter_buttons:"Parameter Buttons",
+        manual_graphs:"Graphs",
+        manual_key_tables:"Key-value Tables",
+        manual_threshold_boxes:"Threshold Boxes",
+        manual_time_options:"Time Interval Options",
+        manual_custom_range:"Custom Range",
+
+        manual_variable_options:"Variable Options",
+        manual_models:"Statistical Models",
+        manual_input_browser:"Input Browser",
+        manual_summary_table:"Summary Table",
+        manual_result_plots:"Result Plots"
 
     },
 
@@ -154,7 +193,45 @@ const translations = {
         threshold_min: "최소",
         threshold_max: "최대",
         threshold_set: "설정",
-        threshold_hide: "숨다"
+        threshold_hide: "숨다",
+
+        // Manual Page
+
+        manual_measurement:"Manual of Measurement",
+        manual_language_switcher:"Language Switcher",
+        manual_flow_page:"Flow Diagram Page",
+        manual_monitoring_page:"Monitoring Page",
+        manual_system_pages:"UF & RO System Pages",
+        manual_analysis_page:"Analysis Page",
+
+        manual_languages:"Languages",
+        manual_devices:"Measurable Devices",
+        manual_pumps:"Pumps",
+        manual_auto_valves:"Automatic Control Valves",
+        manual_calendar:"Calendar",
+        manual_custom_datetime:"Customized Date & Times",
+        manual_table1:"1st Key-value Table",
+        manual_table2:"2nd Key-value Table",
+        manual_animation:"Animated Logic",
+
+        manual_devices_status:"Devices Status",
+        manual_pump_status:"Pump Status",
+        manual_valve_status:"Valve Status",
+        manual_thresholds:"Thresholds",
+        manual_alarm_toggle:"Counts & Alarm Toggle",
+
+        manual_parameter_buttons:"Parameter Buttons",
+        manual_graphs:"Graphs",
+        manual_key_tables:"Key-value Tables",
+        manual_threshold_boxes:"Threshold Boxes",
+        manual_time_options:"Time Interval Options",
+        manual_custom_range:"Custom Range",
+
+        manual_variable_options:"Variable Options",
+        manual_models:"Statistical Models",
+        manual_input_browser:"Input Browser",
+        manual_summary_table:"Summary Table",
+        manual_result_plots:"Result Plots"
 
     },
 
@@ -177,8 +254,8 @@ const translations = {
         table_time: "အချိန်",
         table_latest: "နောက်ဆုံး",
         table_recent: "မကြာသေးမီ",
-        table_avg30m: "30minတွင်းပျမ်းမျှ",
-        table_avg1hr: "1hrတွင်းပျမ်းမျှ",
+        table_avg30m: "မိနစ် ၃၀ တွင်းပျမ်းမျှ",
+        table_avg1hr: "၁နာရီ တွင်းပျမ်းမျှ",
         table_avg1d: "၁ရက်တွင်းပျမ်းမျှ",
         table_max: "အများဆုံး",
         table_min: "အနည်းဆုံး",
@@ -230,7 +307,45 @@ const translations = {
         threshold_min: "အနည်းဆုံး",
         threshold_max: "အများဆုံး",
         threshold_set: "သတ်မှတ်ရန်",
-        threshold_hide: "ဖျောက်ရန်"
+        threshold_hide: "ဖျောက်ရန်",
+
+        // Manual Page
+
+        manual_measurement:"ရှင်းလင်းချက်လမ်းညွှန်",
+        manual_language_switcher:"ဘာသာစကားရွေးခြယ်ခြင်း",
+        manual_flow_page:"ရေဆိုးသန့်စင်ခြင်း စီးဆင်းမှုပြပုံစံ စာမျက်နှာ",
+        manual_monitoring_page:"စောင့်ကြည့်ရန် စာမျက်နှာ",
+        manual_system_pages:"UF & RO စနစ် စာမျက်နှာ",
+        manual_analysis_page:"ဆန်းစစ်လေ့လာခြင်း စာမျက်နှာ",
+
+        manual_languages:"ဘာသာစကားများ",
+        manual_devices:"တိုင်းတာရေးပစ္စည်းကိရိယာများ",
+        manual_pumps:"ရေစုပ်စက်များ",
+        manual_auto_valves:"အလိုအလျောက်ထိန်းချုပ် အဆို့ရှင်ဖွင့်ပိတ်ခလုတ်များ",
+        manual_calendar:"ပြက္ခဒိန်",
+        manual_custom_datetime:"စိတ်ကြိုက် နေ့ရက်နှင့်အချိန် သတ်မှတ်ခြင်း",
+        manual_table1:"ပထမ အကျဉ်းချုပ်အခြေပြဇယား",
+        manual_table2:"ဒုတိယ အကျဉ်းချုပ်အခြေပြဇယား",
+        manual_animation:"ရွေ့လျားလှုပ်ရှားမှုပြအယူအဆ",
+
+        manual_devices_status:"ပစ္စည်းကိရိယာများ အခြေအနေ",
+        manual_pump_status:"ရေစုပ်စက်များ အခြေအနေ",
+        manual_valve_status:"အဆို့ရှင်ဖွင့်ပိတ်ခလုတ်များ အခြေအနေ",
+        manual_thresholds:"သတ်မှတ်စံတန်ဖိုးများ",
+        manual_alarm_toggle:"သတိပေးချက် နှင့် အရေအတွက်များ",
+
+        manual_parameter_buttons:"တိုင်းတာသည့်အချက်များ",
+        manual_graphs:"ဂရပ်ပုံများ",
+        manual_key_tables:"အကျဉ်းချုပ်အခြေပြဇယား",
+        manual_threshold_boxes:"စံတန်ဖိုးများသတ်မှတ်ရန်နေရာ",
+        manual_time_options:"အချိန်ကာလအပိုင်းအခြားသတ်မှတ်ခြင်း",
+        manual_custom_range:"စိတ်ကြိုက်ကာလ",
+
+        manual_variable_options:"ကိန်းရှင်များ",
+        manual_models:"စာရင်းအင်းတွက်ချက်ရန်နည်းလမ်းများ",
+        manual_input_browser:"အချက်အလက်သွင်းရန်စာမျက်နှာ",
+        manual_summary_table:"အကျဉ်းချုပ်ဇယား",
+        manual_result_plots:"အဖြေရလဒ်ပြပုံများ"
 
     },
 
@@ -305,7 +420,45 @@ const translations = {
         threshold_min: "Min",
         threshold_max: "Max",
         threshold_set: "Ngưỡng tối đa",
-        threshold_hide: "Trốn"
+        threshold_hide: "Trốn",
+
+        // Manual Page
+
+        manual_measurement:"Manual of Measurement",
+        manual_language_switcher:"Language Switcher",
+        manual_flow_page:"Flow Diagram Page",
+        manual_monitoring_page:"Monitoring Page",
+        manual_system_pages:"UF & RO System Pages",
+        manual_analysis_page:"Analysis Page",
+
+        manual_languages:"Languages",
+        manual_devices:"Measurable Devices",
+        manual_pumps:"Pumps",
+        manual_auto_valves:"Automatic Control Valves",
+        manual_calendar:"Calendar",
+        manual_custom_datetime:"Customized Date & Times",
+        manual_table1:"1st Key-value Table",
+        manual_table2:"2nd Key-value Table",
+        manual_animation:"Animated Logic",
+
+        manual_devices_status:"Devices Status",
+        manual_pump_status:"Pump Status",
+        manual_valve_status:"Valve Status",
+        manual_thresholds:"Thresholds",
+        manual_alarm_toggle:"Counts & Alarm Toggle",
+
+        manual_parameter_buttons:"Parameter Buttons",
+        manual_graphs:"Graphs",
+        manual_key_tables:"Key-value Tables",
+        manual_threshold_boxes:"Threshold Boxes",
+        manual_time_options:"Time Interval Options",
+        manual_custom_range:"Custom Range",
+
+        manual_variable_options:"Variable Options",
+        manual_models:"Statistical Models",
+        manual_input_browser:"Input Browser",
+        manual_summary_table:"Summary Table",
+        manual_result_plots:"Result Plots"
 
     },
 
@@ -381,7 +534,45 @@ const translations = {
         threshold_min: "Хамгийн бага",
         threshold_max: "Хамгийн их",
         threshold_set: "Тохируулсан",
-        threshold_hide: "Нуух"
+        threshold_hide: "Нуух",
+
+        // Manual Page
+
+        manual_measurement:"Manual of Measurement",
+        manual_language_switcher:"Language Switcher",
+        manual_flow_page:"Flow Diagram Page",
+        manual_monitoring_page:"Monitoring Page",
+        manual_system_pages:"UF & RO System Pages",
+        manual_analysis_page:"Analysis Page",
+
+        manual_languages:"Languages",
+        manual_devices:"Measurable Devices",
+        manual_pumps:"Pumps",
+        manual_auto_valves:"Automatic Control Valves",
+        manual_calendar:"Calendar",
+        manual_custom_datetime:"Customized Date & Times",
+        manual_table1:"1st Key-value Table",
+        manual_table2:"2nd Key-value Table",
+        manual_animation:"Animated Logic",
+
+        manual_devices_status:"Devices Status",
+        manual_pump_status:"Pump Status",
+        manual_valve_status:"Valve Status",
+        manual_thresholds:"Thresholds",
+        manual_alarm_toggle:"Counts & Alarm Toggle",
+
+        manual_parameter_buttons:"Parameter Buttons",
+        manual_graphs:"Graphs",
+        manual_key_tables:"Key-value Tables",
+        manual_threshold_boxes:"Threshold Boxes",
+        manual_time_options:"Time Interval Options",
+        manual_custom_range:"Custom Range",
+
+        manual_variable_options:"Variable Options",
+        manual_models:"Statistical Models",
+        manual_input_browser:"Input Browser",
+        manual_summary_table:"Summary Table",
+        manual_result_plots:"Result Plots"
 
     }
 

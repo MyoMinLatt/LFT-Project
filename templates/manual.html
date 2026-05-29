@@ -74,7 +74,7 @@ body {
 =============================== */
 .manual-top-panel{
     position: fixed;
-    top: 55px;
+    top: 0px;
     left: 0;
     width: 100%;
     z-index: 9999;
@@ -117,8 +117,15 @@ body {
 }
 
 .param-panel{
-    max-width: 250px;
-    padding-right: 10px;
+    position:fixed;
+    top:200px;          /* below top panel */
+    left:15px;
+    width:250px;
+    max-width:250px;
+    height:calc(100vh - 160px);
+    overflow-y:auto;
+    padding-right:10px;
+    z-index:1000;
 }
 
 /* ===============================
@@ -171,7 +178,8 @@ body {
    TEXT PANEL
 =============================== */
 .text-panel{
-    padding-left:10px;
+    margin-left:270px;   /* leave room for fixed panel */
+    padding-left:15px;
 }
 
  /* ===============================
@@ -286,19 +294,12 @@ body {
    COMMON ARROW HEAD
 =============================== */
 .arrow::after{
-
     content:"";
-
     position:absolute;
-
     right:-8px;
-
     top:-4px;
-
     border-left:10px solid red;
-
     border-top:5px solid transparent;
-
     border-bottom:5px solid transparent;
 }
 
@@ -306,70 +307,70 @@ body {
    LABEL 1 : PARAMETERS
 ===================================================== */
 .label-1{
-    top:320px;
-    left:140px;
+    top:140px;
+    left:-65px;
 }
 
 /* ARROW 1 */
 .arrow-1{
-    top:330px;
-    left:215px;
-    width:275px;
-    transform:rotate(-2deg);
+    top:150px;
+    left:5px;
+    width:240px;
+    transform:rotate(-6deg);
 }
 
 /* ARROW 2 */
 .arrow-2{
-    top:330px;
-    left:215px;
-    width:275px;
-    transform:rotate(8deg);
+    top:150px;
+    left:5px;
+    width:240px;
+    transform:rotate(5deg);
 }
 
 /* =====================================================
    LABEL 2 : DEVICES
 ===================================================== */
 .label-2{
-    top:550px;
-    left:120px;
+    top:300px;
+    left:-110px;
 }
 
 /* ARROW 3 */
 .arrow-3{
-    top:560px;
-    left:215px;
-    width:137px;
-    transform:rotate(-40deg);
+    top:310px;
+    left:5px;
+    width:80px;
+    transform:rotate(-35deg);
 }
 
 /* ARROW 4 */
 .arrow-4{
-    top:560px;
-    left:215px;
-    width:160px;
-    transform:rotate(45deg);
+    top:310px;
+    left:5px;
+    width:180px;
+    transform:rotate(60deg);
 }
 
 /* =====================================================
    LABEL 3 : LATEST VALUES
 ===================================================== */
 .label-3{
-    top:550px;
-    right:120px;
+    top:350px;
+    right:-100px;
 }
 
 /* ARROW 5 */
 .arrow-5{
-    top:565px;
-    right:-190px;
-    width:420px;
+    top:360px;
+    right:-400px;
+    width:400px;
     transform:rotate(172deg);
 }
 
 /* ARROW 6 */
 .arrow-6{
-    top:565px;
-    right:110px;
+    top:360px;
+    right:-120px;
     width:120px;
     transform:rotate(225deg);
 }
@@ -380,45 +381,45 @@ body {
 ===================================================== */
 .label-4{
     top:500px;
-    left:140px;
+    left:-80px;
 }
 
 /* ARROW 7 */
 .arrow-7{
     top:510px;
-    left:210px;
-    width:200px;
+    left:-5px;
+    width:160px;
     transform:rotate(-2deg);
 }
 
 /* ARROW 8 */
 .arrow-8{
     top:510px;
-    left:210px;
-    width:215px;
-    transform:rotate(25deg);
+    left:-5px;
+    width:200px;
+    transform:rotate(30deg);
 }
 
 /* =====================================================
    LABEL 5 : Pump VALUES
 ===================================================== */
 .label-5{
-    top:750px;
-    right:120px;
+    top:550px;
+    right:-120px;
 }
 
 /* ARROW 9 */
 .arrow-9{
-    top:765px;
-    right:-300px;
-    width:530px;
+    top:560px;
+    right:-510px;
+    width:500px;
     transform:rotate(173deg);
 }
 
 /* ARROW 10 */
 .arrow-10{
-    top:765px;
-    right:-10px;
+    top:560px;
+    right:-250px;
     width:240px;
     transform:rotate(210deg);
 }
@@ -574,7 +575,8 @@ body {
 =============================== -->
 <div class="manual-top-panel">
 
-    <h2 class="manual-title">
+    <h2 class="manual-title"
+        data-i18n="manual_measurement">
         Manual of Measurement
     </h2>
 
@@ -620,31 +622,36 @@ body {
     <div class="col-md-3 param-panel">
 
         <button class="btn btn-primary parameter-btn"
-                data-param="Language Switcher">
+                data-param="Language Switcher"
+                data-i18n="manual_language_switcher">
             Language Switcher
         </button>
         <div class="device-container"></div>
 
         <button class="btn btn-primary parameter-btn"
-                data-param="Flow Diagram Page">
+                data-param="Flow Diagram Page"
+                data-i18n="manual_flow_page">
             Flow Diagram Page
         </button>
         <div class="device-container"></div>
 
         <button class="btn btn-primary parameter-btn"
-                data-param="Monitoring Page">
+                data-param="Monitoring Page"
+                data-i18n="manual_monitoring_page">
             Monitoring Page
         </button>
         <div class="device-container"></div>
 
         <button class="btn btn-primary parameter-btn"
-                data-param="UF & RO System Pages">
+                data-param="UF & RO System Pages"
+                data-i18n="manual_system_pages">
             UF & RO System Pages
         </button>
         <div class="device-container"></div>
 
         <button class="btn btn-primary parameter-btn"
-                data-param="Analysis Page">
+                data-param="Analysis Page"
+                data-i18n="manual_analysis_page">
             Analysis Page
         </button>
         <div class="device-container"></div>
@@ -667,161 +674,207 @@ body {
 $(document).ready(function(){
 
 /* ===============================
+   PAGE TRANSLATION
+=============================== */
+function translatePage(lang){
+
+    $("[data-i18n]").each(function(){
+
+        const key =
+            $(this).data("i18n");
+
+        $(this).html(
+            translations[lang][key] || key
+        );
+
+    });
+
+}
+
+/* ===============================
+   LANGUAGE SWITCHER
+=============================== */
+$("#languageSwitcher").change(function(){
+
+    const lang = $(this).val();
+
+    /* translate page title + parameter buttons */
+    translatePage(lang);
+
+    /* translate device buttons */
+    $(".device-btn").each(function(){
+
+        const btn = $(this);
+
+        const key =
+            btn.data("device");
+
+        btn.html(
+            translations[lang][key] || key
+        );
+
+    });
+
+    /* reload opened manuals */
+    $(".device-btn.active-device").each(function(){
+
+        const btn = $(this);
+
+        const device =
+            btn.data("device");
+
+        const file =
+            btn.data("file");
+
+        const deviceId =
+            safeId(device);
+
+        $("#content_" + deviceId).load(
+            "/manuals/" +
+            file +
+            "?lang=" +
+            lang
+        );
+
+    });
+
+});
+
+/* initial translation when page loads */
+translatePage(
+    $("#languageSwitcher").val() || "en"
+);
+/* ===============================
    DEVICE MAP
 =============================== */
 const deviceMap = {
 
-    "Language Switcher": [
-        {
-        label: "Languages",
-        file: "languages"
-        }
-    ],
+"Language Switcher":[
+    {
+        labelKey:"manual_languages",
+        file:"languages"
+    }
+],
 
-    "Flow Diagram Page": [
-        {
-            label: "Measurable Devices",
-            file: "devices"
-        },
+"Flow Diagram Page":[
+    {
+        labelKey:"manual_devices",
+        file:"devices"
+    },
+    {
+        labelKey:"manual_pumps",
+        file:"pumps"
+    },
+    {
+        labelKey:"manual_auto_valves",
+        file:"flow_valves"
+    },
+    {
+        labelKey:"manual_calendar",
+        file:"flow_calendar"
+    },
+    {
+        labelKey:"manual_custom_datetime",
+        file:"flow_custom"
+    },
+    {
+        labelKey:"manual_table1",
+        file:"flow_table1"
+    },
+    {
+        labelKey:"manual_table2",
+        file:"flow_table2"
+    },
+    {
+        labelKey:"manual_animation",
+        file:"flow_animation"
+    }
+],
 
-        {
-            label: "Pumps",
-            file: "pumps"
-        },
+"Monitoring Page":[
+    {
+        labelKey:"manual_devices_status",
+        file:"moni_devices"
+    },
+    {
+        labelKey:"manual_pump_status",
+        file:"moni_pumps"
+    },
+    {
+        labelKey:"manual_valve_status",
+        file:"moni_valve"
+    },
+    {
+        labelKey:"manual_thresholds",
+        file:"moni_thresholds"
+    },
+    {
+        labelKey:"manual_alarm_toggle",
+        file:"moni_alarm"
+    }
+],
 
-        {
-        label: "Automatic Control Valves",
-        file: "flow_valves"
-        },
+"UF & RO System Pages":[
+    {
+        labelKey:"manual_parameter_buttons",
+        file:"system_parameters"
+    },
+    {
+        labelKey:"manual_graphs",
+        file:"system_graphs"
+    },
+    {
+        labelKey:"manual_key_tables",
+        file:"system_table"
+    },
+    {
+        labelKey:"manual_threshold_boxes",
+        file:"system_threshold"
+    },
+    {
+        labelKey:"manual_time_options",
+        file:"system_time_interval"
+    },
+    {
+        labelKey:"manual_custom_range",
+        file:"system_range"
+    },
+    {
+        labelKey:"manual_valve_status",
+        file:"system_valves"
+    }
+],
 
-        {
-        label: "Calendar",
-        file: "flow_calendar"
-        },
-
-        {
-        label: "Customized Date & Times",
-        file: "flow_custom"
-        },
-
-        {
-        label: "1st Key-value Table",
-        file: "flow_table1"
-        },
-
-        {
-        label: "2nd Key value Table",
-        file:   "flow_table2"
-        },
-
-        {
-        label: "Animated Logic",
-        file:   "flow_animation"
-        }
-    ],
-
-    "Monitoring Page": [
-        {
-        label: "Devices Status",
-        file:   "moni_devices"
-        },
-
-        {
-        label: "Pump Status",
-        file:   "moni_pumps"
-        },
-
-        {
-        label: "Valve Status",
-        file:   "moni_valve"
-        },
-
-        {
-        label: "Thresholds",
-        file:   "moni_thresholds"
-        },
-
-        {
-        label: "Counts & Alarm Toggle",
-        file:   "moni_alarm"
-        }
-    ],
-
-    "UF & RO System Pages": [
-        {
-        label: "Parameter Buttons",
-        file:   "system_parameters"
-        },
-
-        {
-        label: "Graphs",
-        file:   "system_graphs"
-        },
-
-        {
-        label: "Key-value Tables",
-        file:   "system_table"
-        },
-
-        {
-        label: "Threshold Boxes",
-        file:   "system_threshold"
-        },
-
-        {
-        label: "Time Interval Options",
-        file:   "system_time_interval"
-        },
-
-        {
-        label: "Custom Range",
-        file:   "system_range"
-        },
-
-        {
-        label: "Valve Status",
-        file:   "system_valves"
-        }
-
-    ],
-
-    "Analysis Page": [
-        {
-        label: "Variable Options",
-        file:   "analysis_variables"
-        },
-
-        {
-        label: "Time Interval Options",
-        file:   "analysis_interval"
-        },
-
-        {
-        label: "Custom Range",
-        file:   "analysis_range"
-        },
-
-        {
-        label: "Statistical Models",
-        file:   "analysis_models"
-        },
-
-        {
-        label: "Input Browser",
-        file:   "analysis_input"
-        },
-
-        {
-        label: "Summary Table",
-        file:   "analysis_summary"
-        },
-
-        {
-        label: "Result Plots",
-        file:   "analysis_plots"
-        }
-
-    ]
+"Analysis Page":[
+    {
+        labelKey:"manual_variable_options",
+        file:"analysis_variables"
+    },
+    {
+        labelKey:"manual_time_options",
+        file:"analysis_interval"
+    },
+    {
+        labelKey:"manual_custom_range",
+        file:"analysis_range"
+    },
+    {
+        labelKey:"manual_models",
+        file:"analysis_models"
+    },
+    {
+        labelKey:"manual_input_browser",
+        file:"analysis_input"
+    },
+    {
+        labelKey:"manual_summary_table",
+        file:"analysis_summary"
+    },
+    {
+        labelKey:"manual_result_plots",
+        file:"analysis_plots"
+    }
+]
 
 };
 
@@ -839,7 +892,10 @@ function safeId(name){
 /* ===============================
    PARAMETER BUTTON CLICK
 =============================== */
-$(".parameter-btn").click(function(){
+$(document).on(
+    "click",
+    ".parameter-btn",
+    function(){
 
     let param = $(this).data("param");
 
@@ -862,13 +918,20 @@ $(".parameter-btn").click(function(){
     }
 
     /* ADD DEVICE BUTTONS */
-    deviceMap[param].forEach(function(d){
+deviceMap[param].forEach(function(d){
+
+    const lang =
+        $("#languageSwitcher").val() || "en";
+
+    const text =
+        translations[lang][d.labelKey] ||
+        d.labelKey;
 
     container.append(`
         <button class="btn btn-secondary device-btn"
-                data-device="${d.label}"
+                data-device="${d.labelKey}"
                 data-file="${d.file}">
-            ${d.label}
+            ${text}
         </button>
     `);
 
@@ -876,9 +939,7 @@ $(".parameter-btn").click(function(){
 
 });
 
-/* ===============================
-   DEVICE BUTTON CLICK
-=============================== */
+
 /* ===============================
    DEVICE BUTTON CLICK
 =============================== */
@@ -930,10 +991,16 @@ $(document).on("click",".device-btn",function(){
 
     `);
 
-    /* LOAD HTML FILE */
-    $("#content_" + deviceId).load(
-    "/manuals/" + file
-    );
+    /* LOAD HTML FILE WITH LANGUAGE */
+const lang =
+    $("#languageSwitcher").val() || "en";
+
+$("#content_" + deviceId).load(
+    "/manuals/" +
+    file +
+    "?lang=" +
+    lang
+);
 
 });
 

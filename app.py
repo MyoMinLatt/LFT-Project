@@ -129,6 +129,7 @@ def send_alert():
     global last_alert_time
 
     now = time.time()
+
     if now - last_alert_time < 60:
         return jsonify({"status": "cooldown"})
 
@@ -139,37 +140,62 @@ def send_alert():
     message = f"""
 ⚠️ ALERT: Threshold Exceeded
 
-🔴 Above Maximum ({data.get('high_count', 0)})
-{data.get('high_list', '')}
+🔴 Above Maximum ({data.get('high_count',0)})
+{data.get('high_list','')}
 
-🟡 Below Minimum ({data.get('low_count', 0)})
-{data.get('low_list', '')}
+🟡 Below Minimum ({data.get('low_count',0)})
+{data.get('low_list','')}
 """
 
     users = get_all_users()
 
     for user in users:
 
-        # OPTIONAL FLAGS (if you added columns)
-        if user.get("receive_email", 1) and user.get("email"):
-            send_email(user["email"], "System Alert", message)
+        if user.get("receive_email",1) and user.get("email"):
+            send_email(
+                user["email"],
+                "System Alert",
+                message
+            )
 
-        if user.get("receive_sms", 1) and user.get("phone"):
-            send_sms(user["phone"], message)
+        if user.get("receive_sms",1) and user.get("phone"):
+            send_sms(
+                user["phone"],
+                message
+            )
 
-    return jsonify({"status": "sent"})
+    return jsonify({"status":"sent"})
 
- # ===========================
-#       LOAD HTML FILE
-# ============================
 
+# ===========================
+# LOAD MANUAL HTML FILE
+# ===========================
 @app.route("/manuals/<name>")
 def manuals(name):
 
-    return render_template(
-        f"manuals/{name}.html"
+    lang = request.args.get(
+        "lang",
+        "en"
     )
 
+    folder_map = {
+
+        "en": "manuals",
+        "ko": "manuals/manual_ko",
+        "my": "manuals/manual_my",
+        "vi": "manuals/manual_vi",
+        "mn": "manuals/manual_mn"
+
+    }
+
+    folder = folder_map.get(
+        lang,
+        "manuals"
+    )
+
+    return render_template(
+        f"{folder}/{name}.html"
+    )
 # ==============================
 # RUN FLASK APP
 # ==============================

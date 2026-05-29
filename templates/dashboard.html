@@ -45,28 +45,18 @@ body{
     position:absolute;
     left:50%;
     transform:translateX(-50%);
-
     width:max-content;   /* 🔥 IMPORTANT */
-
     text-align:center;
     white-space:nowrap;
-
     font-size:2rem;
     font-weight:700;
     color:#00e5ff;
-
     background:linear-gradient(180deg,#08245c,#0b3b8f);
-
     padding:8px 25px;
-
     border-radius:14px;
-
     border:2px solid #1c8cff;
-
     box-shadow:0 0 18px rgba(0,180,255,0.45);
-
     letter-spacing:1px;
-
     z-index:10;
 }
 
@@ -128,8 +118,8 @@ thead th{
 }
 
 .th-var{ background:linear-gradient(180deg,#071a4d,#0b2b75); color:#00c8ff; border:2px solid #1c5cff; }
-.th-uf{ background:linear-gradient(180deg,#01351f,#045c38); color:#7affc9; border:2px solid rgba(0,255,140,0.9); }
-.th-ro{ background:linear-gradient(180deg,#3a2400,#6b3f00); color:#ffd27a; border:2px solid rgba(255,180,0,0.9); }
+.th-uf{ background:linear-gradient(180deg,#04261E,#028183); color:#7affc9; border:2px solid rgba(0,255,140,0.9); }
+.th-ro{ background:linear-gradient(180deg,#3a2400,#AF4C3C); color:#ffd27a; border:2px solid rgba(255,180,0,0.9); }
 
 .var-cell{
     background:linear-gradient(180deg,#071a4d,#0b2b75);
@@ -140,23 +130,14 @@ thead th{
 }
 
 .pair-box{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     border-radius:10px;
-
     padding:4px 8px;
-
     min-width:140px;
-
     width:100%;
-
     height:40px;
-
     box-sizing:border-box;
 }
 
@@ -171,13 +152,9 @@ thead th{
 ================================== */
 
 .system-grid{
-
     display:grid;
-
     grid-template-columns:repeat(2, 1fr);
-
     gap:6px;
-
     width:100%;
 }
 
@@ -185,9 +162,7 @@ thead th{
 /* EMPTY PLACEHOLDER */
 
 .empty-box{
-
     visibility:hidden;
-
     height:40px;
 }
 .system-item{
@@ -321,16 +296,22 @@ thead th{
 /* main table bigger */
 .main-panel{
     flex:2;
-    min-width:600px;
+    min-width:500px;
+    max-width:1300px;
 }
 
 /* small side panels */
 .small-panel{
     flex:1;
     min-width:250px;
-    max-width:300px;
+    max-width:350px;
 }
-
+.threshold-panel{
+    flex:0 0 180px;
+    width:180px;
+    min-width:180px;
+    max-width:350px;
+}
 /* REMOVE FULL PAGE VERTICAL STACK */
 .dashboard-layout{
     display:none;   /* ❗ disable old layout */
@@ -361,7 +342,7 @@ thead th{
     justify-content:flex-end;   /* alarm stays right */
     align-items:center;
     padding:5px 10px;
-    margin-bottom:10px;
+    margin-bottom:2px;
     min-height:50px;
 }
 
@@ -414,7 +395,7 @@ thead th{
 
     <div class="top-header">
 
-        <h2 class="dashboard-title fw-bold m-0">
+        <h2 class="dashboard-title fw-bold m-0" data-i18n="main_title">
             💧 LFT Monitoring Dashboard
         </h2>
 
@@ -433,7 +414,7 @@ thead th{
 
     <!-- 1. MAIN TABLE -->
     <div class="panel main-panel">
-        <h4 class="devices-title"> Devices Status</h4>
+        <h4 class="devices-title" data-i18n="dashboard_title"> Devices Status</h4>
         <div class="table-responsive">
             <table id="dashboard-table">
                 <thead>
@@ -453,22 +434,22 @@ thead th{
 
     <!-- PUMP -->
     <div class="sub-panel">
-        <h5 class="pump-title"> Pump Status</h5>
+        <h5 class="pump-title" data-i18n="pump_status"> Pump Status</h5>
         <div id="pump-table-container"></div>
     </div>
 
     <!-- VALVE -->
     <div class="sub-panel">
-        <h5 class="valve-title"> Valve Status</h5>
+        <h5 class="valve-title" data-i18n="valve_status"> Valve Status</h5>
         <div id="valve-table-container"></div>
     </div>
 
 </div>
 
     <!-- 4. THRESHOLD -->
-    <div class="panel small-panel">
-        <h5>Thresholds</h5>
-        <button id="toggleThreshold" class="btn btn-warning btn-sm w-100">Thresholds</button>
+    <div class="panel threshold-panel">
+        <h5 data-i18n="thresholds">Thresholds</h5>
+        <button id="toggleThreshold" class="btn btn-warning btn-sm w-100" data-i18n="thresholds">Thresholds</button>
         <div id="thresholdPanel"></div>
     </div>
 </div>
@@ -605,7 +586,7 @@ function fetchDashboard(){
                 if(previousVariable !== null){
                     tbody += `
                     <tr class="divider-row">
-                        <td colspan="5"></td>
+                        <td colspan="9"></td>
                     </tr>`;
                 }
 
