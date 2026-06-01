@@ -1,6 +1,5 @@
 import smtplib
 import os
-import socket
 from email.mime.text import MIMEText
 from twilio.rest import Client
 
@@ -23,22 +22,20 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
-        # 🔥 ADD TIMEOUT
-        server = smtplib.SMTP_SSL(
+        server = smtplib.SMTP(
             "smtp.gmail.com",
-            465,
+            587,
             timeout=20
         )
 
-
+        server.starttls()
         server.login(sender_email, sender_password)
         server.send_message(msg)
         server.quit()
 
-        print(f"✅ Email sent to {to_email}")
         return True
 
-    except (socket.timeout, Exception) as e:
+    except Exception as e:
         print("❌ Email error:", e)
         return False
 
@@ -48,33 +45,28 @@ def send_email(to_email, subject, message):
 # =========================
 def send_sms(phone, message):
 
-    sid = os.getenv("TWILIO_SID")
-    token = os.getenv("TWILIO_TOKEN")
-    from_number = os.getenv("TWILIO_PHONE")
-
-    if not sid or not token or not from_number:
-        print("⚠️ Twilio not configured")
-        return False
-
-    # prevent same To and From
-    if phone == from_number:
-        print(f"⚠️ Skipping SMS: same number {phone}")
-        return False
-
     try:
-        client = Client(
-            sid,
-            token,
-            timeout=15   # 🔥 ADD
-        )
+        sid = os.getenv("TWILIO_SID")
+        token = os.getenv("TWILIO_TOKEN")
+        from_number = os.getenv("TWILIO_PHONE")
 
-        msg = client.messages.create(
+        if not sid or not token or not from_number:
+            print("⚠️ Twilio not configured")
+            return False
+
+        if phone == from_number:
+            print(f"Skipping SMS: same number {phone}")
+            return False
+
+        client = Client(sid, token)
+
+        message_obj = client.messages.create(
             body=message,
             from_=from_number,
             to=phone
         )
 
-        print(f"✅ SMS sent to {phone}")
+        print(message_obj.sid)
         return True
 
     except Exception as e:
