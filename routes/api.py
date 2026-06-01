@@ -178,26 +178,16 @@ def send_alert():
                     "System Alert",
                     msg
                 )
-
-                if email_ok:
-                    print(f"✅ Email sent to {email}")
-                else:
-                    print(f"⚠️ Email failed/skipped {email}")
             except Exception as e:
                 print(f"❌ Email failed {email}: {e}")
 
         # SMS
         if phone:
             try:
-                sms_ok = send_sms(
+                send_sms(
                     phone,
                     msg
                 )
-
-                if sms_ok:
-                    print(f"✅ SMS sent to {phone}")
-                else:
-                    print(f"⚠️ SMS skipped/failed {phone}")
 
             except Exception as e:
                 print(f"❌ SMS failed {phone}: {e}")
