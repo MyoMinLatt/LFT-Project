@@ -6,7 +6,10 @@ from email.mime.text import MIMEText
 # EMAIL FUNCTION
 # =========================
 def send_email(to_email, subject, message):
-    sender_email = "minlatt.myo@gmail.com"
+    sender_email = os.getenv(
+        "EMAIL_USER",
+        "minlatt.myo@gmail.com"
+    )
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
 
     # ✅ SAFETY CHECK
