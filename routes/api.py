@@ -167,11 +167,13 @@ def send_alert():
 
     for user in users:
 
-        email = user.get("email")
-        phone = user.get("phone")
+        email = str(user.get("email", "")).strip()
+        phone = str(user.get("phone", "")).strip()
 
         # EMAIL
         if email:
+            print(f"Trying EMAIL -> {email}")
+
             ok = send_email(
                 email,
                 "System Alert",
@@ -179,21 +181,23 @@ def send_alert():
             )
 
             if ok:
-                print(f"✅ Email sent to {email}")
+                print(f"✅ EMAIL OK -> {email}")
             else:
-                print(f"❌ Email failed {email}")
+                print(f"❌ EMAIL FAIL -> {email}")
 
         # SMS
         if phone:
+            print(f"Trying SMS -> {phone}")
+
             ok = send_sms(
                 phone,
                 msg
             )
 
             if ok:
-                print(f"✅ SMS sent to {phone}")
+                print(f"✅ SMS OK -> {phone}")
             else:
-                print(f"❌ SMS failed {phone}")
+                print(f"❌ SMS FAIL -> {phone}")
 
     print("===== ALERT COMPLETE =====")
 
