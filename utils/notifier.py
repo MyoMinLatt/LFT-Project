@@ -22,7 +22,6 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
-        # Gmail SSL
         server = smtplib.SMTP_SSL(
             "smtp.gmail.com",
             465,
@@ -46,5 +45,39 @@ def send_email(to_email, subject, message):
         return True
 
     except Exception as e:
-        print(f"❌ EMAIL ERROR -> {e}")
+        print(f"❌ Email error: {e}")
+        return False
+
+
+# =========================
+# SMS FUNCTION
+# =========================
+def send_sms(phone, message):
+
+    try:
+        sid = os.getenv("TWILIO_SID")
+        token = os.getenv("TWILIO_TOKEN")
+        from_number = os.getenv("TWILIO_PHONE")
+
+        if not sid or not token or not from_number:
+            print("⚠️ Twilio not configured")
+            return False
+
+        if phone == from_number:
+            print(f"Skipping SMS: same number {phone}")
+            return False
+
+        client = Client(sid, token)
+
+        message_obj = client.messages.create(
+            body=message,
+            from_=from_number,
+            to=phone
+        )
+
+        print(f"📱 SMS SID: {message_obj.sid}")
+        return True
+
+    except Exception as e:
+        print(f"❌ SMS error: {e}")
         return False
