@@ -178,8 +178,6 @@ def send_alert():
                     "System Alert",
                     msg
                 )
-                print(f"✅ Email sent to {email}")
-
             except Exception as e:
                 print(f"❌ Email failed {email}: {e}")
 
@@ -190,8 +188,6 @@ def send_alert():
                     phone,
                     msg
                 )
-                print(f"✅ SMS sent to {phone}")
-
             except Exception as e:
                 print(f"❌ SMS failed {phone}: {e}")
 

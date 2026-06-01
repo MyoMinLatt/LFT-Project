@@ -1,21 +1,21 @@
 import smtplib
 import os
+import socket
 from email.mime.text import MIMEText
+from twilio.rest import Client
+
 
 # =========================
 # EMAIL FUNCTION
 # =========================
 def send_email(to_email, subject, message):
-    sender_email = os.getenv(
-        "EMAIL_USER",
-        "minlatt.myo@gmail.com"
-    )
+
+    sender_email = "minlatt.myo@gmail.com"
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
 
-    # ✅ SAFETY CHECK
     if not sender_password:
         print("❌ EMAIL_APP_PASSWORD not set")
-        return
+        return False
 
     msg = MIMEText(message)
     msg["Subject"] = subject
@@ -23,43 +23,60 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+        # 🔥 ADD TIMEOUT
+        server = smtplib.SMTP(
+            "smtp.gmail.com",
+            587,
+            timeout=15
+        )
+
         server.starttls()
         server.login(sender_email, sender_password)
         server.send_message(msg)
         server.quit()
 
         print(f"✅ Email sent to {to_email}")
+        return True
 
-    except Exception as e:
+    except (socket.timeout, Exception) as e:
         print("❌ Email error:", e)
+        return False
 
 
 # =========================
-# SMS FUNCTION (Twilio)
+# SMS FUNCTION
 # =========================
-from twilio.rest import Client
-
 def send_sms(phone, message):
+
+    sid = os.getenv("TWILIO_SID")
+    token = os.getenv("TWILIO_TOKEN")
+    from_number = os.getenv("TWILIO_PHONE")
+
+    if not sid or not token or not from_number:
+        print("⚠️ Twilio not configured")
+        return False
+
+    # prevent same To and From
+    if phone == from_number:
+        print(f"⚠️ Skipping SMS: same number {phone}")
+        return False
+
     try:
-        sid = os.getenv("TWILIO_SID")
-        token = os.getenv("TWILIO_TOKEN")
-        from_number = os.getenv("TWILIO_PHONE")
+        client = Client(
+            sid,
+            token,
+            timeout=15   # 🔥 ADD
+        )
 
-        # ✅ SAFETY CHECK
-        if not sid or not token or not from_number:
-            print("⚠️ Twilio not configured — skipping SMS")
-            return
-
-        client = Client(sid, token)
-
-        message_obj = client.messages.create(
+        msg = client.messages.create(
             body=message,
             from_=from_number,
             to=phone
         )
 
-        print(f"📱 SMS sent to {phone} (SID: {message_obj.sid})")
+        print(f"✅ SMS sent to {phone}")
+        return True
 
     except Exception as e:
         print("❌ SMS error:", e)
+        return False
