@@ -13,20 +13,26 @@ def send_email(to_email, subject, message):
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
 
     if not sender_password:
-        print("❌ EMAIL_APP_PASSWORD not set")
+        print("❌ EMAIL_APP_PASSWORD missing")
         return False
 
-    msg = MIMEText(message)
+    msg = MIMEText(message, "plain", "utf-8")
     msg["Subject"] = subject
     msg["From"] = sender_email
     msg["To"] = to_email
 
     try:
-        server = smtplib.SMTP_SSL(
+        print(f"Connecting Gmail SMTP -> {to_email}")
+
+        server = smtplib.SMTP(
             "smtp.gmail.com",
-            465,
-            timeout=10
+            587,
+            timeout=15
         )
+
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
 
         server.login(
             sender_email,
@@ -35,17 +41,17 @@ def send_email(to_email, subject, message):
 
         server.sendmail(
             sender_email,
-            [to_email],
+            to_email,
             msg.as_string()
         )
 
         server.quit()
 
-        print(f"📧 EMAIL SUCCESS -> {to_email}")
+        print(f"✅ EMAIL SUCCESS -> {to_email}")
         return True
 
     except Exception as e:
-        print(f"❌ Email error: {e}")
+        print(f"❌ EMAIL ERROR -> {to_email}: {e}")
         return False
 
 
@@ -60,24 +66,27 @@ def send_sms(phone, message):
         from_number = os.getenv("TWILIO_PHONE")
 
         if not sid or not token or not from_number:
-            print("⚠️ Twilio not configured")
+            print("❌ Twilio env missing")
             return False
 
+        phone = str(phone).strip()
+        from_number = str(from_number).strip()
+
         if phone == from_number:
-            print(f"Skipping SMS: same number {phone}")
+            print(f"⚠️ Skipping SMS same number -> {phone}")
             return False
 
         client = Client(sid, token)
 
-        message_obj = client.messages.create(
+        sms = client.messages.create(
             body=message,
             from_=from_number,
             to=phone
         )
 
-        print(f"📱 SMS SID: {message_obj.sid}")
+        print(f"✅ SMS SID -> {sms.sid}")
         return True
 
     except Exception as e:
-        print(f"❌ SMS error: {e}")
+        print(f"❌ SMS ERROR -> {phone}: {e}")
         return False

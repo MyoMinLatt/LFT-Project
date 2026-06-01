@@ -141,7 +141,7 @@ def send_alert():
     if now - last_alert_time < 60:
         return jsonify({"status": "cooldown"})
 
-    last_alert_time = now
+
 
     data = request.get_json() or {}
 
@@ -198,6 +198,8 @@ def send_alert():
                 print(f"✅ SMS OK -> {phone}")
             else:
                 print(f"❌ SMS FAIL -> {phone}")
+
+    last_alert_time = now
 
     print("===== ALERT COMPLETE =====")
 
