@@ -22,15 +22,26 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
+
+        print("Connecting to Gmail SMTP...")
+
         server = smtplib.SMTP(
             "smtp.gmail.com",
             587,
-            timeout=20
+            timeout=30
         )
 
+        print("SMTP connected")
+
         server.starttls()
+        print("TLS started")
+
         server.login(sender_email, sender_password)
+        print("Login success")
+
         server.send_message(msg)
+        print("Message sent")
+
         server.quit()
 
         return True
@@ -38,6 +49,7 @@ def send_email(to_email, subject, message):
     except Exception as e:
         print("❌ Email error:", e)
         return False
+
 
 
 # =========================
