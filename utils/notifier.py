@@ -22,26 +22,14 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
-
-        print("Connecting to Gmail SMTP...")
-
-        server = smtplib.SMTP(
+        server = smtplib.SMTP_SSL(
             "smtp.gmail.com",
-            587,
-            timeout=30
+            465,
+            timeout=20
         )
 
-        print("SMTP connected")
-
-        server.starttls()
-        print("TLS started")
-
         server.login(sender_email, sender_password)
-        print("Login success")
-
         server.send_message(msg)
-        print("Message sent")
-
         server.quit()
 
         return True
