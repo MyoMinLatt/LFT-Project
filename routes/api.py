@@ -123,10 +123,30 @@ def add_header(response):
 # =========================
 # ALERT (EMAIL + SMS)
 # =========================
+# =========================
+# ALERT (EMAIL + SMS)
+# =========================
+import time
+
+last_alert_time = 0
+
 @api_bp.route("/send-alert", methods=["POST"])
 def send_alert():
 
-    data = request.get_json()
+    global last_alert_time
+
+    now = time.time()
+
+    # server cooldown
+    if now - last_alert_time < 60:
+        return jsonify({"status": "cooldown"})
+
+    last_alert_time = now
+
+    data = request.get_json() or {}
+
+    print("===== ALERT API HIT =====")
+    print(data)
 
     high_count = data.get("high_count", 0)
     high_list  = data.get("high_list", "")
@@ -146,14 +166,36 @@ def send_alert():
     users = get_all_users()
 
     for user in users:
+
         email = user.get("email")
         phone = user.get("phone")
 
+        # EMAIL
         if email:
-            send_email(email, "System Alert", msg)
+            try:
+                send_email(
+                    email,
+                    "System Alert",
+                    msg
+                )
+                print(f"✅ Email sent to {email}")
 
+            except Exception as e:
+                print(f"❌ Email failed {email}: {e}")
+
+        # SMS
         if phone:
-            send_sms(phone, msg)
+            try:
+                send_sms(
+                    phone,
+                    msg
+                )
+                print(f"✅ SMS sent to {phone}")
+
+            except Exception as e:
+                print(f"❌ SMS failed {phone}: {e}")
+
+    print("===== ALERT COMPLETE =====")
 
     return jsonify({"status": "sent"})
 

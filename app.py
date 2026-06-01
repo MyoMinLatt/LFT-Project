@@ -137,6 +137,9 @@ def send_alert():
 
     data = request.get_json() or {}
 
+    print("===== ALERT API HIT =====")
+    print(data)
+
     message = f"""
 ⚠️ ALERT: Threshold Exceeded
 
@@ -151,20 +154,33 @@ def send_alert():
 
     for user in users:
 
-        if user.get("receive_email",1) and user.get("email"):
-            send_email(
-                user["email"],
-                "System Alert",
-                message
-            )
+        # EMAIL
+        if user.get("receive_email", 1) and user.get("email"):
+            try:
+                send_email(
+                    user["email"],
+                    "System Alert",
+                    message
+                )
+                print(f"✅ Email sent to {user['email']}")
 
-        if user.get("receive_sms",1) and user.get("phone"):
-            send_sms(
-                user["phone"],
-                message
-            )
+            except Exception as e:
+                print(f"❌ Email failed {user['email']}: {e}")
 
-    return jsonify({"status":"sent"})
+        # SMS
+        if user.get("receive_sms", 1) and user.get("phone"):
+            try:
+                send_sms(
+                    user["phone"],
+                    message
+                )
+                print(f"✅ SMS sent to {user['phone']}")
+
+            except Exception as e:
+                print(f"❌ SMS failed {user['phone']}: {e}")
+
+    print("===== ALERT COMPLETE =====")
+    return jsonify({"status": "sent"})
 
 
 # ===========================
