@@ -127,16 +127,31 @@ from threading import Thread
 
 def send_alert_worker(users, msg):
     for user in users:
+
         email = str(user.get("email", "")).strip()
         phone = str(user.get("phone", "")).strip()
 
+        # EMAIL
         if email:
             print(f"EMAIL -> {email}")
-            send_email(email, "System Alert", msg)
 
+            ok = send_email(email, "System Alert", msg)
+
+            if ok:
+                print(f"✅ EMAIL OK -> {email}")
+            else:
+                print(f"❌ EMAIL FAILED -> {email}")
+
+        # SMS
         if phone:
             print(f"SMS -> {phone}")
-            send_sms(phone, msg)
+
+            ok = send_sms(phone, msg)
+
+            if ok:
+                print(f"✅ SMS OK -> {phone}")
+            else:
+                print(f"❌ SMS FAILED -> {phone}")
 
 
 @api_bp.route("/send-alert", methods=["POST"])
@@ -144,25 +159,22 @@ def send_alert():
 
     data = request.get_json() or {}
 
-    high_count = data.get("high_count", 0)
-    high_list  = data.get("high_list", "")
-    low_count  = data.get("low_count", 0)
-    low_list   = data.get("low_list", "")
-
     msg = f"""
 ⚠️ ALERT
 
-🔴 Above Maximum ({high_count})
-{high_list}
+🔴 Above Maximum ({data.get('high_count',0)})
+{data.get('high_list','')}
 
-🟡 Below Minimum ({low_count})
-{low_list}
+🟡 Below Minimum ({data.get('low_count',0)})
+{data.get('low_list','')}
 """
 
     users = get_all_users()
 
-    # run in background
-    Thread(target=send_alert_worker, args=(users, msg)).start()
+    # safer: run worker
+    t = Thread(target=send_alert_worker, args=(users, msg))
+    t.daemon = True
+    t.start()
 
     return jsonify({"status": "processing"})
 

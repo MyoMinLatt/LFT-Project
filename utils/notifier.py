@@ -8,13 +8,16 @@ import socket
 # =========================
 # EMAIL FUNCTION
 # =========================
-import smtplib
 import os
-import socket
-from email.mime.text import MIMEText
+import requests
 
 
 def send_email(to_email, subject, message):
+
+    import os
+    import smtplib
+    import socket
+    from email.mime.text import MIMEText
 
     sender_email = "minlatt.myo@gmail.com"
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
@@ -23,53 +26,37 @@ def send_email(to_email, subject, message):
         print("❌ EMAIL_APP_PASSWORD missing")
         return False
 
-    msg = MIMEText(message, "plain", "utf-8")
-    msg["Subject"] = subject
-    msg["From"] = sender_email
-    msg["To"] = to_email
-
     try:
+        # Step 1: DNS check (safe)
+        socket.gethostbyname("smtp.gmail.com")
+        print("✅ SMTP DNS OK")
 
-        # DNS test
-        try:
-            ip = socket.gethostbyname("smtp.gmail.com")
-            print(f"✅ DNS OK smtp.gmail.com -> {ip}")
-        except Exception as dns_error:
-            print(f"❌ DNS FAIL -> {dns_error}")
-            return False
+        msg = MIMEText(message, "plain", "utf-8")
+        msg["Subject"] = subject
+        msg["From"] = sender_email
+        msg["To"] = to_email
 
-        print(f"Connecting Gmail SMTP -> {to_email}")
-
-        server = smtplib.SMTP(
-            "smtp.gmail.com",
-            587,
-            timeout=20
-        )
-
-        server.set_debuglevel(1)
-
+        # Step 2: SMTP connection (IMPORTANT FIX)
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
         server.ehlo()
+
+        # Step 3: STARTTLS upgrade
         server.starttls()
         server.ehlo()
 
-        server.login(
-            sender_email,
-            sender_password
-        )
+        # Step 4: Login
+        server.login(sender_email, sender_password)
 
-        server.sendmail(
-            sender_email,
-            [to_email],
-            msg.as_string()
-        )
+        # Step 5: Send email
+        server.sendmail(sender_email, [to_email], msg.as_string())
 
         server.quit()
 
-        print(f"✅ EMAIL SUCCESS -> {to_email}")
+        print(f"✅ EMAIL SENT -> {to_email}")
         return True
 
     except Exception as e:
-        print(f"❌ EMAIL ERROR -> {to_email}: {repr(e)}")
+        print(f"❌ EMAIL FAILED -> {to_email}: {repr(e)}")
         return False
 
 
