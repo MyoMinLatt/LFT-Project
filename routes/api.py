@@ -7,7 +7,7 @@ from database.uf_data import get_uf_device_data
 from database.ro_data import get_ro_device_data
 from database.device_popup import get_device_popup_data
 from utils.notifier import send_email, send_sms
-from auth.models import get_all_users
+from database.user_utils import get_all_users
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
 
