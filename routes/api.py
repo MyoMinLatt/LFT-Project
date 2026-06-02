@@ -123,30 +123,26 @@ def add_header(response):
 # =========================
 # ALERT (EMAIL + SMS)
 # =========================
-# =========================
-# ALERT (EMAIL + SMS)
-# =========================
-import time
+from threading import Thread
 
-last_alert_time = 0
+def send_alert_worker(users, msg):
+    for user in users:
+        email = str(user.get("email", "")).strip()
+        phone = str(user.get("phone", "")).strip()
+
+        if email:
+            print(f"EMAIL -> {email}")
+            send_email(email, "System Alert", msg)
+
+        if phone:
+            print(f"SMS -> {phone}")
+            send_sms(phone, msg)
+
 
 @api_bp.route("/send-alert", methods=["POST"])
 def send_alert():
 
-    global last_alert_time
-
-    now = time.time()
-
-    # server cooldown
-    if now - last_alert_time < 60:
-        return jsonify({"status": "cooldown"})
-
-
-
     data = request.get_json() or {}
-
-    print("===== ALERT API HIT =====")
-    print(data)
 
     high_count = data.get("high_count", 0)
     high_list  = data.get("high_list", "")
@@ -154,7 +150,7 @@ def send_alert():
     low_list   = data.get("low_list", "")
 
     msg = f"""
-⚠️ ALERT: Threshold Exceeded
+⚠️ ALERT
 
 🔴 Above Maximum ({high_count})
 {high_list}
@@ -165,43 +161,9 @@ def send_alert():
 
     users = get_all_users()
 
-    for user in users:
+    # run in background
+    Thread(target=send_alert_worker, args=(users, msg)).start()
 
-        email = str(user.get("email", "")).strip()
-        phone = str(user.get("phone", "")).strip()
-
-        # EMAIL
-        if email:
-
-            ok = send_email(
-                email,
-                "System Alert",
-                msg
-            )
-
-            if ok is True:
-                print(f"✅ EMAIL SUCCESS -> {email}")
-            else:
-                print(f"❌ EMAIL FAILED -> {email}")
-
-        # SMS
-        if phone:
-            print(f"Trying SMS -> {phone}")
-
-            ok = send_sms(
-                phone,
-                msg
-            )
-
-            if ok is True:
-                print(f"✅ SMS SUCCESS -> {phone}")
-            else:
-                print(f"❌ SMS FAILED -> {phone}")
-
-    last_alert_time = now
-
-    print("===== ALERT COMPLETE =====")
-
-    return jsonify({"status": "sent"})
+    return jsonify({"status": "processing"})
 
 
