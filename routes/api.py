@@ -126,9 +126,61 @@ def add_header(response):
 # =========================
 # ALERT (EMAIL + SMS)
 # =========================
+# =========================
+# ALERT (EMAIL + SMS)
+# =========================
+from threading import Thread
 import time
 
 last_alert_time = 0
+
+
+def send_alert_worker(users, msg):
+
+    for user in users:
+
+        email = str(user.get("email", "")).strip()
+        phone = str(user.get("phone", "")).strip()
+
+        # EMAIL
+        if email:
+
+            print(f"EMAIL -> {email}")
+
+            try:
+                email_ok = send_email(
+                    email,
+                    "System Alert",
+                    msg
+                )
+
+                if email_ok:
+                    print(f"✅ EMAIL OK -> {email}")
+                else:
+                    print(f"❌ EMAIL FAILED -> {email}")
+
+            except Exception as e:
+                print(f"❌ EMAIL ERROR -> {email}: {e}")
+
+        # SMS
+        if phone:
+
+            print(f"SMS -> {phone}")
+
+            try:
+                sms_ok = send_sms(
+                    phone,
+                    msg
+                )
+
+                if sms_ok:
+                    print(f"✅ SMS OK -> {phone}")
+                else:
+                    print(f"❌ SMS FAILED -> {phone}")
+
+            except Exception as e:
+                print(f"❌ SMS ERROR -> {phone}: {e}")
+
 
 @api_bp.route("/send-alert", methods=["POST"])
 def send_alert():
@@ -137,7 +189,6 @@ def send_alert():
 
     now = time.time()
 
-    # server cooldown
     if now - last_alert_time < 60:
         return jsonify({"status": "cooldown"})
 
@@ -148,65 +199,27 @@ def send_alert():
     print("===== ALERT API HIT =====")
     print(data)
 
-    high_count = data.get("high_count", 0)
-    high_list  = data.get("high_list", "")
-    low_count  = data.get("low_count", 0)
-    low_list   = data.get("low_list", "")
-
     msg = f"""
 ⚠️ ALERT: Threshold Exceeded
 
-🔴 Above Maximum ({high_count})
-{high_list}
+🔴 Above Maximum ({data.get('high_count',0)})
+{data.get('high_list','')}
 
-🟡 Below Minimum ({low_count})
-{low_list}
+🟡 Below Minimum ({data.get('low_count',0)})
+{data.get('low_list','')}
 """
 
     users = get_all_users()
 
-    users = get_all_users()
+    t = Thread(
+        target=send_alert_worker,
+        args=(users, msg)
+    )
 
-    for user in users:
+    t.daemon = True
+    t.start()
 
-        email = user.get("email")
-        phone = user.get("phone")
-
-        # EMAIL
-        if email:
-            try:
-                email_ok = send_email(
-                    email,
-                    "System Alert",
-                    msg
-                )
-
-                if email_ok:
-                    print(f"✅ Email sent to {email}")
-                else:
-                    print(f"⚠️ Email failed/skipped {email}")
-            except Exception as e:
-                print(f"❌ Email failed {email}: {e}")
-
-        # SMS
-        if phone:
-            try:
-                sms_ok = send_sms(
-                    phone,
-                    msg
-                )
-
-                if sms_ok:
-                    print(f"✅ SMS sent to {phone}")
-                else:
-                    print(f"⚠️ SMS skipped/failed {phone}")
-
-            except Exception as e:
-                print(f"❌ SMS failed {phone}: {e}")
-
-    print("===== ALERT COMPLETE =====")
-
-    return jsonify({"status": "sent"})
+    return jsonify({"status": "processing"})
 
 
 
