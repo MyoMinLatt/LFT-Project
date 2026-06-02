@@ -1,23 +1,9 @@
 import smtplib
 import os
-from email.mime.text import MIMEText
-from twilio.rest import Client
 import socket
-
-
-# =========================
-# EMAIL FUNCTION
-# =========================
-import os
-import requests
-
+from email.mime.text import MIMEText
 
 def send_email(to_email, subject, message):
-
-    import os
-    import smtplib
-    import socket
-    from email.mime.text import MIMEText
 
     sender_email = "minlatt.myo@gmail.com"
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
@@ -26,37 +12,28 @@ def send_email(to_email, subject, message):
         print("❌ EMAIL_APP_PASSWORD missing")
         return False
 
+    msg = MIMEText(message, "plain", "utf-8")
+    msg["Subject"] = subject
+    msg["From"] = sender_email
+    msg["To"] = to_email
+
     try:
-        # Step 1: DNS check (safe)
+        print("DNS check smtp.gmail.com")
+
         socket.gethostbyname("smtp.gmail.com")
-        print("✅ SMTP DNS OK")
 
-        msg = MIMEText(message, "plain", "utf-8")
-        msg["Subject"] = subject
-        msg["From"] = sender_email
-        msg["To"] = to_email
+        print(f"Connecting SSL SMTP -> {to_email}")
 
-        # Step 2: SMTP connection (IMPORTANT FIX)
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
-        server.ehlo()
-
-        # Step 3: STARTTLS upgrade
-        server.starttls()
-        server.ehlo()
-
-        # Step 4: Login
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20)
         server.login(sender_email, sender_password)
-
-        # Step 5: Send email
         server.sendmail(sender_email, [to_email], msg.as_string())
-
         server.quit()
 
         print(f"✅ EMAIL SENT -> {to_email}")
         return True
 
     except Exception as e:
-        print(f"❌ EMAIL FAILED -> {to_email}: {repr(e)}")
+        print(f"❌ EMAIL FAILED -> {to_email} | {repr(e)}")
         return False
 
 
