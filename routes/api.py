@@ -179,8 +179,8 @@ def send_alert():
                 msg
             )
 
-            if ok:
-                print(f"✅ EMAIL SENT -> {email}")
+            if ok is True:
+                print(f"✅ EMAIL SUCCESS -> {email}")
             else:
                 print(f"❌ EMAIL FAILED -> {email}")
 
@@ -193,10 +193,10 @@ def send_alert():
                 msg
             )
 
-            if ok:
-                print(f"✅ SMS OK -> {phone}")
+            if ok is True:
+                print(f"✅ SMS SUCCESS -> {phone}")
             else:
-                print(f"❌ SMS FAIL -> {phone}")
+                print(f"❌ SMS FAILED -> {phone}")
 
     last_alert_time = now
 
