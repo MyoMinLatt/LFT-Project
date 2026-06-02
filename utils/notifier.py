@@ -8,6 +8,12 @@ import socket
 # =========================
 # EMAIL FUNCTION
 # =========================
+import smtplib
+import os
+import socket
+from email.mime.text import MIMEText
+
+
 def send_email(to_email, subject, message):
 
     sender_email = "minlatt.myo@gmail.com"
@@ -25,16 +31,22 @@ def send_email(to_email, subject, message):
     try:
 
         # DNS test
-        ip = socket.gethostbyname("smtp.gmail.com")
-        print(f"Gmail SMTP IP -> {ip}")
+        try:
+            ip = socket.gethostbyname("smtp.gmail.com")
+            print(f"✅ DNS OK smtp.gmail.com -> {ip}")
+        except Exception as dns_error:
+            print(f"❌ DNS FAIL -> {dns_error}")
+            return False
 
         print(f"Connecting Gmail SMTP -> {to_email}")
 
         server = smtplib.SMTP(
             "smtp.gmail.com",
             587,
-            timeout=15
+            timeout=20
         )
+
+        server.set_debuglevel(1)
 
         server.ehlo()
         server.starttls()
@@ -57,7 +69,7 @@ def send_email(to_email, subject, message):
         return True
 
     except Exception as e:
-        print(f"❌ EMAIL ERROR -> {to_email}: {e}")
+        print(f"❌ EMAIL ERROR -> {to_email}: {repr(e)}")
         return False
 
 
