@@ -2,6 +2,7 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 from twilio.rest import Client
+import socket
 
 
 # =========================
@@ -22,6 +23,11 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
+
+        # DNS test
+        ip = socket.gethostbyname("smtp.gmail.com")
+        print(f"Gmail SMTP IP -> {ip}")
+
         print(f"Connecting Gmail SMTP -> {to_email}")
 
         server = smtplib.SMTP(
@@ -41,7 +47,7 @@ def send_email(to_email, subject, message):
 
         server.sendmail(
             sender_email,
-            to_email,
+            [to_email],
             msg.as_string()
         )
 

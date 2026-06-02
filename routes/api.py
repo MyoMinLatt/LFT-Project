@@ -172,7 +172,6 @@ def send_alert():
 
         # EMAIL
         if email:
-            print(f"Trying EMAIL -> {email}")
 
             ok = send_email(
                 email,
@@ -181,9 +180,9 @@ def send_alert():
             )
 
             if ok:
-                print(f"✅ EMAIL OK -> {email}")
+                print(f"✅ EMAIL SENT -> {email}")
             else:
-                print(f"❌ EMAIL FAIL -> {email}")
+                print(f"❌ EMAIL FAILED -> {email}")
 
         # SMS
         if phone:
