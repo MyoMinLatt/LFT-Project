@@ -120,15 +120,6 @@ def add_header(response):
 # Alarm message
 #======================================
 
-# =========================
-# ALERT (EMAIL + SMS)
-# =========================
-# =========================
-# ALERT (EMAIL + SMS)
-# =========================
-# =========================
-# ALERT (EMAIL + SMS)
-# =========================
 from threading import Thread
 import time
 
@@ -210,6 +201,9 @@ def send_alert():
 """
 
     users = get_all_users()
+
+    print("USERS =", users)
+    print("USER COUNT =", len(users))
 
     t = Thread(
         target=send_alert_worker,
