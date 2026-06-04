@@ -205,15 +205,9 @@ def send_alert():
     print("USERS =", users)
     print("USER COUNT =", len(users))
 
-    t = Thread(
-        target=send_alert_worker,
-        args=(users, msg)
-    )
+    send_alert_worker(users, msg)
 
-    t.daemon = True
-    t.start()
-
-    return jsonify({"status": "processing"})
+    return jsonify({"status": "sent"})
 
 
 

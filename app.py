@@ -162,7 +162,7 @@ def send_alert():
                     "System Alert",
                     message
                 )
-                print(f"✅ Email sent to {user['email']}")
+
 
             except Exception as e:
                 print(f"❌ Email failed {user['email']}: {e}")

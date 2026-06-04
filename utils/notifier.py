@@ -1,11 +1,14 @@
-import os
-from email.mime.text import MIMEText
-from twilio.rest import Client
-import smtplib
 
 # =========================
 # EMAIL FUNCTION (GMAIL API)
 # =========================
+
+import os
+from email.mime.text import MIMEText
+from twilio.rest import Client
+import smtplib
+import socket
+
 
 def send_email(to_email, subject, message):
 
@@ -13,41 +16,30 @@ def send_email(to_email, subject, message):
     sender_password = os.getenv("EMAIL_APP_PASSWORD")
 
     if not sender_password:
-        print("❌ EMAIL_APP_PASSWORD missing")
+        print("❌ EMAIL_APP_PASSWORD not set")
         return False
 
+    msg = MIMEText(message, "plain", "utf-8")
+    msg["Subject"] = subject
+    msg["From"] = sender_email
+    msg["To"] = to_email
+
     try:
-
-        msg = MIMEText(message, "plain", "utf-8")
-        msg["Subject"] = subject
-        msg["From"] = sender_email
-        msg["To"] = to_email
-
         server = smtplib.SMTP_SSL(
             "smtp.gmail.com",
             465,
             timeout=15
         )
 
-        server.login(
-            sender_email,
-            sender_password
-        )
-
-        server.sendmail(
-            sender_email,
-            [to_email],
-            msg.as_string()
-        )
-
+        server.login(sender_email, sender_password)
+        server.send_message(msg)
         server.quit()
 
         print(f"✅ EMAIL SUCCESS -> {to_email}")
         return True
 
-    except Exception as e:
-
-        print(f"❌ EMAIL ERROR -> {to_email}: {repr(e)}")
+    except (socket.gaierror, socket.timeout, OSError, Exception) as e:
+        print(f"❌ EMAIL ERROR -> {to_email}: {e}")
         return False
 
 
