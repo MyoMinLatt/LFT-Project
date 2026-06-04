@@ -251,6 +251,13 @@ thead th{
     gap:8px;
 }
 
+#thresholdPanel{
+    max-height: 700px;      /* adjust height as needed */
+    overflow-y: auto;       /* 🔥 enables vertical scroll */
+    overflow-x: hidden;
+    padding-right: 4px;     /* optional: avoids scrollbar overlap */
+}
+
 .threshold-card{
     background:#081a3a;
     border:1px solid #1c5cff;
@@ -309,8 +316,8 @@ thead th{
 .threshold-panel{
     flex:0 0 180px;
     width:180px;
-    min-width:180px;
-    max-width:350px;
+    min-width:300px;
+    max-width:400px;
 }
 /* REMOVE FULL PAGE VERTICAL STACK */
 .dashboard-layout{
