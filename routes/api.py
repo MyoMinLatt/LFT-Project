@@ -132,9 +132,11 @@ def send_alert_worker(users, msg):
 
         email = str(user.get("email", "")).strip()
         phone = str(user.get("phone", "")).strip()
+        time.sleep(0.2)  # prevents Render burst overload
 
         # EMAIL
         if email:
+
             print(f"EMAIL -> {email}")
 
             try:
@@ -185,6 +187,9 @@ def send_alert():
 
     data = request.get_json() or {}
 
+    if not data:
+        return jsonify({"status": "no-data"})
+
     print("===== ALERT API HIT =====")
     print(data)
 
@@ -201,11 +206,12 @@ def send_alert():
     users = get_all_users()
 
     # IMPORTANT: DO NOT BLOCK REQUEST
-    Thread(
+    t = Thread(
         target=send_alert_worker,
         args=(users, msg),
         daemon=True
-    ).start()
+    )
+    t.start()
 
     return jsonify({"status": "processing"})
 
