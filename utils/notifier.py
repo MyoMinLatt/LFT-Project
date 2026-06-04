@@ -1,40 +1,63 @@
+import os
+import base64
+from email.mime.text import MIMEText
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
 
 # =========================
 # EMAIL FUNCTION (GMAIL API)
 # =========================
-
-import os
-from email.mime.text import MIMEText
-from twilio.rest import Client
-import smtplib
-import socket
-
-
 def send_email(to_email, subject, message):
 
     sender_email = "minlatt.myo@gmail.com"
-    sender_password = os.getenv("EMAIL_APP_PASSWORD")
-
-    if not sender_password:
-        print("❌ EMAIL_APP_PASSWORD not set")
-        return False
-
-    msg = MIMEText(message, "plain", "utf-8")
-    msg["Subject"] = subject
-    msg["From"] = sender_email
-    msg["To"] = to_email
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(msg)
-        server.quit()
+
+        credentials = service_account.Credentials.from_service_account_file(
+            "gmail_service_account.json",
+            scopes=[
+                "https://www.googleapis.com/auth/gmail.send"
+            ]
+        )
+
+        delegated = credentials.with_subject(
+            sender_email
+        )
+
+        service = build(
+            "gmail",
+            "v1",
+            credentials=delegated
+        )
+
+        msg = MIMEText(
+            message,
+            "plain",
+            "utf-8"
+        )
+
+        msg["to"] = to_email
+        msg["from"] = sender_email
+        msg["subject"] = subject
+
+        raw = base64.urlsafe_b64encode(
+            msg.as_bytes()
+        ).decode()
+
+        body = {
+            "raw": raw
+        }
+
+        service.users().messages().send(
+            userId="me",
+            body=body
+        ).execute()
 
         print(f"✅ EMAIL SUCCESS -> {to_email}")
         return True
 
-    except (socket.gaierror, socket.timeout, OSError, Exception) as e:
+    except Exception as e:
         print(f"❌ EMAIL ERROR -> {to_email}: {e}")
         return False
 
