@@ -135,7 +135,6 @@ def send_alert_worker(users, msg):
 
         # EMAIL
         if email:
-
             print(f"EMAIL -> {email}")
 
             try:
@@ -155,7 +154,6 @@ def send_alert_worker(users, msg):
 
         # SMS
         if phone:
-
             print(f"SMS -> {phone}")
 
             try:
@@ -202,12 +200,14 @@ def send_alert():
 
     users = get_all_users()
 
-    print("USERS =", users)
-    print("USER COUNT =", len(users))
+    # IMPORTANT: DO NOT BLOCK REQUEST
+    Thread(
+        target=send_alert_worker,
+        args=(users, msg),
+        daemon=True
+    ).start()
 
-    send_alert_worker(users, msg)
-
-    return jsonify({"status": "sent"})
+    return jsonify({"status": "processing"})
 
 
 
