@@ -25,12 +25,8 @@ def send_email(to_email, subject, message):
     msg["To"] = to_email
 
     try:
-        server = smtplib.SMTP_SSL(
-            "smtp.gmail.com",
-            465,
-            timeout=15
-        )
-
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+        server.starttls()
         server.login(sender_email, sender_password)
         server.send_message(msg)
         server.quit()
