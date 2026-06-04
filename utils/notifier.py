@@ -1,13 +1,13 @@
-import os
-from email.mime.text import MIMEText
-from twilio.rest import Client
 
 # =========================
 # EMAIL FUNCTION (GMAIL API)
 # =========================
-import smtplib
+
 import os
 from email.mime.text import MIMEText
+from twilio.rest import Client
+import smtplib
+
 
 
 def send_email(to_email, subject, message):
