@@ -25,16 +25,27 @@ body{
 =============================== */
 
 .top-panel{
-    position:relative;
-    background:rgba(5,15,45,0.95);
-    border-radius:18px;
-    padding:12px 15px;
-    margin-top:-35px;
-    margin-bottom:10px;
-    background:linear-gradient(180deg,#071a4d,#0b2b75);
-    box-shadow:0 0 20px rgba(0,140,255,0.25);
+    position:fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 9999;
+    background: #2C444C;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
-
+/* ===============================
+   LANGUAGE (TOP RIGHT)
+=============================== */
+.top-panel select{
+    position: absolute;
+    top: 2px;
+    right: 20px;
+    width: 120px;
+}
 /* ===============================
    TITLES
 =============================== */
@@ -290,6 +301,7 @@ thead th{
     gap:10px;
     align-items:flex-start;
     overflow-x:auto;         /* allow scroll only if needed */
+    margin-top:120px;   /* adjust as needed */
 }
 
 /* all panels */
@@ -342,6 +354,7 @@ thead th{
     gap:6px;
     align-items:center;
     margin-right:80px;
+    margin-top:50px;   /* move buttons downward */
 }
 .top-header{
     position:relative;
@@ -385,19 +398,6 @@ thead th{
 
 </style>
 
-
-
-
-    <div style="position:absolute; right:20px; top:10px; z-index:1000;">
-        <select id="languageSwitcher">
-            <option value="en">English</option>
-            <option value="ko">한국어</option>
-            <option value="my">Myanmar</option>
-            <option value="vi">Vietnamese</option>
-            <option value="mn">Mongolian</option>
-        </select>
-    </div>
-
 <div class="top-panel">
 
     <div class="top-header">
@@ -405,6 +405,16 @@ thead th{
         <h2 class="dashboard-title fw-bold m-0" data-i18n="main_title">
             💧 LFT Monitoring Dashboard
         </h2>
+
+
+        <select id="languageSwitcher">
+            <option value="en">English</option>
+            <option value="ko">한국어</option>
+            <option value="my">Myanmar</option>
+            <option value="vi">Vietnamese</option>
+            <option value="mn">Mongolian</option>
+        </select>
+
 
     <!-- RIGHT ALARM -->
         <div class="alarm-top" id="alarmPanel">
@@ -459,7 +469,7 @@ thead th{
         <button id="toggleThreshold" class="btn btn-warning btn-sm w-100" data-i18n="thresholds">Thresholds</button>
         <div id="thresholdPanel"></div>
     </div>
-</div>
+
 </div>
 
 <script>

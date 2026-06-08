@@ -12,6 +12,33 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".nav-menu a");
+    const currentPath = window.location.pathname;
+
+    buttons.forEach(function (btn) {
+
+        // 1. Set active based on URL (page load)
+        if (btn.getAttribute("href") === currentPath) {
+            btn.classList.add("active");
+        }
+
+        // 2. Add click behavior (instant UI feedback)
+        btn.addEventListener("click", function () {
+            buttons.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+        });
+
+    });
+
+});
+
+</script>
+
 <body>
 
 <style>
@@ -21,24 +48,39 @@
     left: 20px;
     z-index: 20000;
 
-    background: white;
+    background: #D8D4BC;
     padding: 8px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* button colors */
-.nav-btn-main      { background:#007bff; color:white; }
-.nav-btn-flow      { background:#ffc107; color:black; }
-.nav-btn-monitor   { background:#28a745; color:white; }
-.nav-btn-uf        { background:#17a2b8; color:white; }
-.nav-btn-ro        { background:#dc3545; color:white; }
-.nav-btn-manual   { background:#6c757d; color:white; }
-.nav-btn-analysis  { background:#343a40; color:white; }
+.nav-btn-main      { background:#304C53; color:white; }
+.nav-btn-flow      { background:#304C53; color:white; }
+.nav-btn-monitor   { background:#304C53; color:white; }
+.nav-btn-uf        { background:#304C53; color:white; }
+.nav-btn-ro        { background:#304C53; color:white; }
+.nav-btn-manual   { background:#304C53; color:white; }
+.nav-btn-analysis  { background:#304C53; color:white; }
 
 /* hover */
 .nav-menu .btn:hover{
     opacity: 0.85;
+}
+
+/* ACTIVE COLORS (clicked state) */
+.nav-btn-main.active {background: #0000ff;}
+.nav-btn-flow.active {background: #0000ff;}
+.nav-btn-monitor.active {background: #0000ff;}
+.nav-btn-uf.active {background: #0000ff;}
+.nav-btn-ro.active {background: #0000ff;}
+.nav-btn-manual.active {background: #0000ff;}
+.nav-btn-analysis.active {background: #0000ff;}
+
+    .nav-menu .btn.active {
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
 }
 </style>
 

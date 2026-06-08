@@ -486,6 +486,36 @@ pointer-events:none; }
     background:#fff4e6;
 }
 
+#popupCloseBtn{
+    position:absolute;
+
+    top:5px;
+    right:2px;
+
+    z-index:9999;      /* ADD THIS */
+
+    width:15px;
+    height:15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+
+    border-radius:50%;
+
+    background:#cc0000;
+}
+
+#popupCloseBtn:hover{
+    background:#ff0000;
+    transform:scale(1.1);
+}
 
         /* Calendar */
         #calendarContainer {
@@ -682,6 +712,9 @@ h2 {
 
     /* Popup resize */
     #devicePopup{
+        position:absolute;
+        z-index:1000;
+        overflow:visible;
         width: 320px;
         font-size: 10px;
     }
@@ -721,7 +754,7 @@ h2 {
 
     </style>
 
-    <h2 data-i18n="flowdiagram_title" style="text-align:center">
+    <h2 data-i18n="flowdiagram_title" style="text-align:center; position:relative; top:-40px; line-height:90px;">
     Liquid Fertilizer Water Treatment Plant
 </h2>
 
@@ -1089,9 +1122,12 @@ d="M115 292 L115 328 L164 328"/>
         <div id="coords">X:0 Y:0</div>
 
         <!-- Device popup table -->
-        <div id="devicePopup"style="position:absolute; z-index: 1000;">
-            <div id="popupTable"></div>
-            <div id="customTable" style="display:none;"></div>
+        <div id="devicePopup" style="position:absolute; z-index:1000;">
+
+              <span id="popupCloseBtn">✖</span>
+              <div id="popupTable"></div>
+              <div id="customTable" style="display:none;"></div>
+
         </div>
 
 
@@ -1150,6 +1186,7 @@ let customMode = false;
 /* DEVICE CLICK */
 document.querySelectorAll(".device").forEach(dev => {
     dev.addEventListener("click", function(){
+
         const circle = this.querySelector("circle");
         let x = circle.getAttribute("cx");
         let y = circle.getAttribute("cy");
@@ -1159,35 +1196,55 @@ document.querySelectorAll(".device").forEach(dev => {
 
         // If same device clicked → toggle popup
         if(currentDevice === deviceId){
+
             if(popup.style.display === "block"){
-                popup.style.display = "none";  // hide
-            } else {
-                showPopup(x,y);  // show
+                popup.style.display = "none";
+            }else{
+                showPopup(x,y);
             }
+
             return;
         }
 
         // New device clicked → show popup
         currentDevice = deviceId;
         showPopup(x,y);
+
     });
 });
 
 function showPopup(x,y){
+
     let popup = document.getElementById("devicePopup");
+
     let px = parseFloat(x);
     let py = parseFloat(y);
+
     popup.style.left = (px - 220) + "px";
-    popup.style.top = (py - 120) + "px";
+    popup.style.top  = (py - 120) + "px";
+
     popup.style.display = "block";
-    loadTable();  // always reload table for current device
+
+    loadTable();
 }
 
 function hidePopup(){
+
     let popup = document.getElementById("devicePopup");
-    popup.style.display="none";
+
+    popup.style.display = "none";
+
     currentDevice = null;
 }
+
+/* CLOSE BUTTON */
+document.getElementById("popupCloseBtn").onclick = function(e){
+
+    e.stopPropagation();   // prevent click bubbling
+
+    hidePopup();
+};
+
 
 /* CALENDAR DATE SELECTION */
 document.getElementById("calendar").addEventListener("change", function(){
@@ -1323,6 +1380,11 @@ const min = custom.min !== undefined && custom.min !== null
 
 // ✅ ONE render only
 document.getElementById("popupTable").innerHTML = html;
+
+// Show popup
+popup.style.display = "block";
+
+
 
             // ✅ Adjust pointer to avoid overlapping device
             let popupHeight = popup.offsetHeight;
