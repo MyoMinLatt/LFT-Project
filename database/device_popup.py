@@ -1,6 +1,4 @@
 import sqlite3
-import time
-
 from datetime import datetime, timedelta
 from config import LFT_DB
 from database.system_map import get_table_column
@@ -34,8 +32,6 @@ def parse_time(t):
 
 def fetch_values(device):
 
-    t0 = time.time()
-
     print(f"\nRequested device = {device}")
 
     table, column = get_table_column(device)
@@ -49,17 +45,8 @@ def fetch_values(device):
 
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
-
-    cur.execute(f'''
-        SELECT Time, "{column}"
-        FROM "{table}"
-        ORDER BY Time DESC
-        LIMIT 10000
-    ''')
-
+    cur.execute(f'SELECT Time, "{column}" FROM "{table}"')
     rows = cur.fetchall()
-    rows.reverse()  # Restore oldest → newest order
-
     conn.close()
 
     values = []
@@ -82,7 +69,6 @@ def fetch_values(device):
             continue
 
     values.sort(key=lambda x: x[0])
-    print(f"fetch_values() took {time.time() - t0:.2f} seconds")
     return values
 
 
@@ -131,8 +117,6 @@ def empty_summary():
 
 
 def get_device_popup_data(device, date=None, datetime_param=None):
-
-    t0 = time.time()
 
     all_values = fetch_values(device)
 
@@ -227,8 +211,6 @@ def get_device_popup_data(device, date=None, datetime_param=None):
         except Exception as e:
                 print("CUSTOM ERROR:", e)
                 custom = None
-
-    print(f"Popup processing time: {time.time() - t0:.2f} seconds")
 
     return {
         "today": today_summary,

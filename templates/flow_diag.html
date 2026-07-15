@@ -1331,14 +1331,8 @@ document.getElementById("calendar").addEventListener("change", function(){
 
 /* LOAD DEVICE DATA */
 
-let popupRequest = 0;
-
 function loadTable() {
-
     if (!currentDevice) return;
-
-    const requestId = ++popupRequest;
-
     const device = currentDevice;   // freeze device at request time
     const deviceElement = document.getElementById(device);
     const circle = deviceElement.querySelector("circle");
@@ -1358,9 +1352,6 @@ let url = `/device_popup?device=${device}&date=${selectedDate || ''}&datetime=${
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            if(requestId !== popupRequest){
-            return;
-            }
         console.log("CUSTOM DATA:", data.custom);
 
     // ⭐ IMPORTANT: ignore outdated responses
@@ -1470,7 +1461,8 @@ const min = custom.min !== undefined && custom.min !== null
 // ✅ ONE render only
 document.getElementById("popupTable").innerHTML = html;
 
-
+// Show popup
+popup.style.display = "block";
 
 
 
@@ -1481,12 +1473,8 @@ document.getElementById("popupTable").innerHTML = html;
             let cx = parseFloat(circle.getAttribute("cx"));
             let cy = parseFloat(circle.getAttribute("cy"));
 
-            requestAnimationFrame(() => {
-
-              popup.style.left = `${cx - popupWidth/2}px`;
-              popup.style.top  = `${cy - popupHeight - 40}px`;
-
-            });
+            popup.style.left = `${cx - popupWidth/2}px`;
+            popup.style.top = `${cy - popupHeight - 40}px`;
 
             // Adjust pointer position
             let after = window.getComputedStyle(popup, "::after");

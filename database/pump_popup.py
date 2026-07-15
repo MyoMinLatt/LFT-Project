@@ -1,4 +1,3 @@
-import time
 import sqlite3
 from datetime import datetime, timedelta
 from config import LFT_DB
@@ -86,17 +85,8 @@ def get_device_popup_data(device, date=None, datetime_param=None):
 
     conn = sqlite3.connect(LFT_DB)
     cur = conn.cursor()
-
-    cur.execute(f'''
-        SELECT Time, "{column}"
-        FROM "{table}"
-        ORDER BY Time DESC
-        LIMIT 10000
-    ''')
-
+    cur.execute(f'SELECT Time, "{column}" FROM "{table}"')
     rows = cur.fetchall()
-    rows.reverse()
-
     conn.close()
 
     dt_vals = []
