@@ -191,6 +191,8 @@ def get_uf_device_data(parameter, device, interval, start=None, end=None):
     """)
     latest_row = cursor.fetchone()
 
+
+
     if not latest_row:
         conn.close()
         return {}
@@ -230,13 +232,18 @@ def get_uf_device_data(parameter, device, interval, start=None, end=None):
         rows = cursor.fetchall()
         custom_active = True
 
+
     else:
+
         cursor.execute(f"""
             SELECT {time_column}, {column_safe}
             FROM {table}
-            ORDER BY {time_column} ASC
+            ORDER BY {time_column} DESC
+            LIMIT 5000
         """)
         rows = cursor.fetchall()
+
+        rows.reverse()  # oldest → newest
 
     conn.close()
 
