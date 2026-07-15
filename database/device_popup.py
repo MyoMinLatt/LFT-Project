@@ -45,8 +45,17 @@ def fetch_values(device):
 
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
-    cur.execute(f'SELECT Time, "{column}" FROM "{table}"')
+
+    cur.execute(f'''
+        SELECT Time, "{column}"
+        FROM "{table}"
+        ORDER BY Time DESC
+        LIMIT 10000
+    ''')
+
     rows = cur.fetchall()
+    rows.reverse()  # Restore oldest → newest order
+
     conn.close()
 
     values = []

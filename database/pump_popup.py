@@ -85,8 +85,17 @@ def get_device_popup_data(device, date=None, datetime_param=None):
 
     conn = sqlite3.connect(LFT_DB)
     cur = conn.cursor()
-    cur.execute(f'SELECT Time, "{column}" FROM "{table}"')
+
+    cur.execute(f'''
+        SELECT Time, "{column}"
+        FROM "{table}"
+        ORDER BY Time DESC
+        LIMIT 10000
+    ''')
+
     rows = cur.fetchall()
+    rows.reverse()
+
     conn.close()
 
     dt_vals = []
