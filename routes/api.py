@@ -67,11 +67,11 @@ def ro_data():
 # =========================
 # RO Valve (ONLY XV013)
 # =========================
-@api_bp.route("/ro-valves")
-def ro_valves():
-    valves = get_valves_table()
-    filtered = [v for v in valves if v.get("uf_device") == "XV013"]
-    return jsonify(filtered)
+#@api_bp.route("/ro-valves")
+#def ro_valves():
+#    valves = get_valves_table()
+#    filtered = [v for v in valves if v.get("uf_device") == "XV013"]
+#    return jsonify(filtered)
 
 
 # =========================

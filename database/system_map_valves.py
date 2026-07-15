@@ -28,7 +28,35 @@ SYSTEM_MAP_VALVES = {
     }
 }
 
+# ===============================
+# Check Table Exists [This block was added when tables of Valves in Sqlit database was not considered.]
+# ===============================
 
+def table_exists(db_path, table_name):
+
+    import sqlite3
+
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT name 
+            FROM sqlite_master 
+            WHERE type='table' AND name=?
+            """,
+            (table_name,)
+        )
+
+        result = cursor.fetchone()
+
+        conn.close()
+
+        return result is not None
+
+    except Exception:
+        return False
 
 # ===============================
 # Convert 0 / 1 to Status
@@ -86,6 +114,15 @@ def get_all_latest_valves():
 
         for name, (table, column) in valves.items():
 
+            # Skip missing valve tables temporarily
+            if not table_exists(LFT_DB, table):
+                result[unit][name] = {
+                    "text": "N/A",
+                    "status": "error"
+                }
+                continue
+
+            # Use this block when valve tables is added in Sqlit Database
             value = get_latest_value(
                 LFT_DB,
                 table,

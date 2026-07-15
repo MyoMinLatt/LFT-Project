@@ -10,16 +10,16 @@ SYSTEM_MAP = {
     "Pumps": {
 
         "UF": {
-            "P001": ("UF_Pumps", "UF_P001"),
-            "P002": ("UF_Pumps", "UF_P002"),
-            "P003": ("UF_Pumps", "UF_P003"),
-            "P004": ("UF_Pumps", "UF_P004"),
-            "P005": ("UF_Pumps", "UF_P005"),
+    #        "P001": ("Pumps", "UF_P001"),
+            "P002": ("Pumps", "UF_P002"),
+    #        "P003": ("Pumps", "UF_P003"),
+    #        "P004": ("Pumps", "UF_P004"),
+    #        "P005": ("Pumps", "UF_P005"),
         },
 
         "RO": {
-            "P006": ("RO_Pumps", "RO_P001"),
-            "P007": ("RO_Pumps", "RO_P002"),
+    #        "P006": ("RO_Pumps", "RO_P001"),
+            "P007": ("Pumps", "RO_P007"),
         }
     }
 }

@@ -325,7 +325,8 @@ pointer-events:none; }
 #FT001 circle{fill:#045F5F;}
 #FT002 circle{fill:#045F5F;}
 #FI001 circle{fill:#5E7D7E;}
-#FI002 circle{fill:#5E7D7E;}
+#FCV001 circle{fill:#5E7D7E;}
+#AG001 circle{fill:#5E7D7E;}
 
 #pH001 circle{fill:#66FF00;} /* pH */
 #pH002 circle{fill:#66FF00;}
@@ -338,6 +339,9 @@ pointer-events:none; }
 #TUB001 circle{fill:#5865F2;} /* Turbidity */
 
 #ORP001 circle{fill:#36013F;} /* ORP */
+
+#UF_TMP circle{fill:#0041C2;} /* UF TMP */
+#RO_TMP circle{fill:#1AA260;} /* RO TMP */
 
 /* specific device font colors */
 
@@ -363,7 +367,8 @@ pointer-events:none; }
 #FT001 text,
 #FT002 text,
 #FI001 text,
-#FI002 text{fill:white;}
+#FCV001 text,
+#AG001 text{fill:white;}
 
 #pH001 text, /* pH */
 #pH002 text,
@@ -376,6 +381,13 @@ pointer-events:none; }
 #TUB001 text{fill:white;} /* Turbidity */
 
 #ORP001 text{fill:white;} /* ORP */
+
+#UF_TMP text{fill:white;} /* UF TMP */
+#RO_TMP text{fill:white;} /* RO TMP */
+#UF_TMP text,
+#RO_TMP text {text-anchor: middle;}
+#UF_TMP text,
+#RO_TMP text {font-weight: bold;}
 
 @keyframes pumpBlink{ 0%{opacity:1;} 50%{opacity:0.4;} 100%{opacity:1;} }
 
@@ -402,7 +414,7 @@ pointer-events:none; }
             display: none;
             z-index: 1000;
             font-size: 12px;
-             transform: translateY(-35px);  /* 👈 increase gap from button */
+            transform: translateY(-35px);  /* 👈 increase gap from button */
 
              /* bevel effect */
     box-shadow:
@@ -520,9 +532,9 @@ pointer-events:none; }
         /* Calendar */
         #calendarContainer {
             position: absolute;
-            right: -290px;
+            right: -330px;
             top: 0px;  /* to adjust custom and rest button and calendar */
-            width: 260px;
+            width: 320px;
             background: white;
             color: black;
             padding: 10px;
@@ -587,17 +599,18 @@ pointer-events:none; }
 /* LABEL ROW */
 .control-labels {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
     text-align: center;
-    font-size: 11px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 /* INPUT ROW */
 .control-inputs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
 }
 
 /* SELECT STYLE */
@@ -657,6 +670,24 @@ h2 {
     min-width: 60px;   /* 🔥 FIX */
 }
 
+/* Active button status */
+
+.button-active {
+    background-color: #00cc66 !important;
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+
+/* Reset active color */
+
+.reset-active {
+    background-color: #ff3333 !important;
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
 
 /* Coordinate display */
 
@@ -1065,11 +1096,18 @@ d="M115 292 L115 328 L164 328"/>
       <tspan x="826" dy="12">002</tspan>
     </text>
   </g>
-  <g class="device" id="FI002">
-    <circle cx="861" cy="376" r="14"/>
-    <text x="861" y="376" class="deviceText">
-      <tspan x="861" dy="-5">FI</tspan>
-      <tspan x="861" dy="12">002</tspan>
+  <g class="device" id="FCV001">
+    <circle cx="861" cy="372" r="14"/>
+    <text x="861" y="372" class="deviceText">
+      <tspan x="861" dy="-5">FCV</tspan>
+      <tspan x="861" dy="12">001</tspan>
+    </text>
+  </g>
+  <g class="device" id="AG001">
+    <circle cx="295" cy="474" r="14"/>
+    <text x="295" y="474" class="deviceText">
+      <tspan x="295" dy="-5">AG</tspan>
+      <tspan x="295" dy="12">001</tspan>
     </text>
   </g>
   <g class="device" id="EC001">
@@ -1108,6 +1146,22 @@ d="M115 292 L115 328 L164 328"/>
     </text>
   </g>
 
+  <g class="device" id="UF_TMP">
+    <circle cx="521" cy="146" r="18"/>
+    <text x="521" y="146" class="deviceText">
+      <tspan x="521" dy="-4">UF</tspan>
+      <tspan x="521" dy="12">TMP</tspan>
+    </text>
+  </g>
+
+  <g class="device" id="RO_TMP">
+    <circle cx="569" cy="146" r="18"/>
+    <text x="569" y="146" class="deviceText">
+      <tspan x="569" dy="-4">RO</tspan>
+      <tspan x="569" dy="12">TMP</tspan>
+    </text>
+  </g>
+
 <!-- Legend -->
 
   <circle id="ON" class="valve" cx="1153" cy="459" r="12"/>
@@ -1126,6 +1180,7 @@ d="M115 292 L115 328 L164 328"/>
 
               <span id="popupCloseBtn">✖</span>
               <div id="popupTable"></div>
+              <div id="popupPointer"></div>
               <div id="customTable" style="display:none;"></div>
 
         </div>
@@ -1137,18 +1192,28 @@ d="M115 292 L115 328 L164 328"/>
 
     <!-- LABEL ROW -->
     <div class="control-labels">
-        <div data-i18n="label_minute">mm</div>
-        <div data-i18n="label_hour">hh</div>
-        <div data-i18n="label_month">Month</div>
         <div data-i18n="label_year">Year</div>
+        <div data-i18n="label_month">Month</div>
+        <div data-i18n="label_hour">hh</div>
+        <div data-i18n="label_minute">mm</div>
+        <div data-i18n="label_second">ss</div>
+
+
+
+
     </div>
 
     <!-- INPUT ROW -->
     <div class="control-inputs">
-        <select id="minuteSelect"></select>
-        <select id="hourSelect"></select>
-        <select id="monthSelect"></select>
         <select id="yearSelect"></select>
+        <select id="monthSelect"></select>
+        <select id="hourSelect"></select>
+        <select id="minuteSelect"></select>
+        <select id="secondSelect"></select>
+
+
+
+
     </div>
 
 </div>
@@ -1175,7 +1240,7 @@ d="M115 292 L115 328 L164 328"/>
 
         function fmt(val){
     if(val === null || val === undefined || val === '-') return '-';
-    return Number(val).toFixed(4);
+    return Number(val).toFixed(3);
 }
 
         /* GLOBAL STATE */
@@ -1257,14 +1322,16 @@ document.getElementById("calendar").addEventListener("change", function(){
 function loadTable() {
     if (!currentDevice) return;
     const device = currentDevice;   // freeze device at request time
-
-let datetimeParam = "";
+    const deviceElement = document.getElementById(device);
+    const circle = deviceElement.querySelector("circle");
+    let datetimeParam = "";
 
 if(customMode && selectedDate){
     const hour = document.getElementById("hourSelect").value;
     const minute = document.getElementById("minuteSelect").value;
+    const second = document.getElementById("secondSelect").value;
 
-    datetimeParam = `${selectedDate} ${hour}:${minute}`;
+    datetimeParam = `${selectedDate} ${hour}:${minute}:${second}`;
 }
 
 let url = `/device_popup?device=${device}&date=${selectedDate || ''}&datetime=${datetimeParam}`;
@@ -1282,7 +1349,7 @@ let url = `/device_popup?device=${device}&date=${selectedDate || ''}&datetime=${
 
             const fmt = (v) => {
                 let num = parseFloat(v);
-                return isNaN(num) ? '-' : num.toFixed(4);
+                return isNaN(num) ? '-' : num.toFixed(3);
             };
 
 
@@ -1336,6 +1403,7 @@ html = `
 
     const hour = document.getElementById("hourSelect").value;
     const minute = document.getElementById("minuteSelect").value;
+    const second = document.getElementById("secondSelect").value;
 
     const custom = data.custom || {};
 
@@ -1368,7 +1436,7 @@ const min = custom.min !== undefined && custom.min !== null
 
     <tr>
         <td>${selectedDate ? selectedDate.replace(/-/g,'/') : '-'}</td>
-        <td>${hour}:${minute}</td>
+        <td>${hour}:${minute}:${second}</td>
         <td>${value}</td>
         <td>${avg}</td>
         <td>${max}</td>
@@ -1386,7 +1454,7 @@ popup.style.display = "block";
 
 
 
-            // ✅ Adjust pointer to avoid overlapping device
+           // ✅ Adjust pointer to avoid overlapping device
             let popupHeight = popup.offsetHeight;
             let popupWidth = popup.offsetWidth;
             let circle = document.getElementById(device).querySelector("circle");
@@ -1407,11 +1475,32 @@ popup.style.display = "block";
 
 document.getElementById("customBtn").onclick = function(){
     customMode = true;
+
+    // Button color change
+    this.style.background = "#00cc66";
+    this.style.color = "white";
+
+
+    // Reset button back to normal
+    document.getElementById("resetBtn").style.background = "";
+    document.getElementById("resetBtn").style.color = "";
+
     if(currentDevice) loadTable();   // 🔥 IMPORTANT
 };
 
 document.getElementById("resetBtn").onclick = function(){
     customMode = false;
+
+    // Button color change
+    this.style.background = "#ff3333";
+    this.style.color = "white";
+
+
+    // Custom button back to normal
+    document.getElementById("customBtn").style.background = "";
+    document.getElementById("customBtn").style.color = "";
+
+
     if(currentDevice) loadTable();   // 🔥 IMPORTANT
 };
 
@@ -1531,9 +1620,24 @@ for(let m=0; m<60; m++){
     minuteSelect.appendChild(option);
 }
 
+/* SECOND SELECT */
+
+const secondSelect = document.getElementById("secondSelect");
+
+/* SECONDS (5-second interval) */
+
+for(let s=0; s<60; s+=5){
+    let option=document.createElement("option");
+    option.value = String(s).padStart(2,'0');
+    option.text = String(s).padStart(2,'0');
+    secondSelect.appendChild(option);
+}
+
+
 /* DEFAULT VALUES */
 hourSelect.value = currentDate.getHours();
 minuteSelect.value = currentDate.getMinutes();
+secondSelect.value = Math.floor(currentDate.getSeconds()/5)*5;
 
 /* UPDATE DATE TIME */
 hourSelect.addEventListener("change",()=>{
@@ -1542,6 +1646,11 @@ hourSelect.addEventListener("change",()=>{
 
 minuteSelect.addEventListener("change",()=>{
     currentDate.setMinutes(parseInt(minuteSelect.value));
+});
+
+
+secondSelect.addEventListener("change",()=>{
+    currentDate.setSeconds(parseInt(secondSelect.value));
 });
 
         initCalendarControls();
@@ -1596,24 +1705,24 @@ function applyPumpLogic(pumpStates){
     console.log("PumpStates:", pumpStates);
 
     // -------- P003 --------
-    if(pumpStates["P003"] === "RUN"){
-        onPipes(["p25","p26","p27","p28","p58","p60","p63"]);
-    } else {
-        offPipes(["p25","p26","p27","p28","p58","p60","p63"]);
-    }
+//    if(pumpStates["P003"] === "RUN"){
+//        onPipes(["p25","p26","p27","p28","p58","p60","p63"]);
+//    } else {
+//        offPipes(["p25","p26","p27","p28","p58","p60","p63"]);
+//    }
 
     // -------- P006 --------
-    if(pumpStates["P006"] === "RUN"){
-        onPipes(["p17","p20"]);
-        offPipes(["p18","p19"]);
-    }
-    else if(pumpStates["P006"] === "STOP"){
-        onPipes(["p18","p19"]);
-        offPipes(["p17","p20"]);
-    }
-    else { // ERROR
-        offPipes(["p17","p18","p19","p20"]);
-    }
+//    if(pumpStates["P006"] === "RUN"){
+//        onPipes(["p17","p20"]);
+//        offPipes(["p18","p19"]);
+//    }
+//    else if(pumpStates["P006"] === "STOP"){
+//        onPipes(["p18","p19"]);
+//        offPipes(["p17","p20"]);
+//    }
+//    else { // ERROR
+//        offPipes(["p17","p18","p19","p20"]);
+//    }
 }
 
 // =========================
@@ -1849,16 +1958,7 @@ window.addEventListener("DOMContentLoaded", function(){
 });
 
 
-/* ==========================
-   AUTO REFRESH
-========================== */
 
-
-setInterval(updatePumps,2000)
-setInterval(updateValves,2000)
-
-updatePumps()
-updateValves()
 
     </script>
 

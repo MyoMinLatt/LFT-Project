@@ -10,90 +10,90 @@ SYSTEM_MAP = {
 
     "Pressure (bar)": {
         "UF": {
-            "PT001": ("UF_Pressure", "UF_PT001"),
-            "PT002": ("UF_Pressure", "UF_PT002"),
-            "PT003": ("UF_Pressure", "UF_PT003"),
-            "PT004": ("UF_Pressure", "UF_PT004"),
-            "PT005": ("UF_Pressure", "UF_PT005"),
-            "PT006": ("UF_Pressure", "UF_PT006"),
-            "PT007": ("UF_Pressure", "UF_PT007"),
+            "PT001": ("Pressure", "UF_PT001"),
+            "PT002": ("Pressure", "UF_PT002"),
+            "PT003": ("Pressure", "UF_PT003"),
+            "PT004": ("Pressure", "UF_PT004"),
+            "PT005": ("Pressure", "UF_PT005"),
+            "PT006": ("Pressure", "UF_PT006"),
+            "PT007": ("Pressure", "UF_PT007"),
         },
 
         "RO": {
-            "PT008": ("RO_Pressure", "RO_PT008"),
-            "PT009": ("RO_Pressure", "RO_PT009"),
-            "PT010": ("RO_Pressure", "RO_PT010"),
-            "PT011": ("RO_Pressure", "RO_PT011"),
+            "PT008": ("Pressure", "RO_PT008"),
+            "PT009": ("Pressure", "RO_PT009"),
+            "PT010": ("Pressure", "RO_PT010"),
+            "PT011": ("Pressure", "RO_PT011"),
         }
     },
 
 
     "TMP (bar)": {
         "UF": {
-            "UF TMP": ("UF_Pressure", "UF_TMP"),
+            "UF_TMP": ("Pressure", "UF_TMP"),
         },
 
         "RO": {
-            "RO TMP": ("RO_Pressure", "RO_TMP"),
+            "RO_TMP": ("Pressure", "RO_TMP"),
         }
     },
 
 
     "Temperature (°C)": {
         "UF": {
-            "TIT001": ("UF_Temperature", "UF_TIT001"),
-            "TIT002": ("UF_Temperature", "UF_TIT002"),
-            "TIT003": ("UF_Temperature", "UF_TIT003"),
+            "TIT001": ("Temperature", "UF_TIT001"),
+            "TIT002": ("Temperature", "UF_TIT002"),
+            "TT003": ("Temperature", "UF_TT003"),
         },
 
         "RO": {
-            "TT004": ("RO_Temperature", "RO_TT004"),
+            "TT004": ("Temperature", "RO_TT004"),
         }
     },
 
 
     "pH": {
         "UF": {
-            "pH001": ("UF_pH", "UF_pH001"),
+            "pH001": ("pH", "UF_pH001"),
         },
 
         "RO": {
-            "pH002": ("RO_pH", "RO_pH002"),
-            "pH003": ("RO_pH", "RO_pH003"),
+            "pH002": ("pH", "RO_pH002"),
+            "pH003": ("pH", "RO_pH003"),
         }
     },
 
 
     "Flow (m<sup>3</sup>/h)": {
         "UF": {
-            "FIT001": ("UF_FlowRate", "UF_FIT001"),
-            "FIT002": ("UF_FlowRate", "UF_FIT002"),
+            "FIT001": ("FlowRate", "UF_FIT001"),
+            "FIT002": ("FlowRate", "UF_FIT002"),
         },
 
         "RO": {
-            "FT001": ("RO_FlowRate", "RO_FT001"),
-            "FT002": ("RO_FlowRate", "RO_FT002"),
-            "FI001": ("RO_FlowRate", "RO_FI001"),
-            "FI002": ("RO_FlowRate", "RO_FI002"),
+            "FT001": ("FlowRate", "RO_FT001"),
+            "FT002": ("FlowRate", "RO_FT002"),
+    #        "FI001": ("RO_FlowRate", "RO_FI001"),
+    #        "FI002": ("RO_FlowRate", "RO_FI002"),
         }
     },
 
 
     "Conductivity (mS/cm)": {
         "UF": {
-            "EC001": ("UF_Conductivity", "UF_EC001"),
+            "EC001": ("Conductivity", "UF_EC001"),
         },
 
         "RO": {
-            "EC002": ("RO_Conductivity", "RO_EC002"),
-            "EC003": ("RO_Conductivity", "RO_EC003"),
+            "EC002": ("Conductivity", "RO_EC002"),
+            "EC003": ("Conductivity", "RO_EC003"),
         }
     },
 
 
     "Turbidity (NTU)": {
         "UF": {
-            "TUB001": ("UF_Turbidity", "UF_TUB001"),
+            "TUB001": ("Turbidity", "UF_TUB001"),
         },
 
         "RO": {}
@@ -104,9 +104,26 @@ SYSTEM_MAP = {
         "UF": {},
 
         "RO": {
-            "ORP001": ("RO_ORP", "RO_ORP001"),
+            "ORP001": ("ORP", "RO_ORP001"),
         }
-    }
+    },
+
+    "Agitator (Hz)": {
+        "UF": {
+            "AG001": ("Agitator", "UF_AG001"),
+        },
+
+        "RO": {}
+    },
+
+    "RO Concentrate (%)": {
+
+        "UF": {},
+
+        "RO": {
+            "FCV001": ("RO_Concentrate", "RO_FCV001"),
+        }
+    },
 }
 
 
@@ -123,7 +140,9 @@ COLOR_MAP = {
     "pH": "bg-ph",
     "Conductivity (mS/cm)": "bg-cond",
     "Turbidity (NTU)": "bg-turb",
-    "ORP (mV)": "bg-orp"
+    "ORP (mV)": "bg-orp",
+    "Agitator (Hz)": "bg-ag",
+    "RO Concentrate (%)": "bg-concentrate",
 
 }
 

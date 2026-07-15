@@ -10,49 +10,53 @@ import sqlite3
 UF_DEVICE_MAP = {
 
     "Pressure (bar)": {
-        "PT001": ("UF_Pressure", "UF_PT001"),
-        "PT002": ("UF_Pressure", "UF_PT002"),
-        "PT003": ("UF_Pressure", "UF_PT003"),
-        "PT004": ("UF_Pressure", "UF_PT004"),
-        "PT005": ("UF_Pressure", "UF_PT005"),
-        "PT006": ("UF_Pressure", "UF_PT006"),
-        "PT007": ("UF_Pressure", "UF_PT007"),
+        "PT001": ("Pressure", "UF_PT001"),
+        "PT002": ("Pressure", "UF_PT002"),
+        "PT003": ("Pressure", "UF_PT003"),
+        "PT004": ("Pressure", "UF_PT004"),
+        "PT005": ("Pressure", "UF_PT005"),
+        "PT006": ("Pressure", "UF_PT006"),
+        "PT007": ("Pressure", "UF_PT007"),
     },
 
     "TMP (bar)": {
-        "UF TMP": ("UF_Pressure", "UF_TMP"),
+        "UF_TMP": ("Pressure", "UF_TMP"),
     },
 
     "Temperature (°C)": {
-        "TIT001": ("UF_Temperature", "UF_TIT001"),
-        "TIT002": ("UF_Temperature", "UF_TIT002"),
-        "TIT003": ("UF_Temperature", "UF_TIT003"),
+        "TIT001": ("Temperature", "UF_TIT001"),
+        "TIT002": ("Temperature", "UF_TIT002"),
+        "TT003": ("Temperature", "UF_TT003"),
     },
 
     "pH": {
-        "pH001": ("UF_pH", "UF_pH001"),
+        "pH001": ("pH", "UF_pH001"),
     },
 
     "Flow (m3/h)": {
-        "FIT001": ("UF_FlowRate", "UF_FIT001"),
-        "FIT002": ("UF_FlowRate", "UF_FIT002"),
+        "FIT001": ("FlowRate", "UF_FIT001"),
+        "FIT002": ("FlowRate", "UF_FIT002"),
     },
 
     "Conductivity (mS/cm)": {
-        "EC001": ("UF_Conductivity", "UF_EC001"),
+        "EC001": ("Conductivity", "UF_EC001"),
     },
 
     "Turbidity (NTU)": {
-        "TUB001": ("UF_Turbidity", "UF_TUB001"),
+        "TUB001": ("Turbidity", "UF_TUB001"),
+    },
+
+    "Agitator (Hz)": {
+        "AG001": ("Agitator", "UF_AG001"),
     },
 
 "Pumps": {
 
-           "P001": ("UF_Pumps", "UF_P001"),
-            "P002": ("UF_Pumps", "UF_P002"),
-            "P003": ("UF_Pumps", "UF_P003"),
-            "P004": ("UF_Pumps", "UF_P004"),
-            "P005": ("UF_Pumps", "UF_P005"),
+           "P001": ("Pumps", "UF_P001"),
+            "P002": ("Pumps", "UF_P002"),
+            "P003": ("Pumps", "UF_P003"),
+            "P004": ("Pumps", "UF_P004"),
+            "P005": ("Pumps", "UF_P005"),
         }
 }
 
@@ -110,16 +114,27 @@ def sample_by_interval(rows, interval):
         return []
 
     # Determine step size
-    if interval == "30min":
+    if interval == "5min":
+        step = timedelta(minutes=5)
+
+    elif interval == "15min":
+        step = timedelta(minutes=15)
+
+    elif interval == "30min":
         step = timedelta(minutes=30)
+
     elif interval == "1hour":
         step = timedelta(hours=1)
+
     elif interval == "1day":
         step = timedelta(days=1)
+
     elif interval == "1week":
         step = timedelta(weeks=1)
+
     elif interval == "1month":
         step = timedelta(days=30)
+
     else:
         return rows
 
@@ -228,7 +243,7 @@ def get_uf_device_data(parameter, device, interval, start=None, end=None):
     # ======================================================
     # APPLY INTERVAL SAMPLING
     # ======================================================
-    if rows and interval in ["30min", "1hour", "1day", "1week", "1month"]:
+    if rows and interval in ["5min", "15min","30min", "1hour", "1day", "1week", "1month"]:
         rows = sample_by_interval(rows, interval)
 
     # ======================================================

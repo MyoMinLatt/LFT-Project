@@ -54,7 +54,8 @@ const translations = {
         //UF & RO System Page
 
         "var_Flow": "Flow (m<sup>3</sup>/h)",
-
+        interval_5m: "5 minutes",
+        interval_15m: "15 minutes",
         interval_30m: "30 minutes",
         interval_1h: "One hour",
         interval_1d: "One day",
@@ -171,6 +172,8 @@ const translations = {
 
 
         "var_Flow": "유량(m<sup>3</sup>/h)",
+        interval_5m: "5분",
+        interval_15m: "15분",
         interval_30m: "30분",
         interval_1h: "1시간",
         interval_1d: "1일",
@@ -285,6 +288,8 @@ const translations = {
 
 
         "var_Flow": "ရေစီးနှုန်း (m<sup>3</sup>/h)",
+        interval_5m: "5 မိနစ်",
+        interval_15m: "15 မိနစ်",
         interval_30m: "၃၀ မိနစ်",
         interval_1h: "၁နာရီ",
         interval_1d: "၁ရက်",
@@ -399,6 +404,8 @@ const translations = {
 
 
         "var_Flow": "Lưu lượng (m<sup>3</sup>/h)",
+        interval_5m: "5 phút",
+        interval_15m: "15 phút",
         interval_30m: "30 phút",
         interval_1h: "Một giờ",
         interval_1d: "Một ngày",
@@ -512,6 +519,8 @@ const translations = {
 
 
         "var_Flow": "Урсгал (m<sup>3</sup>/h)",
+        interval_5m: "5 минут",
+        interval_15m: "15 минут",
         interval_30m: "30 минут",
         interval_1h: "Нэг цаг",
         interval_1d: "Нэг өдөр",

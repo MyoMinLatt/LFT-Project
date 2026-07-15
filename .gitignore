@@ -12,3 +12,6 @@ venv/
 
 # Logs
 *.log
+
+# SQLite database
+database/LFT_DB.db

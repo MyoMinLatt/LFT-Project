@@ -329,6 +329,8 @@ body {
 
     <!-- RIGHT: INTERVAL BUTTONS -->
     <div class="interval-bar">
+        <button class="btn btn-info interval-btn" data-int="5min" data-i18n="interval_5m">5 minutes</button>
+        <button class="btn btn-info interval-btn" data-int="15min" data-i18n="interval_15m">15 minutes</button>
         <button class="btn btn-info interval-btn" data-int="30min" data-i18n="interval_30m">30 minutes</button>
         <button class="btn btn-info interval-btn" data-int="1hour" data-i18n="interval_1h">One hour</button>
         <button class="btn btn-info interval-btn" data-int="1day" data-i18n="interval_1d">One day</button>
@@ -386,6 +388,9 @@ body {
 <button class="btn btn-primary parameter-btn" data-param="ORP (mV)" data-i18n="var_ORP (mV)">ORP (mV)</button>
 <div class="device-container"></div>
 
+<button class="btn btn-primary parameter-btn" data-param="RO Concentrate (%)" data-i18n="var_RO Concentrate (%)">RO Concentrate (%)</button>
+<div class="device-container"></div>
+
 <button class="btn btn-primary parameter-btn" data-param="Pumps" data-i18n="var_Pumps">Pumps</button>
 <div class="device-container"></div>
 
@@ -416,13 +421,19 @@ const IMG_ERROR = "/static/images/3.ERROR.png";
 
 const deviceMap = {
 "Pressure (bar)": ["PT008","PT009","PT010","PT011"],
-"TMP (bar)": ["RO TMP"],
+"TMP (bar)": ["RO_TMP"],
 "Temperature (°C)": ["TT004"],
 "pH": ["pH002","pH003"],
-"Flow (m3/h)": ["FT001","FT002", "FI001","FI002"],
+"Flow (m3/h)": ["FT001","FT002"],
 "Conductivity (mS/cm)": ["EC002", "EC003"],
 "ORP (mV)": ["ORP001"],
-"Pumps": ["P006","P007"]
+"RO Concentrate (%)": ["FCV001"],
+"Pumps": ["P007"]
+};
+
+// Display name only
+const deviceDisplayName = {
+    "RO_TMP": "RO TMP"
 };
 
 function safeId(name){
@@ -652,15 +663,19 @@ $(".parameter-btn").click(function(){
         return;
     }
 
-    deviceMap[param].forEach(d=>{
-        container.append(`
-            <button class="btn btn-secondary device-btn"
-                data-param="${param}"
-                data-device="${d}">
-                ${d}
-            </button>
-        `);
-    });
+   deviceMap[param].forEach(d=>{
+
+    let label = deviceDisplayName[d] || d;
+
+    container.append(`
+        <button class="btn btn-secondary device-btn"
+            data-param="${param}"
+            data-device="${d}">
+            ${label}
+        </button>
+    `);
+
+});
 
 });
 
@@ -719,7 +734,7 @@ $(this).addClass("active-device");
                  ×
             </button>
             <h5 class="chart-title">
-                ${device}
+                ${deviceDisplayName[device] || device}
             </h5>
 
              <!-- THRESHOLD UI -->

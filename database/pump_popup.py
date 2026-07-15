@@ -13,11 +13,27 @@ def find_device(device):
 
 
 def parse_time(ts):
-    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S"):
+
+    formats = [
+
+        "%Y/%m/%d %H:%M:%S",
+        "%Y/%m/%d %H:%M",
+
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+
+        "%m/%d/%Y %H:%M:%S",
+        "%m/%d/%Y %H:%M",
+
+        "%Y-%m-%dT%H:%M:%S"
+    ]
+
+    for fmt in formats:
         try:
             return datetime.strptime(ts, fmt)
-        except:
+        except ValueError:
             pass
+
     return None
 
 
@@ -28,7 +44,7 @@ def calculate_summary(values, latest_time):
 
     max_val = max(day_vals) if day_vals else "-"
     min_val = min(day_vals) if day_vals else "-"
-    avg_day_val = round(sum(day_vals) / len(day_vals), 9) if day_vals else "-"
+    avg_day_val = round(sum(day_vals) / len(day_vals), 3) if day_vals else "-"
 
     interval_vals = [v for t, v in values if t <= latest_time]
 
@@ -38,10 +54,10 @@ def calculate_summary(values, latest_time):
     def avg_minutes(minutes):
         start = latest_time - timedelta(minutes=minutes)
         vals = [v for t, v in values if start <= t <= latest_time]
-        return round(sum(vals) / len(vals), 9) if vals else "-"
+        return round(sum(vals) / len(vals), 3) if vals else "-"
 
     def safe_round(val):
-        return round(val, 9) if isinstance(val, (int, float)) else "-"
+        return round(val, 3) if isinstance(val, (int, float)) else "-"
 
     return {
         "latest": safe_round(latest_val),
@@ -74,24 +90,52 @@ def get_device_popup_data(device, date=None, datetime_param=None):
     conn.close()
 
     dt_vals = []
+
     for ts, v in rows:
+
         t = parse_time(ts)
+
+        if t is None:
+            continue
+
+        # Keep only every 5 seconds
+        if t.second % 5 != 0:
+            continue
+
         try:
             val = float(v)
         except:
             continue
-        if t:
-            dt_vals.append((t, val))
+
+        dt_vals.append((t, val))
 
     if not dt_vals:
         return {"today": empty_summary(), "selected": None, "custom": None}
 
     dt_vals.sort()
 
+    print("\nFirst 10 timestamps:")
+    for t, v in dt_vals[:10]:
+        print(t)
     latest_time = dt_vals[-1][0]
 
     # -------- TODAY --------
-    today_vals = [(t, v) for t, v in dt_vals if t.date() == latest_time.date()]
+    today_vals = [
+
+        (t, v)
+
+        for t, v in dt_vals
+
+        if t.date() == latest_time.date()
+           and t.second % 5 == 0
+
+    ]
+
+    latest_time = latest_time.replace(
+        second=(latest_time.second // 5) * 5,
+        microsecond=0
+    )
+
     today_data = calculate_summary(today_vals, latest_time)
 
     # -------- SELECTED (FIXED LOGIC 1) --------
@@ -99,13 +143,26 @@ def get_device_popup_data(device, date=None, datetime_param=None):
 
     if date:
         dt = datetime.strptime(date, "%Y-%m-%d")
-        sel_vals = [(t, v) for t, v in dt_vals if t.date() == dt.date()]
+        sel_vals = [
+
+    (t, v)
+
+    for t, v in dt_vals
+
+    if t.date() == dt.date()
+       and t.second % 5 == 0
+
+]
 
         if sel_vals:
             target_time = latest_time.replace(
+
                 year=dt.year,
                 month=dt.month,
-                day=dt.day
+                day=dt.day,
+
+                microsecond=0
+
             )
 
             closest_record = min(sel_vals, key=lambda x: abs(x[0] - target_time))
@@ -121,9 +178,9 @@ def get_device_popup_data(device, date=None, datetime_param=None):
                     "recent": "-",
                     "avg30m": "-",
                     "avg1hr": "-",
-                    "avg1d": round(sum(vals)/len(vals), 9),
-                    "max": round(max(vals), 9),
-                    "min": round(min(vals), 9)
+                    "avg1d": round(sum(vals)/len(vals), 3),
+                    "max": round(max(vals), 3),
+                    "min": round(min(vals), 3)
                 }
             else:
                 selected_data = calculate_summary(sel_vals, closest_time)
@@ -135,23 +192,35 @@ def get_device_popup_data(device, date=None, datetime_param=None):
     custom = None
     if datetime_param:
         try:
-            dt_sel = datetime.strptime(datetime_param, "%Y-%m-%d %H:%M")
+            print("datetime_param =", repr(datetime_param))
+            dt_sel = datetime.strptime(datetime_param, "%Y-%m-%d %H:%M:%S")
             day_vals = [(t, v) for t, v in dt_vals if t.date() == dt_sel.date()]
 
             if day_vals:
-                exact = [v for t, v in day_vals if t.hour == dt_sel.hour and t.minute == dt_sel.minute]
+                exact = [
+
+                    v
+
+                    for t, v in day_vals
+
+                    if t.hour == dt_sel.hour
+                       and t.minute == dt_sel.minute
+                       and t.second == dt_sel.second
+
+                ]
                 vals = [v for t, v in day_vals]
 
                 custom = {
                     "date": dt_sel.strftime("%Y/%m/%d"),
-                    "time": dt_sel.strftime("%H:%M"),
-                    "value": exact[0] if exact else None,
-                    "avg": round(sum(vals)/len(vals), 9),
-                    "max": round(max(vals), 9),
-                    "min": round(min(vals), 9)
+                    "time": dt_sel.strftime("%H:%M:%S"),
+                    "value": round(exact[0], 3) if exact else None,
+                    "avg": round(sum(vals) / len(vals), 3),
+                    "max": round(max(vals), 3),
+                    "min": round(min(vals), 3)
                 }
-        except:
-            custom = None
+        except Exception as e:
+                print("CUSTOM ERROR:", e)
+                custom = None
 
     return {
         "today": today_data,

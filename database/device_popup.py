@@ -6,23 +6,41 @@ from database.system_map import get_table_column
 DB_PATH = LFT_DB
 
 def parse_time(t):
+
     formats = [
-        "%m/%d/%Y %H:%M",
-        "%m/%d/%Y %H:%M:%S",
+
+        "%Y/%m/%d %H:%M:%S",
         "%Y/%m/%d %H:%M",
-        "%Y/%m/%d %H:%M:%S"
+
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+
+        "%m/%d/%Y %H:%M:%S",
+        "%m/%d/%Y %H:%M",
+
+        "%Y-%m-%dT%H:%M:%S"
     ]
+
     for fmt in formats:
         try:
             return datetime.strptime(t, fmt)
-        except:
+        except ValueError:
             pass
+
     return None
 
 
 def fetch_values(device):
+
+    print(f"\nRequested device = {device}")
+
     table, column = get_table_column(device)
+
+    print(f"Mapped table = {table}")
+    print(f"Mapped column = {column}")
+
     if table is None:
+        print("Device not found in SYSTEM_MAP")
         return []
 
     conn = sqlite3.connect(DB_PATH)
@@ -38,6 +56,13 @@ def fetch_values(device):
         dt = parse_time(t)
         if dt is None:
             continue
+        # --------------------------------------
+        # Keep only every 5 seconds
+        # # hh:mm:00,05,10,...55
+        # --------------------------------------
+        if dt.second % 5 != 0:
+           continue
+
         try:
             values.append((dt, float(v)))
         except:
@@ -53,7 +78,7 @@ def calculate_summary(values, latest_time):
 
     max_val = max(day_vals) if day_vals else "-"
     min_val = min(day_vals) if day_vals else "-"
-    avg_day_val = round(sum(day_vals) / len(day_vals), 9) if day_vals else "-"
+    avg_day_val = round(sum(day_vals) / len(day_vals), 3) if day_vals else "-"
 
     interval_vals = [v for t, v in values if t <= latest_time]
 
@@ -63,10 +88,10 @@ def calculate_summary(values, latest_time):
     def avg_minutes(minutes):
         start = latest_time - timedelta(minutes=minutes)
         vals = [v for t, v in values if start <= t <= latest_time]
-        return round(sum(vals) / len(vals), 9) if vals else "-"
+        return round(sum(vals) / len(vals), 3) if vals else "-"
 
     def safe_round(val):
-        return round(val, 9) if isinstance(val, (int, float)) else "-"
+        return round(val, 3) if isinstance(val, (int, float)) else "-"
 
     return {
         "latest": safe_round(latest_val),
@@ -101,21 +126,39 @@ def get_device_popup_data(device, date=None, datetime_param=None):
     latest_time = all_values[-1][0]
 
     # -------- TODAY --------
-    today_vals = [(t, v) for t, v in all_values if t.date() == latest_time.date()]
+    today_vals = [
+        (t, v)
+        for t, v in all_values
+        if t.date() == latest_time.date()
+           and t.second % 5 == 0
+    ]
+
+    latest_time = latest_time.replace(
+        second=(latest_time.second // 5) * 5,
+        microsecond=0
+    )
+
     today_summary = calculate_summary(today_vals, latest_time)
 
     # -------- SELECTED --------
     selected_summary = None
     if date:
         dt = datetime.strptime(date, "%Y-%m-%d")
-        sel_vals = [(t, v) for t, v in all_values if t.date() == dt.date()]
+        sel_vals = [
+            (t, v)
+            for t, v in all_values
+            if t.date() == dt.date()
+               and t.second % 5 == 0
+        ]
 
         if sel_vals:
             # Target time (same clock time as Today)
             target_time = latest_time.replace(
                 year=dt.year,
                 month=dt.month,
-                day=dt.day
+                day=dt.day,
+
+                microsecond=0
             )
 
             # Find closest timestamp
@@ -133,9 +176,9 @@ def get_device_popup_data(device, date=None, datetime_param=None):
                     "recent": "-",
                     "avg30m": "-",
                     "avg1hr": "-",
-                    "avg1d": round(sum(vals) / len(vals), 9),
-                    "max": round(max(vals), 9),
-                    "min": round(min(vals), 9)
+                    "avg1d": round(sum(vals) / len(vals), 3),
+                    "max": round(max(vals), 3),
+                    "min": round(min(vals), 3)
                 }
             else:
                 # ✅ Good match → full logic
@@ -149,23 +192,25 @@ def get_device_popup_data(device, date=None, datetime_param=None):
     custom = None
     if datetime_param:
         try:
-            dt_sel = datetime.strptime(datetime_param, "%Y-%m-%d %H:%M")
+            print("datetime_param =", repr(datetime_param))
+            dt_sel = datetime.strptime(datetime_param, "%Y-%m-%d %H:%M:%S")
             day_vals = [(t, v) for t, v in all_values if t.date() == dt_sel.date()]
 
             if day_vals:
-                exact = [v for t, v in day_vals if t.hour == dt_sel.hour and t.minute == dt_sel.minute]
+                exact = [v for t, v in day_vals if t.hour == dt_sel.hour and t.minute == dt_sel.minute and t.second == dt_sel.second]
                 vals = [v for t, v in day_vals]
 
                 custom = {
                     "date": dt_sel.strftime("%Y/%m/%d"),
-                    "time": dt_sel.strftime("%H:%M"),
-                    "value": round(exact[0], 9) if exact else None,
-                    "avg": round(sum(vals)/len(vals), 9),
-                    "max": round(max(vals), 9),
-                    "min": round(min(vals), 9)
+                    "time": dt_sel.strftime("%H:%M:%S"),
+                    "value": round(exact[0], 3) if exact else None,
+                    "avg": round(sum(vals)/len(vals), 3),
+                    "max": round(max(vals), 3),
+                    "min": round(min(vals), 3)
                 }
-        except:
-            custom = None
+        except Exception as e:
+                print("CUSTOM ERROR:", e)
+                custom = None
 
     return {
         "today": today_summary,

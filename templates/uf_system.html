@@ -322,6 +322,8 @@ body {
 
 <!-- INTERVAL BUTTONS -->
     <div class="interval-bar">
+        <button class="btn btn-info interval-btn" data-int="5min" data-i18n="interval_5m">5 minutes</button>
+        <button class="btn btn-info interval-btn" data-int="15min" data-i18n="interval_15m">15 minutes</button>
         <button class="btn btn-info interval-btn" data-int="30min" data-i18n="interval_30m">30 minutes</button>
         <button class="btn btn-info interval-btn" data-int="1hour" data-i18n="interval_1h">One hour</button>
         <button class="btn btn-info interval-btn" data-int="1day" data-i18n="interval_1d">One day</button>
@@ -378,6 +380,9 @@ body {
 <button class="btn btn-primary parameter-btn" data-param="Turbidity (NTU)" data-i18n="var_Turbidity (NTU)">Turbidity (NTU)</button>
 <div class="device-container"></div>
 
+<button class="btn btn-primary parameter-btn" data-param="Agitator (Hz)" data-i18n="var_Agitator (Hz)">Agitator (Hz)</button>
+<div class="device-container"></div>
+
 <button class="btn btn-primary parameter-btn" data-param="Pumps" data-i18n="var_Pumps">Pumps</button>
 <div class="device-container"></div>
 
@@ -405,14 +410,21 @@ const IMG_ERROR = "/static/images/3.ERROR.png";
 
 const deviceMap = {
 "Pressure (bar)": ["PT001","PT002","PT003","PT004","PT005","PT006","PT007"],
-"TMP (bar)": ["UF TMP"],
+"TMP (bar)": ["UF_TMP"],
 "Temperature (°C)": ["TIT001","TIT002","TIT003"],
 "pH": ["pH001"],
 "Flow (m3/h)": ["FIT001","FIT002"],
 "Conductivity (mS/cm)": ["EC001"],
 "Turbidity (NTU)": ["TUB001"],
-"Pumps": ["P001","P002","P003", "P004","P005"]
+"Agitator (Hz)": ["AG001"],
+"Pumps": ["P002"]
 };
+
+// Display name only
+const deviceDisplayName = {
+    "UF_TMP": "UF TMP"
+};
+
 
 function safeId(name){
     return name.replace(/\s+/g,"_").replace(/[^\w]/g,"");
@@ -640,14 +652,18 @@ $(".parameter-btn").click(function(){
     }
 
     deviceMap[param].forEach(d=>{
-        container.append(`
-            <button class="btn btn-secondary device-btn"
-                data-param="${param}"
-                data-device="${d}">
-                ${d}
-            </button>
-        `);
-    });
+
+    let label = deviceDisplayName[d] || d;
+
+    container.append(`
+        <button class="btn btn-secondary device-btn"
+            data-param="${param}"
+            data-device="${d}">
+            ${label}
+        </button>
+    `);
+
+});
 
 });
 
@@ -706,7 +722,7 @@ $(this).addClass("active-device");
             ×
         </button>
         <h5 class="chart-title">
-            ${device}
+            ${deviceDisplayName[device] || device}
         </h5>
 
             <!-- THRESHOLD UI -->
