@@ -118,9 +118,21 @@ const translations = {
         manual_models:"Statistical Models",
         manual_input_browser:"Input Browser",
         manual_summary_table:"Summary Table",
-        manual_result_plots:"Result Plots"
+        manual_result_plots:"Result Plots",
+
+
+        //Analysis Page
+
+        "statistical-analysis": "Statistical Analysis",
+        "uf_treatment_volume_estimation": "UF Treatment Volume Estimation",
+        "average_treatment_flow_rate": "Average treatment flow rate",
+        "raw_water_capacity": "Raw water capacity (X)",
+        "estimated_processing_time": "Estimated processing time (T)",
+        "uf_treatment_volume": "UF Treatment volume (Y)"
 
     },
+
+
 
     ko: {
         title: "폐수 처리 시스템",
@@ -234,7 +246,17 @@ const translations = {
         manual_models:"Statistical Models",
         manual_input_browser:"Input Browser",
         manual_summary_table:"Summary Table",
-        manual_result_plots:"Result Plots"
+        manual_result_plots:"Result Plots",
+
+
+        //Analysis Page
+
+        "statistical-analysis": "통계 분석",
+        "uf_treatment_volume_estimation": "UF 처리량 추정",
+        "average_treatment_flow_rate": "평균 처리 유량",
+        "raw_water_capacity": "원수 용량 (X)",
+        "estimated_processing_time": "예상 처리 시간(T)",
+        "uf_treatment_volume": "UF 처리수 (Y)"
 
     },
 
@@ -350,7 +372,16 @@ const translations = {
         manual_models:"စာရင်းအင်းတွက်ချက်ရန်နည်းလမ်းများ",
         manual_input_browser:"အချက်အလက်သွင်းရန်စာမျက်နှာ",
         manual_summary_table:"အကျဉ်းချုပ်ဇယား",
-        manual_result_plots:"အဖြေရလဒ်ပြပုံများ"
+        manual_result_plots:"အဖြေရလဒ်ပြပုံများ",
+
+
+
+        "statistical-analysis": "ဆန်းစစ်လေ့လာခြင်း",
+        "uf_treatment_volume_estimation": "UF သန့်စင်ပြီးထုထည် တွက်ချက်ခြင်း",
+        "average_treatment_flow_rate": "ပျမ်းမျှ သက်ရောက်စီးဆင်းနှုန်း",
+        "raw_water_capacity": "မပြုပြင်ရသေးသော ရေပမာဏ (X)",
+        "estimated_processing_time": "လုပ်ငန်းစဉ် ခန့်မှန်းကြာချိန် (T)",
+        "uf_treatment_volume": "UF စစ်ထုတ်ပြီး ရေထုထည်(Y)"
 
     },
 
@@ -465,7 +496,15 @@ const translations = {
         manual_models:"Statistical Models",
         manual_input_browser:"Input Browser",
         manual_summary_table:"Summary Table",
-        manual_result_plots:"Result Plots"
+        manual_result_plots:"Result Plots",
+
+
+        "statistical-analysis": "Phân tích thống kê",
+        "uf_treatment_volume_estimation": "Ước tính thể tích xử lý UF",
+        "average_treatment_flow_rate": "Lưu lượng xử lý trung bình",
+        "raw_water_capacity": "Dung lượng nước thô (X)",
+        "estimated_processing_time": "Thời gian xử lý ước tính (T)",
+        "uf_treatment_volume": "Thể tích xử lý UF (Y)"
 
     },
 
@@ -581,7 +620,15 @@ const translations = {
         manual_models:"Statistical Models",
         manual_input_browser:"Input Browser",
         manual_summary_table:"Summary Table",
-        manual_result_plots:"Result Plots"
+        manual_result_plots:"Result Plots",
+
+
+        "statistical-analysis": "Статистик шинжилгээ",
+        "uf_treatment_volume_estimation": "UF эмчилгээний эзлэхүүний тооцоолол",
+        "average_treatment_flow_rate": "Цэвэрлэгээний дундаж урсгалын хурд",
+        "raw_water_capacity": "Түүхий усны багтаамж (X)",
+        "estimated_processing_time": "Боловсруулалтын тооцоолсон хугацаа (T)",
+        "uf_treatment_volume": "UF эмчилгээний эзлэхүүн (Y)"
 
     }
 

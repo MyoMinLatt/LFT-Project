@@ -14,22 +14,7 @@ body {
     color:white;
 }
 
-.graph-box {
-    background:white;
-    padding:15px;
-    border-radius:8px;
-    height:100%;
-}
 
-.graph-box canvas {
-    width:100% !important;
-    height:220px !important;
-    margin-bottom:15px;
-}
-
-.table {
-    font-size:12px;
-}
 
 /* ===============================
    🔥 FULL-WIDTH TOP PANEL
@@ -42,7 +27,7 @@ body {
     z-index: 9999;
 
     background: rgba(0,0,0,0.7);
-    padding: 10px 20px;
+    padding: 25px 30px;
 
     display: flex;
     flex-direction: column;
@@ -58,8 +43,6 @@ body {
     margin: 0;
 }
 
-/* REMOVE THIS (important) */
-/* .statistic-top-panel h2 { ... } */
 
 /* ===============================
    🔥 LANGUAGE (TOP RIGHT)
@@ -87,129 +70,109 @@ body {
     line-height: 1.4;
 }
 
-/* INTERVAL RIGHT */
-.interval-bar{
-    display: flex;
-    gap: 5px;
-}
 
-.interval-bar button{
-    margin: 0;
-    padding: 4px 6px;
-    font-size: 12px;
-}
 
-/* ===============================
-   CUSTOM RANGE
-=============================== */
-.custom-range{
-    display: flex;
-    gap: 5px;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
 
-.custom-range input{
-    width: 140px;
-}
-
-/* ===============================
-   🔥 PUSH MAIN CONTENT DOWN
-=============================== */
-.statistic-content{
-    margin-top: 170px;  /* adjust if needed */
-}
-
-/* ===============================
-   PARAMETER PANEL
-=============================== */
-.param-panel{
-    max-width: 200px;
-    padding-right: 10px;
-}
-
-.parameter-btn {
-    width:100%;
-    margin-bottom:6px;
-    padding: 8px;
-    font-size: 14px;
-    background-color:#25383C !important;
-    color:#ffffff !important;
-    border:2px solid #7b2cbf !important;
-}
-
-.parameter-btn:hover {
-    background-color:#3c096c !important;
-}
-
-.parameter-btn.active-parameter {
-    background-color:#240046 !important;
-    border:2px solid #ffffff !important;
-}
-
-/* ===============================
-   DEVICE BUTTONS
-=============================== */
-.device-btn {
-    width:100%;
-    margin-bottom:4px;
-    background-color:#00b894 !important;
-    color:white !important;
-    border:2px solid #00cec9 !important;
-}
-
-.device-btn:hover {
-    background-color:#00997a !important;
-}
-
-.device-btn.active-device {
-    background-color:#00e5ff !important;
-    color:#000 !important;
-    border:2px solid #ffffff !important;
-}
-
-/* ===============================
-   ACTIVE INTERVAL
-=============================== */
-.interval-bar button.active-interval {
-    background-color: #0002FF !important;
-    color: #ffffff !important;
-    border: 2px solid #ffffff !important;
-}
-
-.interval-bar button.active-interval:hover {
-    background-color: #08305c !important;
-}
-
-/* ===============================
-   🔥 FIXED VALVE BOX (OUTSIDE PANEL)
-=============================== */
-.fixed-models{
-    position: fixed;
-
-    top: 260px;      /* to adjust up and down below panel */
-    right: 20px;
-
-    width: 260px;
-    max-height: 300px;
-
-    overflow-y: auto;
-
-    z-index: 9998;
-
-    background: rgba(0,0,0,0.7);
-    border: 2px solid #00c8ff;
-    border-radius: 10px;
-    padding: 10px;
-
+/* ======================================
+   Calculation Tables
+====================================== */
+.calc-title{
     text-align:center;
+    color:#32CD32;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:120px;      /* Move title below top panel */
+    margin-bottom:20px;
+    letter-spacing:1px;
 }
 
-/* compact table */
-.fixed-models table{
-    font-size: 20px;
+
+.calc-panel{
+    background:#ffffff;
+    border-radius:12px;
+    padding:25px;
+    position:relative;
+    left:-180px;
+    top:20px;
+    border:2px solid #0b5ed7;
+    box-shadow:0 8px 20px rgba(0,0,0,0.20);
 }
 
+.calc-header{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+    margin-bottom:25px;
+    padding-right:20px;
+}
+
+.calc-header input{
+    width:140px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    border:2px solid #0d6efd;
+    border-radius:8px;
+    color:#003366;
+    background:#f8fbff;
+}
+
+.calc-header label{
+    color:#003366;
+    font-size:22px;
+    font-weight:bold;
+}
+
+
+.calc-table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:Segoe UI, Arial, sans-serif;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+.calc-table th{
+    background:#003366;
+    color:white;
+    text-align:center;
+    font-size:22px;
+    font-weight:700;
+    padding:14px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    border:1px solid #295f8a;
+}
+
+.calc-table td{
+    padding:14px;
+    font-size:20px;
+    border:1px solid #d8d8d8;
+    text-align:center;
+    font-weight:600;
+}
+
+/* First column (Raw water capacity) */
+.calc-table td:first-child{
+    color:#003366;      /* Change to any colour you like */
+    font-size:22px;
+    font-weight:700;
+}
+
+.calc-table tbody tr:nth-child(even){
+    background:#f2f8fc;
+}
+
+.calc-table tbody tr:nth-child(odd){
+    background:#ffffff;
+}
+
+.calc-table tbody tr:hover{
+    background:#d7f0ff;
+    transition:0.3s;
+}
 </style>
 
 
@@ -236,78 +199,111 @@ body {
         <div>UTC: <span id="utc-time"></span></div>
         <div>KST: <span id="kst-time"></span></div>
         <div>
-            <span data-i18n="latest_data_time">Latest Data Time</span>:
+
             <span id="data-time" style="font-weight:bold; color:#00ffff;"></span>
         </div>
     </div>
 
-    <!-- RIGHT: INTERVAL BUTTONS -->
-    <div class="interval-bar">
-        <button class="btn btn-info interval-btn" data-int="30min" data-i18n="interval_30m">30 minutes</button>
-        <button class="btn btn-info interval-btn" data-int="1hour" data-i18n="interval_1h">One hour</button>
-        <button class="btn btn-info interval-btn" data-int="1day" data-i18n="interval_1d">One day</button>
-        <button class="btn btn-info interval-btn" data-int="1week" data-i18n="interval_1w">One week</button>
-        <button class="btn btn-info interval-btn" data-int="1month" data-i18n="interval_1m">One month</button>
-    </div>
 
-</div>
+</div>   <!-- closes .top-row -->
 
-<!-- CUSTOM RANGE stays below -->
-    <div class="custom-range">
-        <label data-i18n="start">Start:</label>
-        <input type="datetime-local" id="startTime" class="form-control form-control-sm">
-        <label data-i18n="end">End:</label>
-        <input type="datetime-local" id="endTime" class="form-control form-control-sm">
-        <button class="btn btn-success btn-sm" id="applyCustom" data-i18n="apply">Apply</button>
-        <button class="btn btn-secondary btn-sm" id="resetRange" data-i18n="reset">Reset</button>
-    </div>
+</div>   <!-- closes .statistic-top-panel -->
 
-</div>
-
-   <!-- ✅ VALVE BOX (CORRECT POSITION) -->
-    <div class="models-box fixed-models">
-        <h6 data-i18n="statistic_models">Statistic Models</h6>
-        <div id="models-table-container"></div>
-</div>
-
-
-
-</div>
 <hr style="border-color:white;">
 
-<div class="row statistic-content">
+    <div class="row statistic-content"></div>
 
-  <div class="col-md-3 param-panel">
-
-<button class="btn btn-primary parameter-btn" data-param="Pressure (bar)" data-i18n="var_Pressure (bar)">Pressure (bar)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="TMP (bar)" data-i18n="var_TMP (bar)">TMP (bar)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="Temperature (°C)" data-i18n="var_Temperature (°C)">Temperature (°C)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="pH" data-i18n="var_pH">pH</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="Flow (m3/h)" data-i18n="var_Flow">Flow (m<sup>3</sup>/h)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="Conductivity (mS/cm)" data-i18n="var_Conductivity (mS/cm)">Conductivity (mS/cm)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="ORP (mV)" data-i18n="var_ORP (mV)">ORP (mV)</button>
-<div class="device-container"></div>
-
-<button class="btn btn-primary parameter-btn" data-param="Pumps" data-i18n="var_Pumps">Pumps</button>
-<div class="device-container"></div>
-
+        <div class="col-md-3 param-panel"> </div>
 </div>
 
-<div class="col-md-9 graph-panel">
-      <div class="row g-3" id="graph-container"></div>
-</div>
+
+
+<!-- =========================================
+     Processing Time Calculator
+========================================= -->
+<h3 class="calc-title"
+    style="margin-top:120px;"
+    data-i18n="uf_treatment_volume_estimation">
+    UF Treatment Volume Estimation
+</h3>
+
+<div class="row mt-4">
+    <div class="col-md-9 offset-md-3">
+
+<div class="calc-panel">
+
+    <div class="calc-header">
+
+        <label data-i18n="average_treatment_flow_rate">
+            <strong>>Average treatment flow rate</strong>
+        </label>
+
+        <input
+            type="number"
+            id="flowRate"
+            class="form-control"
+            step="0.01"
+            value="15.01">
+
+        <label data-i18n="ton_per_hour"><strong>Ton/hr</strong> </label>
+
+    </div>
+
+    <table class="calc-table">
+
+        <thead>
+            <tr>
+                <th data-i18n="raw_water_capacity"> Raw water capacity (X) </th>
+                <th data-i18n="estimated_processing_time"> Estimated processing time (T) </th>
+                <th data-i18n="uf_treatment_volume"> UF Treatment volume (Y) </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>5 Ton</td>
+                <td id="time5"></td>
+                <td id="uf5"></td>
+            </tr>
+
+            <tr>
+                <td>10 Ton</td>
+                <td id="time10"></td>
+                <td id="uf10"></td>
+            </tr>
+
+            <tr>
+                <td>15 Ton</td>
+                <td id="time15"></td>
+                <td id="uf15"></td>
+            </tr>
+
+            <tr>
+                <td>20 Ton</td>
+                <td id="time20"></td>
+                <td id="uf20"></td>
+            </tr>
+
+            <tr>
+                <td>25 Ton</td>
+                <td id="time25"></td>
+                <td id="uf25"></td>
+            </tr>
+
+            <tr>
+                <td>30 Ton</td>
+                <td id="time30"></td>
+                <td id="uf30"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+    </div>
+    </div>
 </div>
 
 
@@ -315,484 +311,121 @@ body {
 
 <script>
 
-$(document).ready(function(){
-
-let currentInterval = "raw";   // 🔥 default = raw (real-time)
-let charts = {};
-let thresholds = {};  // 🔥 store min/max threshold per device
-let customStart = null;
-let customEnd = null;
-let isCustomActive = false;
-
-const IMG_ON = "/static/images/1.ON.gif";
-const IMG_OFF = "/static/images/2.OFF.png";
-const IMG_ERROR = "/static/images/3.ERROR.png";
-
-const deviceMap = {
-"Pressure (bar)": ["PT008","PT009","PT010","PT011"],
-"TMP (bar)": ["RO TMP"],
-"Temperature (°C)": ["TT004"],
-"pH": ["pH002","pH003"],
-"Flow (m3/h)": ["FT001","FT002", "FI001","FI002"],
-"Conductivity (mS/cm)": ["EC002", "EC003"],
-"ORP (mV)": ["ORP001"],
-"Pumps": ["P006","P007"]
-};
-
-function safeId(name){
-    return name.replace(/\s+/g,"_").replace(/[^\w]/g,"");
-}
-
-/* CLOCK */
-function updateTimes(){
-    const now = new Date();
-    $("#utc-time").text(now.toISOString().slice(0,19).replace("T"," "));
-    const kst = new Date(now.getTime()+9*60*60*1000);
-    $("#kst-time").text(kst.toISOString().slice(0,19).replace("T"," "));
-}
-
-/* LOAD CHART */
-
-function loadChart(param, device, start=null, end=null){
-
-    $.get("/api/statistic-data", {
-        parameter:param,
-        device:device,
-        interval:currentInterval,
-        start:start,
-        end:end
-    }, function(data){
-
-        if(!data || !data.timestamps) return;
-
-        const deviceId = safeId(device);
-
-        if(data.data_time) $("#data-time").text(data.data_time);
-
-        $("#"+deviceId+"_current").text(data.latest ?? "-");
-        $("#"+deviceId+"_mean").text(data.mean ?? "-");
-        $("#"+deviceId+"_min").text(data.min ?? "-");
-        $("#"+deviceId+"_max").text(data.max ?? "-");
-
-        if(data.timestamps.length === 0) return;
-
-        const fullLabels = data.timestamps;
-        const fullValues = data.values;
-
-        // 🛑 STOP previous animation if exists
-        if(charts[deviceId] && charts[deviceId].animationInterval){
-            clearInterval(charts[deviceId].animationInterval);
-        }
-
-        // destroy old chart
-        if(charts[deviceId]){
-            charts[deviceId].destroy();
-            delete charts[deviceId];
-        }
-
-        const ctx = document.getElementById("chart_"+deviceId);
-// ✅ DEFINE DATASETS FIRST (CRITICAL FIX)
-        let datasets = [
-            {
-                label: device,
-                data: [],
-                borderWidth: 2,
-                tension: 0.3,
-                borderColor: "#12AD2B",   // Parrot Green
-                backgroundColor: "transparent"
-            },
-            {
-                label: t("threshold_min"),
-                data: [],
-                borderColor: "red",
-                borderDash: [5,5],
-                pointRadius: 0
-            },
-            {
-                label: t("threshold_max"),
-                data: [],
-                borderColor: "blue",
-                borderDash: [5,5],
-                pointRadius: 0
-            }
-        ];
-
-        charts[deviceId] = new Chart(ctx,{
-            type:'line',
-            data:{
-                labels:[],
-                datasets: datasets
-            },
-            options:{
-                responsive:true,
-                maintainAspectRatio:false,
-                animation:false
-            }
-        });
-
-        const windowSize = 300;
-        let index = 0;
-        const speed = 200;
-
-        const animationInterval = setInterval(function(){
-
-            if(!charts[deviceId]){
-                clearInterval(animationInterval);
-                return;
-            }
-
-            if(index >= fullLabels.length){
-                index = 0;  // 🔁 LOOP BACK (recycle continuously)
-            }
-
-            charts[deviceId].data.labels.push(fullLabels[index]);
-            const value = fullValues[index];
-
-// main data
-charts[deviceId].data.datasets[0].data.push(value);
-
-// threshold logic
-const th = thresholds[deviceId];
-
-if(th){
-    charts[deviceId].data.datasets[1].data.push(th.min);
-    charts[deviceId].data.datasets[2].data.push(th.max);
-} else {
-    charts[deviceId].data.datasets[1].data.push(null);
-    charts[deviceId].data.datasets[2].data.push(null);
-}
-
-            if(charts[deviceId].data.labels.length > windowSize){
-                charts[deviceId].data.labels.shift();
-
-                charts[deviceId].data.datasets.forEach(ds => {
-                    ds.data.shift();
-                 });
-            }
-
-            charts[deviceId].update();
-
-            index++;
-
-        }, speed);
-
-        // 🧠 STORE interval inside chart object
-        charts[deviceId].animationInterval = animationInterval;
-
-    });
-}
-
-/* INTERVAL BUTTONS */
-$(".interval-btn").click(function(){
-
-    $(".interval-btn")
-        .removeClass("active-interval")
-        .addClass("btn-info");
-
-    $(this)
-        .removeClass("btn-info")
-        .addClass("active-interval");
-
-    currentInterval = $(this).data("int");   // 🔥 apply interval
-
-    $("[id^='box_']").each(function(){
-        const param  = $(this).data("param");
-        const device = $(this).data("device");
-
-        if(isCustomActive){
-            loadChart(param, device, customStart, customEnd);
-        } else {
-            loadChart(param, device);
-        }
-    });
-});
-
-/* APPLY CUSTOM */
-$("#applyCustom").click(function(){
-
-    customStart = $("#startTime").val();
-    customEnd   = $("#endTime").val();
-
-    if(!customStart || !customEnd){
-        alert("Select start & end");
-        return;
-    }
-
-    isCustomActive = true;
-
-    $("[id^='box_']").each(function(){
-        const param  = $(this).data("param");
-        const device = $(this).data("device");
-        loadChart(param, device, customStart, customEnd);
-    });
-
-});
-
-/* RESET */
-$("#resetRange").click(function(){
-
-    isCustomActive = false;
-    customStart = null;
-    customEnd = null;
-
-    currentInterval = "raw";   // 🔥 back to real-time
-
-    $(".interval-btn")
-        .removeClass("active-interval")
-        .addClass("btn-info");
-
-    $("#startTime").val("");
-    $("#endTime").val("");
-
-    $("[id^='box_']").each(function(){
-        const param  = $(this).data("param");
-        const device = $(this).data("device");
-        loadChart(param, device);
-    });
-
-});
-
-/* PARAMETER TOGGLE */
-$(".parameter-btn").click(function(){
-
-    let param = $(this).data("param");
-    let container = $(this).next(".device-container");
-
-    if(container.children().length>0){
-        container.empty();
-        return;
-    }
-
-    deviceMap[param].forEach(d=>{
-        container.append(`
-            <button class="btn btn-secondary device-btn"
-                data-param="${param}"
-                data-device="${d}">
-                ${d}
-            </button>
-        `);
-    });
-
-});
-
-/* DEVICE TOGGLE */
-
-/* Translating Key-value names */
-function t(key){
-    const lang = localStorage.getItem("lang") || "en";
-
-    if(typeof translations !== "undefined" &&
-       translations[lang] &&
-       translations[lang][key]){
-        return translations[lang][key];
-    }
-
-    return key;
-}
-
-/* DEVICE Data */
-
-$(document).on("click",".device-btn",function(){
-
-    const param  = $(this).data("param");
-    const device = $(this).data("device");
-    const deviceId = safeId(device);
-
-    if($("#box_"+deviceId).length){
-
-        if(charts[deviceId]){
-            charts[deviceId].destroy();
-            delete charts[deviceId];
-        }
-
-        $("#box_"+deviceId).remove();
-        return;
-    }
-
-    $("#graph-container").append(`
-        <div class="col-md-4" id="box_${deviceId}" data-param="${param}" data-device="${device}">
-            <div class="graph-box">
-
-             <!-- THRESHOLD UI -->
-            <div class="d-flex mb-2" style="gap:5px;">
-                <input type="number" id="${deviceId}_min_input" class="form-control form-control-sm" placeholder="${t('table_min')}">
-                <input type="number" id="${deviceId}_max_input" class="form-control form-control-sm" placeholder="${t('table_max')}">
-                <button class="btn btn-warning btn-sm threshold-btn" data-device="${device}">
-                    ${t("threshold_set")}
-                </button>
-            </div>
-
-                <canvas id="chart_${deviceId}"></canvas>
-                <table class="table table-sm mt-2">
-                    <tr>
-                        <th>${t("table_current")}</th>
-                        <th>${t("table_mean")}</th>
-                        <th>${t("table_min")}</th>
-                        <th>${t("table_max")}</th>
-                    </tr>
-                    <tr>
-                        <td id="${deviceId}_current"></td>
-                        <td id="${deviceId}_mean"></td>
-                        <td id="${deviceId}_min"></td>
-                        <td id="${deviceId}_max"></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    `);
-
-    // 🔥 First click ALWAYS real-time
-    loadChart(param, device);
-
-});
-
-$(document).on("click", ".threshold-btn", function(){
-
-    const device = $(this).data("device");
-    const deviceId = safeId(device);
-    const btn = $(this);
-
-    // 🔥 TOGGLE OFF (HIDE)
-    if(thresholds[deviceId]){
-        delete thresholds[deviceId];
-
-        if(charts[deviceId]){
-            charts[deviceId].data.datasets[1].data = [];
-            charts[deviceId].data.datasets[2].data = [];
-            charts[deviceId].update();
-        }
-
-        btn.text(t("threshold_set"));  // back to "Set"
-        return;
-    }
-
-    // 🔥 TOGGLE ON (SET)
-    const minVal = parseFloat($("#"+deviceId+"_min_input").val());
-    const maxVal = parseFloat($("#"+deviceId+"_max_input").val());
-
-    if(isNaN(minVal) || isNaN(maxVal)){
-        alert("Enter valid min and max");
-        return;
-    }
-
-    thresholds[deviceId] = { min: minVal, max: maxVal };
-
-    btn.text(t("threshold_hide"));
-
-});
-
-
-/* VALVES */
-function getValveIcon(v){
-    if(!v || !v.status) return `<img src="${IMG_ERROR}" height="40">`;
-    if(v.status==="on") return `<img src="${IMG_ON}" height="40">`;
-    if(v.status==="off") return `<img src="${IMG_OFF}" height="40">`;
-    return `<img src="${IMG_ERROR}" height="40">`;
-}
-
-function fetchValves(){
-    $.get("/api/statistic-valves",function(data){
-        if(!Array.isArray(data)) return;
-        let html="<table style='width:100%'><tbody>";
-        data.forEach(r=>{
-            html+=`<tr><td style="font-size:12px;">${r.ro_device}</td>
-                   <td>${getValveIcon(r.ro_value)}</td></tr>`;
-        });
-        html+="</tbody></table>";
-        $("#models-table-container").html(html);
-    });
-}
-
-setInterval(fetchValves,5000);
-fetchValves();
-
-setInterval(updateTimes,1000);
-updateTimes();
-
-});
-
-
-    /* ===============================
-   LANGUAGE SWITCH (ADD THIS)
+/* ===============================
+   CLOCK
 =============================== */
 
-function setLanguage(lang){
+function updateTimes() {
 
-    localStorage.setItem("lang", lang);
+    const now = new Date();
 
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
+    document.getElementById("utc-time").textContent =
+        now.toISOString().slice(0,19).replace("T"," ");
 
-        if(translations[lang] && translations[lang][key]){
-            el.innerHTML = translations[lang][key];
-        }
-    });
+    const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
 
-    // FORCE UPDATE AFTER DOM + CHART READY
-    setTimeout(() => {
-    updateDynamicLanguage();
-    updateChartLanguage();
-}, 100);
+    document.getElementById("kst-time").textContent =
+        kst.toISOString().slice(0,19).replace("T"," ");
 
 }
 
-window.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
-    const switcher = document.getElementById("languageSwitcher");
-    const savedLang = localStorage.getItem("lang") || "en";
+    updateTimes();
 
-    if(switcher){
-        switcher.value = savedLang;
+    setInterval(updateTimes, 1000);
 
-        switcher.addEventListener("change", function(){
-            setLanguage(this.value);
-        });
-    }
-
-    setLanguage(savedLang);
 });
 
-    // 🔥 UPDATE ALL CHART LEGENDS AFTER LANGUAGE CHANGE
-function updateDynamicLanguage(){
 
-    $("[id^='box_']").each(function(){
+//* Calculation in Table *//
 
-        const deviceId = $(this).attr("id").replace("box_","");
+document.addEventListener("DOMContentLoaded", function () {
 
-        // Table headers
-        $(this).find("th").eq(0).html(t("table_current"));
-        $(this).find("th").eq(1).html(t("table_mean"));
-        $(this).find("th").eq(2).html(t("table_min"));
-        $(this).find("th").eq(3).html(t("table_max"));
+    const capacities = [5, 10, 15, 20, 25, 30];
 
-        // Placeholders
-        $("#"+deviceId+"_min_input").attr("placeholder", t("table_min"));
-        $("#"+deviceId+"_max_input").attr("placeholder", t("table_max"));
+    function updateProcessingTime() {
+
+        const flow = parseFloat(document.getElementById("flowRate").value);
+
+        capacities.forEach(function(cap) {
+
+            const timeCell = document.getElementById("time" + cap);
+            const ufCell = document.getElementById("uf" + cap);
+
+            if (!timeCell || !ufCell) return;
+
+            if (isNaN(flow) || flow <= 0) {
+
+                timeCell.innerHTML = "-";
+                ufCell.innerHTML = "-";
+
+            } else {
+
+                const minutes = (60 * cap) / flow;
+
+                timeCell.innerHTML =
+                    '<span style="color:#0d6efd;font-weight:bold;">'
+                    + Math.round(minutes)
+                    + ' min</span>';
+
+                const ufVolume = (0.84 * minutes) / 60;
+
+                ufCell.innerHTML =
+                    '<span style="color:#198754;font-weight:bold;">'
+                    + ufVolume.toFixed(2)
+                    + ' Ton</span>';
+
+            }
+
+        });
+
+    }
+
+    document.getElementById("flowRate")
+        .addEventListener("input", updateProcessingTime);
+
+    updateProcessingTime();
+
+});
+
+function applyLanguage(lang) {
+    document.querySelectorAll("[data-i18n]").forEach(function(element){
+        const key = element.dataset.i18n;
+        if (translations[lang] && translations[lang][key]) {
+            element.innerHTML = translations[lang][key];
+        }
     });
-
-
 }
 
-    function updateChartLanguage(){
+document.addEventListener("DOMContentLoaded", function () {
 
-    Object.keys(charts).forEach(deviceId => {
+    const savedLang = localStorage.getItem("language") || "en";
 
-        const chart = charts[deviceId];
-        if(!chart) return;
+    const selector = document.getElementById("languageSwitcher");
 
-        // ⚠️ IMPORTANT: dataset index must match your structure
-        if(chart.data.datasets[1]){
-            chart.data.datasets[1].label = t("table_min");
-        }
+    if (selector) {
 
-        if(chart.data.datasets[2]){
-            chart.data.datasets[2].label = t("table_max");
-        }
+        selector.value = savedLang;
 
-        chart.update();
-    });
+        selector.addEventListener("change", function () {
 
-}
+            localStorage.setItem("language", this.value);
+
+            applyLanguage(this.value);
+
+        });
+
+    }
+
+    applyLanguage(savedLang);
+
+});
+
+
+
+
+
 </script>
 
 {% endblock %}
