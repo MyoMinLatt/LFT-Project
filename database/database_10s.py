@@ -7,7 +7,7 @@ import glob
 # USER SETTINGS
 # ===============================
 CSV_FOLDER = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\Real_LFT_Data\Daily_LFT_Data"
-DB_FILE = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\wastewater_dashboard - Copy\database\LFT_DB.db"
+DB_FILE = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\wastewater_dashboard - Copy\database\LFT_DB_3.db"
 
 
 COLUMN_MAP = {
