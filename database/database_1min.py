@@ -7,7 +7,7 @@ import glob
 # USER SETTINGS
 # ===============================
 CSV_FOLDER = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\Real_LFT_Data\Daily_LFT_Data"
-DB_FILE = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\wastewater_dashboard - Copy\database\LFT_DB.db"
+DB_FILE = r"H:\SejongRain\LATT_Work\2026_Data\LET_Project\wastewater_dashboard - Copy\database\LFT_DB_4.db"
 
 
 COLUMN_MAP = {
@@ -357,6 +357,14 @@ def main():
             if bad.any():
                 print(f"⚠ Skipped {bad.sum()} bad rows.")
                 df = df[~bad]
+            # --------------------------------------
+            # Keep only 1-minute interval records
+            # --------------------------------------
+            # Keep only 1-minute interval records
+            df = df[df["Time"].dt.second == 0].copy()
+
+            print(f"Keeping {len(df)} rows at 1-minute intervals.")
+
             df["Time"] = df["Time"].dt.strftime("%Y/%m/%d %H:%M:%S")
 
             # --------------------------------------
